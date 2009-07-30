@@ -12,7 +12,7 @@ namespace AgentJohnson.ValueAnalysis
   using JetBrains.Annotations;
   using JetBrains.Application.Progress;
   using JetBrains.ReSharper.Intentions;
-  using JetBrains.ReSharper.Intentions.CSharp.ContextActions;
+  using JetBrains.ReSharper.Intentions.CSharp.DataProviders;
   using JetBrains.ReSharper.Psi;
   using JetBrains.ReSharper.Psi.CodeStyle;
   using JetBrains.ReSharper.Psi.CSharp;
@@ -155,7 +155,7 @@ namespace AgentJohnson.ValueAnalysis
 
         this._name = reference.GetName();
 
-        range = new TextRange(destination.GetTreeStartOffset(), source.GetTreeStartOffset());
+        range = new TextRange(destination.GetTreeStartOffset().Offset, source.GetTreeStartOffset().Offset);
       }
       else
       {
@@ -187,7 +187,7 @@ namespace AgentJohnson.ValueAnalysis
           return false;
         }
 
-        range = new TextRange(identifier.GetTreeStartOffset(), initial.GetTreeStartOffset());
+        range = new TextRange(identifier.GetTreeStartOffset().Offset, initial.GetTreeStartOffset().Offset);
       }
 
       if (declaredType == null)
@@ -200,7 +200,7 @@ namespace AgentJohnson.ValueAnalysis
         return false;
       }
 
-      return range.IsValid() && range.Contains(this.Provider.CaretOffset);
+      return range.IsValid() && range.Contains(this.Provider.CaretOffset.Offset);
     }
 
     /// <summary>
@@ -325,7 +325,7 @@ namespace AgentJohnson.ValueAnalysis
 
       var range = result.GetDocumentRange();
       var marker = result.GetManager().CreatePsiRangeMarker(range);
-      codeFormatter.Optimize(result.GetContainingFile(), marker, false, true, NullProgressIndicator.Instance);
+      codeFormatter.OptimizeImportsAndRefs(result.GetContainingFile(), marker, false, true, NullProgressIndicator.Instance);
     }
 
     /// <summary>
@@ -335,7 +335,7 @@ namespace AgentJohnson.ValueAnalysis
     /// The code formatter.
     /// </returns>
     [CanBeNull]
-    private static CodeFormatter GetCodeFormatter()
+    private static ICodeFormatter GetCodeFormatter()
     {
       var languageService = LanguageServiceManager.Instance.GetLanguageService(CSharpLanguageService.CSHARP);
       if (languageService == null)

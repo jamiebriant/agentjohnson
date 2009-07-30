@@ -12,10 +12,11 @@ namespace AgentJohnson.Statements
   using System.Text;
   using JetBrains.Application;
   using JetBrains.ReSharper.Intentions;
-  using JetBrains.ReSharper.Intentions.CSharp.ContextActions;
+  using JetBrains.ReSharper.Intentions.CSharp.DataProviders;
   using JetBrains.ReSharper.Psi;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.Tree;
+    using JetBrains.Application.CommandProcessing;
 
   /// <summary>
   /// Defines the pull parameters class.
@@ -269,7 +270,7 @@ namespace AgentJohnson.Statements
     private void HandleEmptyParentheses(IElement element)
     {
       var text = GetText(element);
-      this.TextControl.Document.InsertText(this.TextControl.CaretModel.Offset, text);
+      this.TextControl.Document.InsertText(this.TextControl.Caret.PositionValue.ToDocOffset(), text);
     }
 
     /// <summary>
@@ -281,7 +282,7 @@ namespace AgentJohnson.Statements
     private void HandleExpressionStatement(IElement element)
     {
       var text = GetText(element);
-      this.TextControl.Document.InsertText(this.TextControl.CaretModel.Offset, "(" + text + ");");
+      this.TextControl.Document.InsertText(this.TextControl.Caret.PositionValue.ToDocOffset(), "(" + text + ");");
     }
 
     /// <summary>
@@ -293,7 +294,7 @@ namespace AgentJohnson.Statements
     private void HandleReferenceExpression(IElement element)
     {
       var text = GetText(element);
-      this.TextControl.Document.InsertText(this.TextControl.CaretModel.Offset, "(" + text + ")");
+      this.TextControl.Document.InsertText(this.TextControl.Caret.PositionValue.ToDocOffset(), "(" + text + ")");
     }
 
     #endregion

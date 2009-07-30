@@ -14,7 +14,7 @@ namespace AgentJohnson.ValueAnalysis
   using JetBrains.Annotations;
   using JetBrains.Application.Progress;
   using JetBrains.ProjectModel;
-  using JetBrains.ReSharper.Intentions.CSharp.ContextActions;
+  using JetBrains.ReSharper.Intentions.CSharp.DataProviders;
   using JetBrains.ReSharper.Psi;
   using JetBrains.ReSharper.Psi.Caches;
   using JetBrains.ReSharper.Psi.CodeStyle;
@@ -325,7 +325,7 @@ namespace AgentJohnson.ValueAnalysis
     /// The code formatter.
     /// </returns>
     [CanBeNull]
-    private static CodeFormatter GetCodeFormatter()
+    private static ICodeFormatter GetCodeFormatter()
     {
       var languageService = LanguageServiceManager.Instance.GetLanguageService(CSharpLanguageService.CSHARP);
       if (languageService == null)
@@ -345,7 +345,7 @@ namespace AgentJohnson.ValueAnalysis
     /// <param name="formatter">
     /// The formatter.
     /// </param>
-    private static void InsertBlankLine([NotNull] IStatement anchor, [NotNull] CodeFormatter formatter)
+    private static void InsertBlankLine([NotNull] IStatement anchor, [NotNull] ICodeFormatter formatter)
     {
       var anchorTreeNode = anchor.ToTreeNode();
       if (anchorTreeNode == null)
@@ -371,7 +371,9 @@ namespace AgentJohnson.ValueAnalysis
 
       var range = element.GetDocumentRange();
       var marker = element.GetManager().CreatePsiRangeMarker(range);
-      formatter.Optimize(element.GetContainingFile(), marker, false, true, NullProgressIndicator.Instance);
+
+
+      formatter.OptimizeImportsAndRefs(element.GetContainingFile(), marker, false, true, NullProgressIndicator.Instance);
     }
 
     /// <summary>
@@ -461,7 +463,7 @@ namespace AgentJohnson.ValueAnalysis
 
         var range = result.GetDocumentRange();
         var marker = result.GetManager().CreatePsiRangeMarker(range);
-        codeFormatter.Optimize(result.GetContainingFile(), marker, false, true, NullProgressIndicator.Instance);
+        codeFormatter.OptimizeImportsAndRefs(result.GetContainingFile(), marker, false, true, NullProgressIndicator.Instance);
 
         hasAsserts = true;
       }

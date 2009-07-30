@@ -14,7 +14,6 @@ namespace AgentJohnson.Options
   using ValueAnalysis;
   using EnvDTE;
   using JetBrains.UI.Options;
-  using JetBrains.VSIntegration.Application;
 
   /// <summary>
   /// The value analysis options page.
@@ -47,22 +46,12 @@ namespace AgentJohnson.Options
       this.InitializeComponent();
       instance = this;
 
-      _DTE dte = VSShell.Instance.ApplicationObject;
+      Util.Shell.CreateCommand("Tools.SubMain.GhostDoc.DocumentThis", false, 
+          c => { 
+              if (c == null)
+                    this.ExecuteGhostDoc.Enabled = false; 
+          });
 
-      Command command;
-      try
-      {
-        command = dte.Commands.Item("Tools.SubMain.GhostDoc.DocumentThis", -1);
-      }
-      catch
-      {
-        command = null;
-      }
-
-      if (command == null)
-      {
-        this.ExecuteGhostDoc.Enabled = false;
-      }
     }
 
     #endregion

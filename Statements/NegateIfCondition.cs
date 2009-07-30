@@ -10,7 +10,7 @@
 namespace AgentJohnson.Statements
 {
   using JetBrains.ReSharper.Intentions;
-  using JetBrains.ReSharper.Intentions.CSharp.ContextActions;
+  using JetBrains.ReSharper.Intentions.CSharp.DataProviders;
   using JetBrains.ReSharper.Psi.CSharp;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.Tree;
@@ -234,7 +234,9 @@ namespace AgentJohnson.Statements
 
       var expression = factory.CreateExpression(text);
 
-      literalExpression.ReplaceBy(expression);
+        //FIXME: ReplaceBy
+        //literalExpression.
+          //ReplaceBy(expression);
     }
 
     /// <summary>

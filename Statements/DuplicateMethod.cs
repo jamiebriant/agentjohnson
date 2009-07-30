@@ -18,6 +18,8 @@ namespace AgentJohnson.Statements
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.Tree;
   using JetBrains.Util;
+    using JetBrains.TextControl.Coords;
+    using JetBrains.TextControl;
 
   /// <summary>
   /// The invert return value action handler.
@@ -74,7 +76,8 @@ namespace AgentJohnson.Statements
 
       if (selection != TextRange.InvalidRange)
       {
-        textControl.SelectionModel.SetRange(selection);
+
+        textControl.Selection.SetRange(selection);
       }
     }
 
@@ -159,7 +162,7 @@ namespace AgentJohnson.Statements
       var after = classDeclaration.AddClassMemberDeclarationAfter(declaration, anchor);
       if (after != null)
       {
-        return after.GetNameRange();
+          return Util.Conversion.TreeTextRangeToTextRange(after.GetNameRange());
       }
 
       return TextRange.InvalidRange;

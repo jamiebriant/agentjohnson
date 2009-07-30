@@ -525,7 +525,7 @@ namespace AgentJohnson.Strings
 
       var range = result.GetDocumentRange();
       var marker = result.GetManager().CreatePsiRangeMarker(range);
-      formatter.Optimize(result.GetContainingFile(), marker, false, true, NullProgressIndicator.Instance);
+      formatter.OptimizeImportsAndRefs(result.GetContainingFile(), marker, false, true, NullProgressIndicator.Instance);
     }
 
     /// <summary>
@@ -610,8 +610,8 @@ namespace AgentJohnson.Strings
       {
         return null;
       }
-
-      return file.FindTokenAt(this.TextControl.CaretModel.Offset);
+      DocumentRange dr = new DocumentRange(projectFile, textControl.Caret.PositionValue.ToDocOffset());
+        return file.FindTokenAt(dr);
     }
 
     /// <summary>
@@ -744,7 +744,7 @@ namespace AgentJohnson.Strings
 
       var editorManager = EditorManager.GetInstance(this.Solution);
 
-      var textControl2 = editorManager.GetTextControl(projectFile);
+      var textControl2 = editorManager.TryGetTextControl(projectFile);
       if (this.TextControl == null)
       {
         return;

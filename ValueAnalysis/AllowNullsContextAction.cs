@@ -11,7 +11,7 @@ namespace AgentJohnson.ValueAnalysis
 {
   using JetBrains.Application.Progress;
   using JetBrains.ReSharper.Intentions;
-  using JetBrains.ReSharper.Intentions.CSharp.ContextActions;
+  using JetBrains.ReSharper.Intentions.CSharp.DataProviders;
   using JetBrains.ReSharper.Psi;
   using JetBrains.ReSharper.Psi.Caches;
   using JetBrains.ReSharper.Psi.CSharp;
@@ -113,7 +113,7 @@ namespace AgentJohnson.ValueAnalysis
       */
       var range = attribute.GetDocumentRange();
       var marker = (attribute as IElement).GetManager().CreatePsiRangeMarker(range);
-      codeFormatter.Optimize(attribute.GetContainingFile(), marker, false, true, NullProgressIndicator.Instance);
+      codeFormatter.OptimizeImportsAndRefs(attribute.GetContainingFile(), marker, false, true, NullProgressIndicator.Instance);
     }
 
     /// <summary>

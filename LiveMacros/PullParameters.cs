@@ -7,10 +7,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+
+
 namespace AgentJohnson.LiveMacros
 {
   using System.Collections.Generic;
   using System.Text;
+  using JetBrains.Annotations;
   using JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots;
   using JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros;
   using JetBrains.ReSharper.Feature.Services.Lookup;
@@ -59,6 +62,7 @@ namespace AgentJohnson.LiveMacros
     /// <returns>
     /// The evaluate quick result.
     /// </returns>
+    [CanBeNull]
     public string EvaluateQuickResult(IHotspotContext context, IList<string> arguments)
     {
       return null;
@@ -165,6 +169,8 @@ namespace AgentJohnson.LiveMacros
         if (!first)
         {
           parametersBuilder.Append(", ");
+            
+            
         }
 
         first = false;

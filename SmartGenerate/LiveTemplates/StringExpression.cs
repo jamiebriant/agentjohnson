@@ -50,12 +50,12 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
 
         if (typeName == "string" && !hasString)
         {
-          result.Add(new LiveTemplateItem
-          {
-            MenuText = "Surround string expression",
-            Description = "Surround string expression",
-            Shortcut = "Surround string expression",
-            Range = expression.GetTreeTextRange()
+            result.Add(new LiveTemplateItem
+                           {
+                               MenuText = "Surround string expression",
+                               Description = "Surround string expression",
+                               Shortcut = "Surround string expression",
+                               Range = Util.Conversion.TreeTextRangeToTextRange(expression.GetTreeTextRange())
           });
 
           hasString = true;
@@ -68,7 +68,7 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
             MenuText = "Surround integer expression",
             Description = "Surround integer expression",
             Shortcut = "Surround integer expression",
-            Range = expression.GetTreeTextRange()
+            Range = Util.Conversion.TreeTextRangeToTextRange(expression.GetTreeTextRange())
           });
 
           hasInt = true;
@@ -81,7 +81,7 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
             MenuText = "Surround boolean expression",
             Description = "Surround boolean expression",
             Shortcut = "Surround boolean expression",
-            Range = expression.GetTreeTextRange()
+            Range = Util.Conversion.TreeTextRangeToTextRange(expression.GetTreeTextRange())
           });
 
           hasBool = true;

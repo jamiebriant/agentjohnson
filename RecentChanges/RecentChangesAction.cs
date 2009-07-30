@@ -15,6 +15,7 @@ namespace AgentJohnson.RecentChanges
   using JetBrains.IDE;
   using JetBrains.ProjectModel;
   using JetBrains.Util;
+    using JetBrains.Annotations;
 
   /// <summary>
   /// Handles Find Text action, see Actions.xml
@@ -35,7 +36,7 @@ namespace AgentJohnson.RecentChanges
     /// <param name="nextExecute">
     /// delegate to call
     /// </param>
-    public void Execute(IDataContext context, DelegateExecute nextExecute)
+      public void Execute([NotNull] IDataContext context, [CanBeNull] DelegateExecute nextExecute)
     {
       var solution = context.GetData(DataConstants.SOLUTION);
       if (solution == null)
@@ -62,7 +63,7 @@ namespace AgentJohnson.RecentChanges
     /// <returns>
     /// <c>True</c>, if successful.
     /// </returns>
-    public bool Update(IDataContext context, ActionPresentation presentation, DelegateUpdate nextUpdate)
+    public bool Update([NotNull] IDataContext context, [CanBeNull] ActionPresentation presentation, [CanBeNull] DelegateUpdate nextUpdate)
     {
       return context.CheckAllNotNull(DataConstants.SOLUTION);
     }
@@ -82,7 +83,7 @@ namespace AgentJohnson.RecentChanges
     /// <param name="context">
     /// The context.
     /// </param>
-    private static void Execute(ISolution solution, IDataContext context)
+    private static void Execute([NotNull] ISolution solution, [NotNull] IDataContext context)
     {
       var form = new RecentChanges();
 
@@ -100,7 +101,7 @@ namespace AgentJohnson.RecentChanges
         return;
       }
 
-      var offset = textControl.CaretModel.Offset;
+        var offset = textControl.Caret.PositionValue.ToDocOffset();
 
       using (CommandCookie.Create(string.Format("Context Action RecentChanges")))
       {
@@ -113,7 +114,9 @@ namespace AgentJohnson.RecentChanges
 
           textControl.Document.InsertText(offset, form.SelectedText);
 
-          textControl.CaretModel.MoveTo(offset + form.SelectedText.Length);
+            //TODO: test properly
+            textControl.Caret.MoveTo(textControl.Coords.FromDocOffset(offset));
+
         }
       }
     }

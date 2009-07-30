@@ -7,11 +7,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using JetBrains.ReSharper.Intentions.CSharp.ContextActions;
+using JetBrains.ReSharper.Psi.Tree;
+
 namespace AgentJohnson.Strings
 {
   using System.Collections.Generic;
   using JetBrains.ReSharper.Intentions;
-  using JetBrains.ReSharper.Intentions.CSharp.ContextActions;
+  using JetBrains.ReSharper.Intentions.CSharp.DataProviders;
   using JetBrains.ReSharper.Intentions.CSharp.ContextActions.Util;
   using JetBrains.ReSharper.Psi;
   using JetBrains.ReSharper.Psi.CSharp;

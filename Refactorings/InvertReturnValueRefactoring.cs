@@ -216,8 +216,8 @@ namespace AgentJohnson.Refactorings
       {
         return null;
       }
-
-      return file.FindTokenAt(this.TextControl.CaretModel.Offset);
+      DocumentRange dr = new DocumentRange(projectFile, this.TextControl.Caret.PositionValue.ToDocOffset());
+      return file.FindTokenAt(dr);
     }
 
     /// <summary>

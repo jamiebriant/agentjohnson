@@ -22,7 +22,7 @@ namespace AgentJohnson.FavoriteFiles
   using JetBrains.UI.PopupMenu;
   using JetBrains.UI.RichText;
   using JetBrains.Util;
-  using JetBrains.VSIntegration.Application;
+  using JetBrains.VsIntegration.Application;
 
   /// <summary>
   /// Handles Find Text action, see Actions.xml
@@ -374,8 +374,9 @@ namespace AgentJohnson.FavoriteFiles
 
       if (string.IsNullOrEmpty(favoriteFilePath.ProjectName))
       {
-        _DTE dte = VSShell.Instance.ApplicationObject;
-        dte.ItemOperations.OpenFile(favoriteFilePath.Path, Constants.vsViewKindTextView);
+          EditorManager.GetInstance(_solution).OpenFile(favoriteFilePath.Path, true );
+        //_DTE dte = VSShell.Instance.ApplicationObject;
+        //dte.ItemOperations.OpenFile(favoriteFilePath.Path, Constants.vsViewKindTextView);
         return;
       }
 

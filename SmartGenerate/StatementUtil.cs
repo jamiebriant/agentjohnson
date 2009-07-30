@@ -43,7 +43,7 @@ namespace AgentJohnson.SmartGenerate
       {
         var range = statement.GetTreeTextRange();
 
-        return new TextRange(range.EndOffset + 1);
+        return new TextRange(range.EndOffset.Offset + 1);
       }
 
       return TextRange.InvalidRange;
@@ -129,7 +129,7 @@ namespace AgentJohnson.SmartGenerate
       var range = statement.GetDocumentRange();
 
       var end = range.TextRange.StartOffset + range.TextRange.Length;
-      if (end > element.GetTreeTextRange().StartOffset)
+      if (end > element.GetTreeTextRange().StartOffset.Offset)
       {
         return false;
       }

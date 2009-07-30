@@ -138,8 +138,8 @@ namespace AgentJohnson.LiveMacros
       {
         return false;
       }
-
-      var element = file.FindTokenAt(textControl.CaretModel.Offset);
+      DocumentRange dr = new DocumentRange(projectFile, textControl.Caret.PositionValue.ToDocOffset());
+      var element = file.FindTokenAt(dr);
       if (element == null)
       {
         return false;

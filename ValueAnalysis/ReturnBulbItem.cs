@@ -110,7 +110,7 @@ namespace AgentJohnson.ValueAnalysis
     /// </summary>
     /// <returns>
     /// </returns>
-    private static CodeFormatter GetCodeFormatter()
+    private static ICodeFormatter GetCodeFormatter()
     {
       var languageService = LanguageServiceManager.Instance.GetLanguageService(CSharpLanguageService.CSHARP);
       if (languageService == null)
@@ -163,7 +163,7 @@ namespace AgentJohnson.ValueAnalysis
 
       var range = result.GetDocumentRange();
       var marker = result.GetManager().CreatePsiRangeMarker(range);
-      codeFormatter.Optimize(result.GetContainingFile(), marker, false, true, NullProgressIndicator.Instance);
+      codeFormatter.OptimizeImportsAndRefs(result.GetContainingFile(), marker, false, true, NullProgressIndicator.Instance);
     }
 
     #endregion

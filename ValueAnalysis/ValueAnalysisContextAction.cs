@@ -9,12 +9,10 @@
 
 namespace AgentJohnson.ValueAnalysis
 {
-  using EnvDTE;
   using JetBrains.Annotations;
   using JetBrains.ReSharper.Intentions;
-  using JetBrains.ReSharper.Intentions.CSharp.ContextActions;
+  using JetBrains.ReSharper.Intentions.CSharp.DataProviders;
   using JetBrains.ReSharper.Psi.Tree;
-  using JetBrains.VSIntegration.Application;
 
   /// <summary>
   /// Represents the Context Action.
@@ -30,7 +28,7 @@ namespace AgentJohnson.ValueAnalysis
     /// <param name="provider">
     /// The provider.
     /// </param>
-    public ValueAnalysisContextAction(ICSharpContextActionDataProvider provider) : base(provider)
+    public ValueAnalysisContextAction([NotNull] ICSharpContextActionDataProvider provider) : base(provider)
     {
     }
 
@@ -71,6 +69,7 @@ namespace AgentJohnson.ValueAnalysis
     /// <value>
     /// The text.
     /// </value>
+    [NotNull]
     protected override string GetText()
     {
       return "Annotate with Value Analysis attributes [Agent Johnson]";
@@ -106,22 +105,7 @@ namespace AgentJohnson.ValueAnalysis
     /// </param>
     protected override void PostExecute(IElement element)
     {
-      _DTE dte = VSShell.Instance.ApplicationObject;
-      Command command;
-
-      try
-      {
-        command = dte.Commands.Item("Tools.SubMain.GhostDoc.DocumentThis", -1);
-      }
-      catch
-      {
-        command = null;
-      }
-
-      if (command != null)
-      {
-        dte.ExecuteCommand("Tools.SubMain.GhostDoc.DocumentThis", string.Empty);
-      }
+        Util.Shell.CreateCommand("Tools.SubMain.GhostDoc.DocumentThis", true, null);
     }
 
     /// <summary>

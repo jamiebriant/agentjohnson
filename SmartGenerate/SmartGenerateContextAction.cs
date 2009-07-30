@@ -119,10 +119,9 @@ namespace AgentJohnson.SmartGenerate
         return false;
       }
 
-      var caretLine = textControl.Document.GetCoordsByOffset(textControl.CaretModel.Offset).Line;
-      var line = textControl.Document.GetLine(caretLine);
-      var prefix = line.Substring(
-        0, textControl.CaretModel.Offset - textControl.Document.GetLineStartOffset(caretLine));
+      var caretLine = textControl.Document.GetCoordsByOffset(textControl.Caret.Offset()).Line;
+      var line = textControl.Document.GetLineText(caretLine);
+      string prefix = line.Substring(0, textControl.Caret.Offset() - textControl.Document.GetLineStartOffset(caretLine));
       if (prefix.TrimStart(new[]
       {
         ' ', '\t'
@@ -180,8 +179,8 @@ namespace AgentJohnson.SmartGenerate
       {
         return false;
       }
-
-      element = file.FindTokenAt(textControl.CaretModel.Offset);
+      DocumentRange dr = new DocumentRange(projectFile, textControl.Caret.PositionValue.ToDocOffset());
+      element = file.FindTokenAt(dr);
 
       return true;
     }
@@ -511,7 +510,7 @@ namespace AgentJohnson.SmartGenerate
 
       if (range.IsValid())
       {
-        textControl.SelectionModel.SetRange(range);
+        textControl.Selection.SetRange(range);
       }
 
       Shell.Instance.Invocator.ReentrancyGuard.ExecuteOrQueue(
