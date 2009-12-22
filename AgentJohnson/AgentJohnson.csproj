@@ -128,8 +128,16 @@
       <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\JetBrains.ReSharper.Feature.Services.CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="JetBrains.ReSharper.Features.Common">
+      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\JetBrains.ReSharper.Features.Common.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="JetBrains.ReSharper.Features.Environment">
       <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\JetBrains.ReSharper.Features.Environment.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="JetBrains.ReSharper.Features.Finding">
+      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\JetBrains.ReSharper.Features.Finding.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Intentions">

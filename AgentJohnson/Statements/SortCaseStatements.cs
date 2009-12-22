@@ -220,7 +220,7 @@ namespace AgentJohnson.Statements
         return true;
       }
 
-      var isInt = PredefinedType.IsInt(type) || PredefinedType.IsLong(type);
+      var isInt = PredefinedType.IsPredefinedIntegral(typeName);
       if (isInt)
       {
         return true;

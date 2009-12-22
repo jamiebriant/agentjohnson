@@ -1,14 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <actions>
-  <insert group-id="ReSharper.Find" position="last">
-    <action id="FavoriteFiles" text="Favorite Files" shortcut="Control+Shift+X">
-      <vs-shortcut>Control+Shift+X</vs-shortcut>
-    </action>
-    <action id="RecentChanges" text="Recent Changes" shortcut="Control+Shift+P">
-      <vs-shortcut>Control+Shift+P</vs-shortcut>
-    </action>
-  </insert>
-
   <action id="AgentJohnson.IntroduceStringConstant" text="Introduce String Constant"/>
   <action id="AgentJohnson.InvertReturnValue" text="Invert Return Value"/>
   <action id="AgentJohnson.ImplementICloneable" text="Implement ICloneable"/>
@@ -19,6 +10,16 @@
     <vs-shortcut>Control+Shift+M</vs-shortcut>
   </action>
   <action id="SmartGenerate2" text="Internal Use Only"/>
+
+
+  <insert group-id="ReSharper.Find" position="last">
+    <action id="FavoriteFiles" text="Favorite Files" shortcut="Control+Shift+X">
+      <vs-shortcut>Control+Shift+X</vs-shortcut>
+    </action>
+    <action id="RecentChanges" text="Recent Changes" shortcut="Control+Shift+P">
+      <vs-shortcut>Control+Shift+P</vs-shortcut>
+    </action>
+  </insert>
 
   <insert group-id="ReSharper.Refactor" position="last">
     <separator />

@@ -182,7 +182,7 @@ namespace AgentJohnson.Strings
         range = new global::JetBrains.Util.TextRange(declNode.NameIdentifier.GetTreeStartOffset().Offset, initial.GetTreeStartOffset().Offset);
       }
 
-      return range.IsValid() && range.Contains(this.Provider.CaretOffset.Offset);
+      return range.IsValid && range.Contains(this.Provider.CaretOffset.Offset);
     }
 
     /// <summary>

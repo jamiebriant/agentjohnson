@@ -186,7 +186,7 @@ namespace AgentJohnson
         return;
       }
 
-      consumer.AddHighlighting(range, highlighting);
+      consumer.AddHighlighting(highlighting, range);
     }
 
     /// <summary>

@@ -192,7 +192,7 @@ namespace AgentJohnson.ValueAnalysis
         return false;
       }
 
-      return range.IsValid() && range.Contains(this.Provider.CaretOffset.Offset);
+      return range.IsValid && range.Contains(this.Provider.CaretOffset.Offset);
     }
 
     /// <summary>

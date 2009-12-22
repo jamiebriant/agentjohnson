@@ -408,7 +408,7 @@ namespace AgentJohnson.SmartGenerate
         {
           this.AddItem(items, smartGenerateItem);
 
-          if (!range.IsValid())
+          if (!range.IsValid)
           {
             range = smartGenerateItem.SelectionRange;
           }
@@ -507,7 +507,7 @@ namespace AgentJohnson.SmartGenerate
 
       var range = item.SelectionRange;
 
-      if (range.IsValid())
+      if (range.IsValid)
       {
         textControl.Selection.SetRange(range);
       }

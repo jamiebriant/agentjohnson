@@ -197,7 +197,7 @@ namespace AgentJohnson.ValueAnalysis
         return false;
       }
 
-      if (!range.IsValid() || !range.Contains(this.Provider.CaretOffset.Offset))
+      if (!range.IsValid || !range.Contains(this.Provider.CaretOffset.Offset))
       {
         return false;
       }
