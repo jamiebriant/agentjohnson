@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!-- Agent Johnson Installer File. -->
 <!-- This is a secondary file, see “Main” for comments. -->
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
@@ -33,13 +33,13 @@
 		<Property Id="VSROOTSUFFIX" Secure="yes" />
 
 		<!-- Set this property if you'd like to prevent the installation from uninstalling any other versions of the same product, for example, if you'd like to install a few versions side-by-side for different VS Hives. -->
-                <!-- <Property Id="NOUPGRADE" Secure="yes">1</Property> -->
+		<!--<Property Id="NOUPGRADE" Secure="yes" />-->
 
 		<!-- If an installed product of the same version is detected, abort the installation. -->
-                <!-- <Property Id="CANNOTUPGRADESAME" Secure="yes">1</Property> -->
+		<Property Id="CANNOTUPGRADESAME" Secure="yes"/>
 
 		<!-- If a newer version of the product is detected, abort the installation. -->
-		<!-- <Property Id="CANNOTUPGRADENEWER" Secure="yes"/>		-->
+		<Property Id="CANNOTUPGRADENEWER" Secure="yes"/>
 
 		<!---->
 		<!---->
