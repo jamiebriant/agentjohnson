@@ -57,8 +57,10 @@
 
 	</PropertyGroup>
 
-	<Import Project="$(MSBuildExtensionsPath)\Microsoft\wix\v3.0\Wix.targets" />
-
+  <!-- Use Wix 3.5 when possible, otherwise fall back to 3.0 -->
+	<Import Project="$(MSBuildExtensionsPath)\Microsoft\wix\v3.0\Wix.targets" Condition="!Exists('$(MSBuildExtensionsPath)\Microsoft\wix\v3.5\')" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\wix\v3.5\Wix.targets" Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\wix\v3.5\')" />
+  
 	<!-- Checks for the mandatory properties. -->
 	<Target Name="CheckAgentJohnsonHomeDir">
 		<Error Condition="'$(AgentJohnsonHomeDir)'==''" Text="The “AgentJohnsonHomeDir” property must be defined, pointing to the root AgentJohnson folder."/>
