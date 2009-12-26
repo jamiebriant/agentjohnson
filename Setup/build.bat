@@ -1,1 +1,2 @@
-C:\Windows\Microsoft.NET\Framework64\v3.5\msbuild.exe AgentJohnson.Setup.Proj
+IF EXIST C:\Windows\Microsoft.NET\Framework64 C:\Windows\Microsoft.NET\Framework64\v3.5\msbuild.exe AgentJohnson.Setup.Proj
+IF EXIST C:\Windows\Microsoft.NET\Framework C:\Windows\Microsoft.NET\Framework\v3.5\msbuild.exe AgentJohnson.Setup.Proj
