@@ -7,6 +7,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using JetBrains.Annotations;
+using JetBrains.DocumentModel;
+using JetBrains.Util;
+
 namespace AgentJohnson.Statements
 {
   using System.Text;
@@ -15,8 +19,7 @@ namespace AgentJohnson.Statements
   using JetBrains.ReSharper.Psi;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.Tree;
-  using JetBrains.TextControl;
-
+    using JetBrains.TextControl;
 
   /// <summary>
   /// Defines the pull parameters class.
@@ -32,7 +35,7 @@ namespace AgentJohnson.Statements
     /// <param name="provider">
     /// The provider.
     /// </param>
-    public PullParameters(ICSharpContextActionDataProvider provider) : base(provider)
+    public PullParameters([NotNull] ICSharpContextActionDataProvider provider) : base(provider)
     {
       this.StartTransaction = false;
     }
@@ -47,9 +50,9 @@ namespace AgentJohnson.Statements
     /// <param name="element">
     /// The element.
     /// </param>
-    protected override void Execute(IElement element)
+    protected override void Execute([NotNull] IElement element)
     {
-      using (this.TextControl.Document.EnsureWritable())
+        using (DocumentManager.GetInstance(Solution).EnsureWritable(TextControl.Document))
       {
         try
         {
@@ -82,6 +85,7 @@ namespace AgentJohnson.Statements
     /// <returns>
     /// The text.
     /// </returns>
+    [NotNull]
     protected override string GetText()
     {
       return "Pull parameters [Agent Johnson]";
@@ -90,25 +94,31 @@ namespace AgentJohnson.Statements
     /// <summary>
     /// Determines whether this instance is available.
     /// </summary>
-    /// <param name="element">
+    /// <param name="cache">
     /// The element.
     /// </param>
     /// <returns>
     /// <c>true</c> if this instance is available; otherwise, <c>false</c>.
     /// </returns>
-    protected override bool IsAvailable(IElement element)
+    public override bool IsAvailable(IUserDataHolder cache)
     {
-      if (IsExpressionStatement(element))
+        var expression = Provider.GetSelectedElement<IExpression>(false, true);
+        if (expression == null)
+        {
+            return false;
+        }
+
+      if (IsExpressionStatement(expression))
       {
         return true;
       }
 
-      if (IsReferenceExpression(element))
+      if (IsReferenceExpression(expression))
       {
         return true;
       }
 
-      return IsEmptyParentheses(element);
+      return IsEmptyParentheses(expression);
     }
 
     /// <summary>
@@ -120,7 +130,8 @@ namespace AgentJohnson.Statements
     /// <returns>
     /// The text.
     /// </returns>
-    private static string GetText(IElement element)
+    [CanBeNull]
+    private static string GetText([NotNull] IElement element)
     {
       var typeMemberDeclaration = element.GetContainingElement<ITypeMemberDeclaration>(true);
       if (typeMemberDeclaration == null)
@@ -166,7 +177,7 @@ namespace AgentJohnson.Statements
     /// <returns>
     /// <c>true</c> if [is empty parentheses] [the specified element]; otherwise, <c>false</c>.
     /// </returns>
-    private static bool IsEmptyParentheses(IElement element)
+    private static bool IsEmptyParentheses([NotNull] IElement element)
     {
       var text = element.GetText();
       if (text != ")")
@@ -212,10 +223,10 @@ namespace AgentJohnson.Statements
     /// <param name="element">
     /// The element.
     /// </param>
-    /// <returns>
+    /// <return>
     /// <c>true</c> if [is expression statement] [the specified element]; otherwise, <c>false</c>.
-    /// </returns>
-    private static bool IsExpressionStatement(IElement element)
+    /// </return>
+    private static bool IsExpressionStatement([NotNull] IElement element)
     {
       var treeNode = element.ToTreeNode();
 
@@ -249,7 +260,7 @@ namespace AgentJohnson.Statements
     /// <returns>
     /// <c>true</c> if [is reference expression] [the specified element]; otherwise, <c>false</c>.
     /// </returns>
-    private static bool IsReferenceExpression(IElement element)
+    private static bool IsReferenceExpression([NotNull] IElement element)
     {
       var treeNode = element.ToTreeNode();
 
@@ -267,7 +278,7 @@ namespace AgentJohnson.Statements
     /// <param name="element">
     /// The element.
     /// </param>
-    private void HandleEmptyParentheses(IElement element)
+    private void HandleEmptyParentheses([NotNull] IElement element)
     {
       var text = GetText(element);
       this.TextControl.Document.InsertText(this.TextControl.Caret.Offset(), text);
@@ -279,7 +290,7 @@ namespace AgentJohnson.Statements
     /// <param name="element">
     /// The element.
     /// </param>
-    private void HandleExpressionStatement(IElement element)
+    private void HandleExpressionStatement([NotNull] IElement element)
     {
       var text = GetText(element);
       this.TextControl.Document.InsertText(this.TextControl.Caret.Offset(), "(" + text + ");");
@@ -291,7 +302,7 @@ namespace AgentJohnson.Statements
     /// <param name="element">
     /// The element.
     /// </param>
-    private void HandleReferenceExpression(IElement element)
+    private void HandleReferenceExpression([NotNull] IElement element)
     {
       var text = GetText(element);
       this.TextControl.Document.InsertText(this.TextControl.Caret.Offset(), "(" + text + ")");

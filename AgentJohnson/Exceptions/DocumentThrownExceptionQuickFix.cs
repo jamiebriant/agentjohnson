@@ -77,7 +77,7 @@ namespace AgentJohnson.Exceptions
     /// <returns>
     /// The is available.
     /// </returns>
-    public bool IsAvailable(global::JetBrains.Util.IUserDataHolder cache)
+    public bool IsAvailable(JetBrains.Util.IUserDataHolder cache)
     {
       return true;
     }

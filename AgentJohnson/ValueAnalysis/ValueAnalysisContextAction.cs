@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using JetBrains.Util;
+
 namespace AgentJohnson.ValueAnalysis
 {
   using EnvDTE;
@@ -79,13 +81,13 @@ namespace AgentJohnson.ValueAnalysis
     /// <summary>
     /// Determines whether this instance is available.
     /// </summary>
-    /// <param name="element">
+    /// <param name="cache">
     /// The element.
     /// </param>
     /// <returns>
     /// <c>true</c> if this instance is available; otherwise, <c>false</c>.
     /// </returns>
-    protected override bool IsAvailable(IElement element)
+    public override bool IsAvailable(IUserDataHolder cache)
     {
       var typeMemberDeclaration = this.GetTypeMemberDeclaration();
       if (typeMemberDeclaration == null)

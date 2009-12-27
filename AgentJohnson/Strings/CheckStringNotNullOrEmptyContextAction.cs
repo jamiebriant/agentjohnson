@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using JetBrains.Util;
+
 namespace AgentJohnson.Strings
 {
   using JetBrains.ReSharper.Intentions;
@@ -101,7 +103,7 @@ namespace AgentJohnson.Strings
     /// <returns>
     /// Determines if the context action is available.
     /// </returns>
-    protected override bool IsAvailable(IElement element)
+    public override bool IsAvailable(IUserDataHolder element)
     {
       this.name = null;
 
@@ -113,7 +115,7 @@ namespace AgentJohnson.Strings
         return false;
       }
 
-      global::JetBrains.Util.TextRange range;
+      TextRange range;
 
       if (assignmentExpression != null)
       {
@@ -149,7 +151,7 @@ namespace AgentJohnson.Strings
 
         this.name = reference.GetName();
 
-        range = new global::JetBrains.Util.TextRange(destination.GetTreeStartOffset().Offset, source.GetTreeStartOffset().Offset);
+        range = new TextRange(destination.GetTreeStartOffset().Offset, source.GetTreeStartOffset().Offset);
       }
       else
       {
@@ -179,7 +181,7 @@ namespace AgentJohnson.Strings
           return false;
         }
 
-        range = new global::JetBrains.Util.TextRange(declNode.NameIdentifier.GetTreeStartOffset().Offset, initial.GetTreeStartOffset().Offset);
+        range = new TextRange(declNode.NameIdentifier.GetTreeStartOffset().Offset, initial.GetTreeStartOffset().Offset);
       }
 
       return range.IsValid && range.Contains(this.Provider.CaretOffset.Offset);
@@ -258,8 +260,8 @@ namespace AgentJohnson.Strings
     /// </summary>
     /// <param name="element">The element.</param>
     /// <param name="anchor">The anchor.</param>
-    /// <param name="name">The name of the variable.</param>
-    private void CheckStringAssignment(IElement element, IStatement anchor, string name)
+    /// <param name="assignmentName">The name of the variable.</param>
+    private void CheckStringAssignment(IElement element, IStatement anchor, string assignmentName)
     {
       var methodDeclaration = anchor.GetContainingTypeMemberDeclaration() as IMethodDeclaration;
       if (methodDeclaration == null)
@@ -281,7 +283,7 @@ namespace AgentJohnson.Strings
 
       var factory = CSharpElementFactory.GetInstance(element.GetPsiModule());
 
-      var statement = factory.CreateStatement(string.Format("if (string.IsNullOrEmpty({0})) {{ }}", name));
+      var statement = factory.CreateStatement(string.Format("if (string.IsNullOrEmpty({0})) {{ }}", assignmentName));
 
       var result = body.AddStatementAfter(statement, anchor);
 

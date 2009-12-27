@@ -111,7 +111,7 @@ namespace AgentJohnson.ValueAnalysis
     /// <returns>
     /// The is available.
     /// </returns>
-    protected override bool IsAvailable(IElement element)
+    public override bool IsAvailable(IUserDataHolder element)
     {
       if (string.IsNullOrEmpty(ValueAnalysisSettings.Instance.AllowNullAttribute))
       {

@@ -53,7 +53,7 @@ namespace AgentJohnson.SmartGenerate.Generators
         return;
       }
 
-      global::JetBrains.Util.TextRange range = StatementUtil.GetNewStatementPosition(element);
+      JetBrains.Util.TextRange range = StatementUtil.GetNewStatementPosition(element);
 
       if (type.GetPresentableName(element.Language) == "string")
       {
@@ -83,14 +83,15 @@ namespace AgentJohnson.SmartGenerate.Generators
     /// <returns>
     /// The null reference state.
     /// </returns>
-    private static CSharpControlFlowNullReferenceState GetExpressionNullReferenceState(SmartGenerateParameters smartGenerateParameters, IElement element, string name)
+    private CSharpControlFlowNullReferenceState GetExpressionNullReferenceState(SmartGenerateParameters smartGenerateParameters, IElement element, string name)
     {
       var state = CSharpControlFlowNullReferenceState.UNKNOWN;
 
       var psiManager = PsiManager.GetInstance(smartGenerateParameters.Solution);
-      using (var cookie = smartGenerateParameters.TextControl.Document.EnsureWritable())
+        
+      using (var cookie = EnsureWritable(smartGenerateParameters.Solution, smartGenerateParameters.TextControl.Document))
       {
-        if (cookie.EnsureWritableResult != global::JetBrains.Util.EnsureWritableResult.SUCCESS)
+        if (cookie.EnsureWritableResult != JetBrains.Util.EnsureWritableResult.SUCCESS)
         {
           return state;
         }

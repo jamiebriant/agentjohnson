@@ -26,7 +26,7 @@ namespace AgentJohnson.Strings
   using JetBrains.ReSharper.Psi.Tree;
   using JetBrains.TextControl;
   using JetBrains.UI.PopupMenu;
-  using AgentJohnson.Psi.CodeStyle;
+  using Psi.CodeStyle;
 
   /// <summary>
   /// Represents a Refactoring.
@@ -543,9 +543,9 @@ namespace AgentJohnson.Strings
         {
           using (ReadLockCookie.Create())
           {
-            using (var cookie = this.TextControl.Document.EnsureWritable())
+            using (var cookie = DocumentManager.GetInstance(solution).EnsureWritable(textControl.Document))
             {
-              if (cookie.EnsureWritableResult != global::JetBrains.Util.EnsureWritableResult.SUCCESS)
+              if (cookie.EnsureWritableResult != JetBrains.Util.EnsureWritableResult.SUCCESS)
               {
                 return;
               }
@@ -681,7 +681,7 @@ namespace AgentJohnson.Strings
 
       NamingRule rule = CodeStyleSettingsManager.Instance.CodeStyleSettings.GetNamingSettings2().PredefinedNamingRules[NamedElementKinds.Constants].NamingRule;
 
-      identifier = PsiManager.GetInstance(this.Solution).Naming.Parsing.Parse(identifier, rule, classDeclaration.Language.Service.LanguageType).GetCanonicalName();
+      identifier = PsiManager.GetInstance(this.Solution).Naming.Parsing.Parse(identifier, rule, classDeclaration.LanguageService.LanguageType).GetCanonicalName();
 
       identifier = Clip(identifier, 64);
 

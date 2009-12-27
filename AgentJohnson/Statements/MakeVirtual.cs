@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+
+
 namespace AgentJohnson.Statements
 {
   using JetBrains.ReSharper.Feature.Services.CSharp.Generate.MemberBody;
@@ -15,6 +17,7 @@ namespace AgentJohnson.Statements
   using JetBrains.ReSharper.Psi.CSharp;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.Tree;
+    using JetBrains.Util;
 
   /// <summary>
   /// Defines the make abstract class.
@@ -138,24 +141,19 @@ namespace AgentJohnson.Statements
     /// <returns>
     /// <c>true</c> if this instance is available; otherwise, <c>false</c>.
     /// </returns>
-    protected override bool IsAvailable(IElement element)
+    public override bool IsAvailable(IUserDataHolder element)
     {
-      var text = element.GetText();
+        var classDeclaration = Provider.GetSelectedElement<IClassDeclaration>(false, true);
+        if(classDeclaration == null)
+        {
+            return false;
+        }
+        if(!classDeclaration.IsAbstract)
+        {
+            return false;
+        }
 
-      if (text != "abstract")
-      {
-        return false;
-      }
-
-      var parent = element.ToTreeNode().Parent;
-      if (parent == null)
-      {
-        return false;
-      }
-
-      var classNode = parent.Parent;
-
-      return classNode is IClassDeclaration;
+        return true;
     }
 
     #endregion

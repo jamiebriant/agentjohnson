@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using JetBrains.DocumentModel;
+
 namespace AgentJohnson.ValueAnalysis
 {
   using JetBrains.Application;
@@ -84,9 +86,9 @@ namespace AgentJohnson.ValueAnalysis
         return;
       }
 
-      using (var cookie = textControl.Document.EnsureWritable())
+      using (var cookie = DocumentManager.GetInstance(solution).EnsureWritable(textControl.Document))
       {
-        if (cookie.EnsureWritableResult != global::JetBrains.Util.EnsureWritableResult.SUCCESS)
+        if (cookie.EnsureWritableResult != JetBrains.Util.EnsureWritableResult.SUCCESS)
         {
           return;
         }

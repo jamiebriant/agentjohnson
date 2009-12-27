@@ -32,7 +32,7 @@ namespace AgentJohnson.Comments
     /// <param name="provider">
     /// The provider.
     /// </param>
-    public CopySummary(ICSharpContextActionDataProvider provider) : base(provider)
+    public CopySummary([NotNull] ICSharpContextActionDataProvider provider) : base(provider)
     {
       this.StartTransaction = false;
     }
@@ -81,6 +81,7 @@ namespace AgentJohnson.Comments
     /// <returns>
     /// The text in the context menu.
     /// </returns>
+    [NotNull]
     protected override string GetText()
     {
       return "Replace <returns> with <summary> [Agent Johnson]";
@@ -89,24 +90,30 @@ namespace AgentJohnson.Comments
     /// <summary>
     /// Determines whether this instance is available.
     /// </summary>
-    /// <param name="element">
+    /// <param name="cache">
     /// The element.
     /// </param>
     /// <returns>
     /// <c>true</c> if this instance is available; otherwise, <c>false</c>.
     /// </returns>
-    protected override bool IsAvailable([NotNull] IElement element)
+    public override bool IsAvailable([NotNull] IUserDataHolder cache)
     {
-      IDocCommentNode summary;
-      IDocCommentNode returns;
+        IDocCommentNode summary;
+        IDocCommentNode returns;
 
-      GetSummaryAndReturns(element, out summary, out returns);
-      if (summary == null || returns == null)
-      {
+        IElement element = Provider.GetSelectedElement<ICommentNode>(false, true);
+        if(element == null)
+        {
+            return false;
+        }
+
+        GetSummaryAndReturns(element, out summary, out returns);
+        if (summary == null || returns == null)
+        {
         return false;
-      }
+        }
 
-      return returns.GetDocumentRange().Contains(this.Provider.DocumentCaret);
+        return returns.GetDocumentRange().Contains(this.Provider.DocumentCaret);
     }
 
     /// <summary>
@@ -121,7 +128,9 @@ namespace AgentJohnson.Comments
     [CanBeNull]
     private static IDocCommentBlockNode GetDocCommentBlock([NotNull] IElement element)
     {
+        
       var typeMemberDeclaration = element.GetContainingElement<ITypeMemberDeclaration>(true);
+        
       if (typeMemberDeclaration == null)
       {
         return null;
@@ -195,7 +204,8 @@ namespace AgentJohnson.Comments
     /// <returns>
     /// Returns the string.
     /// </returns>
-    private static string GetSummaryText(IDocCommentNode summary)
+    [NotNull]
+    private static string GetSummaryText([NotNull] IDocCommentNode summary)
     {
       var result = string.Empty;
 
@@ -236,7 +246,13 @@ namespace AgentJohnson.Comments
           break;
         }
 
-        summary = summary.FindNextNode(node => node is IDocCommentNode ? TreeNodeActionType.ACCEPT : TreeNodeActionType.CONTINUE) as IDocCommentNode;
+                summary = summary.FindNextNode(
+                              delegate(ITreeNode node)
+                                  {
+                                      return node is IDocCommentNode
+                                                 ? TreeNodeActionType.ACCEPT
+                                                 : TreeNodeActionType.CONTINUE;
+                                  }) as IDocCommentNode;
       }
 
       return result;
@@ -255,7 +271,7 @@ namespace AgentJohnson.Comments
     {
       using (CommandCookie.Create(string.Format("Context Action {0}", this.GetText())))
       {
-        using (var cookie = this.TextControl.Document.EnsureWritable())
+        using (var cookie = EnsureWritable())
         {
           if (cookie.EnsureWritableResult != EnsureWritableResult.SUCCESS)
           {

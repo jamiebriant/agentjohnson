@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using JetBrains.DocumentModel;
+
 namespace AgentJohnson.RecentChanges
 {
   using System.Windows.Forms;
@@ -104,9 +106,9 @@ namespace AgentJohnson.RecentChanges
 
       using (CommandCookie.Create(string.Format("Context Action RecentChanges")))
       {
-        using (var cookie = textControl.Document.EnsureWritable())
+        using (var cookie = DocumentManager.GetInstance(solution).EnsureWritable(textControl.Document))
         {
-          if (cookie.EnsureWritableResult != global::JetBrains.Util.EnsureWritableResult.SUCCESS)
+          if (cookie.EnsureWritableResult != JetBrains.Util.EnsureWritableResult.SUCCESS)
           {
             return;
           }

@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Linq;
+
 namespace AgentJohnson.ValueAnalysis
 {
   using System;
@@ -851,15 +853,7 @@ namespace AgentJohnson.ValueAnalysis
 
       var codeAnnotationsCache = CodeAnnotationsCache.GetInstance(this.Solution);
 
-      foreach (var attribute in attributes)
-      {
-        if (codeAnnotationsCache.IsAnnotationAttribute(attribute))
-        {
-          return true;
-        }
-      }
-
-      return false;
+        return attributes.Any(codeAnnotationsCache.IsAnnotationAttribute);
     }
 
     /// <summary>

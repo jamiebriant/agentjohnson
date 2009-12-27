@@ -6,9 +6,9 @@
 //   The invert return value action handler.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace AgentJohnson.Statements
 {
+  using JetBrains.Annotations;
   using JetBrains.ActionManagement;
   using JetBrains.Application;
   using JetBrains.IDE;
@@ -36,7 +36,7 @@ namespace AgentJohnson.Statements
     /// <param name="context">
     /// The context.
     /// </param>
-    protected override void Execute(ISolution solution, IDataContext context)
+    protected override void Execute([NotNull] ISolution solution, [NotNull] IDataContext context)
     {
       if (!context.CheckAllNotNull(DataConstants.SOLUTION))
       {
@@ -57,11 +57,12 @@ namespace AgentJohnson.Statements
         return;
       }
 
-      var selection = global::JetBrains.Util.TextRange.InvalidRange;
+      var selection = JetBrains.Util.TextRange.InvalidRange;
 
-      using (var cookie = textControl.Document.EnsureWritable())
+
+      using (var cookie = EnsureWritable(solution, textControl.Document))
       {
-        if (cookie.EnsureWritableResult != global::JetBrains.Util.EnsureWritableResult.SUCCESS)
+        if (cookie.EnsureWritableResult != JetBrains.Util.EnsureWritableResult.SUCCESS)
         {
           return;
         }
@@ -72,7 +73,7 @@ namespace AgentJohnson.Statements
         }
       }
 
-      if (selection != global::JetBrains.Util.TextRange.InvalidRange)
+      if (selection != JetBrains.Util.TextRange.InvalidRange)
       {
         textControl.Selection.SetRange(TextControlPosRange.FromDocRange(textControl, selection.StartOffset, selection.EndOffset));
       }
@@ -87,7 +88,7 @@ namespace AgentJohnson.Statements
     /// <returns>
     /// The update.
     /// </returns>
-    protected override bool Update(IDataContext context)
+    protected override bool Update([NotNull] IDataContext context)
     {
       if (!context.CheckAllNotNull(DataConstants.SOLUTION))
       {
@@ -122,18 +123,19 @@ namespace AgentJohnson.Statements
     /// <returns>
     /// Returns the text range.
     /// </returns>
-    private static global::JetBrains.Util.TextRange Execute(IElement element)
+    [NotNull]
+    private static JetBrains.Util.TextRange Execute([NotNull] IElement element)
     {
       var typeMemberDeclaration = element.ToTreeNode().Parent as ICSharpTypeMemberDeclaration;
       if (typeMemberDeclaration == null)
       {
-        return global::JetBrains.Util.TextRange.InvalidRange;
+        return JetBrains.Util.TextRange.InvalidRange;
       }
 
       var classDeclaration = typeMemberDeclaration.GetContainingTypeDeclaration() as IClassDeclaration;
       if (classDeclaration == null)
       {
-        return global::JetBrains.Util.TextRange.InvalidRange;
+        return JetBrains.Util.TextRange.InvalidRange;
       }
 
       var text = typeMemberDeclaration.GetText();
@@ -141,29 +143,29 @@ namespace AgentJohnson.Statements
       var factory = CSharpElementFactory.GetInstance(element.GetPsiModule());
       if (factory == null)
       {
-        return global::JetBrains.Util.TextRange.InvalidRange;
+        return JetBrains.Util.TextRange.InvalidRange;
       }
 
       var declaration = factory.CreateTypeMemberDeclaration(text) as IClassMemberDeclaration;
       if (declaration == null)
       {
-        return global::JetBrains.Util.TextRange.InvalidRange;
+        return JetBrains.Util.TextRange.InvalidRange;
       }
 
       var anchor = typeMemberDeclaration as IClassMemberDeclaration;
       if (anchor == null)
       {
-        return global::JetBrains.Util.TextRange.InvalidRange;
+        return JetBrains.Util.TextRange.InvalidRange;
       }
 
       var after = classDeclaration.AddClassMemberDeclarationAfter(declaration, anchor);
       if (after != null)
       {
         var treeTextRange = after.GetNameRange();
-        return new global::JetBrains.Util.TextRange(treeTextRange.StartOffset.Offset, treeTextRange.EndOffset.Offset);
+        return new JetBrains.Util.TextRange(treeTextRange.StartOffset.Offset, treeTextRange.EndOffset.Offset);
       }
 
-      return global::JetBrains.Util.TextRange.InvalidRange;
+      return JetBrains.Util.TextRange.InvalidRange;
     }
 
     #endregion

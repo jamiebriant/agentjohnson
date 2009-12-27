@@ -62,16 +62,16 @@ namespace AgentJohnson.Refactorings
         return;
       }
 
-      using (var cookie = textControl.Document.EnsureWritable())
+      using (var cookie = EnsureWritable(solution, textControl.Document))
       {
-        if (cookie.EnsureWritableResult != global::JetBrains.Util.EnsureWritableResult.SUCCESS)
+        if (cookie.EnsureWritableResult != EnsureWritableResult.SUCCESS)
         {
           return;
         }
 
         using (CommandCookie.Create("Context Action Implement ICloneable"))
         {
-          PsiManager.GetInstance(solution).DoTransaction(delegate { Execute(solution, classDeclaration); });
+          PsiManager.GetInstance(solution).DoTransaction(() => Execute(solution, classDeclaration));
         }
       }
     }

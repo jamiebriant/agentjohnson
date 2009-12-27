@@ -34,7 +34,7 @@ namespace AgentJohnson.LiveMacros
     {
       get
       {
-        return global::JetBrains.Util.EmptyArray<ParameterInfo>.Instance;
+        return JetBrains.Util.EmptyArray<ParameterInfo>.Instance;
       }
     }
 

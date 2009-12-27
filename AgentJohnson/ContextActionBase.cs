@@ -7,13 +7,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using JetBrains.Annotations;
+using JetBrains.DocumentModel;
 namespace AgentJohnson
 {
   using System;
   using JetBrains.Application;
   using JetBrains.ProjectModel;
   using JetBrains.ReSharper.Feature.Services.Bulbs;
-  using JetBrains.ReSharper.Intentions.CSharp.ContextActions.Util;
   using JetBrains.ReSharper.Intentions.CSharp.DataProviders;
   using JetBrains.ReSharper.Psi;
   using JetBrains.ReSharper.Psi.Tree;
@@ -23,7 +24,7 @@ namespace AgentJohnson
   /// <summary>
   /// Represents the base of a context action.
   /// </summary>
-  public abstract class ContextActionBase : CSharpContextActionBase, IBulbItem
+  public abstract class ContextActionBase: IBulbItem, IContextAction
   {
     #region Constants and Fields
 
@@ -31,6 +32,10 @@ namespace AgentJohnson
     /// The current provider.
     /// </summary>
     private readonly ICSharpContextActionDataProvider provider;
+      public ICSharpContextActionDataProvider Provider
+      {
+          get { return provider; }
+      }
 
     /// <summary>
     /// Indicates if transactions should be started.
@@ -47,9 +52,9 @@ namespace AgentJohnson
     /// <param name="provider">
     /// The provider.
     /// </param>
-    protected ContextActionBase(ICSharpContextActionDataProvider provider) : base(provider)
+    protected ContextActionBase(ICSharpContextActionDataProvider provider)
     {
-      this.provider = provider;
+        this.provider = provider;
     }
 
     #endregion
@@ -60,7 +65,7 @@ namespace AgentJohnson
     /// Gets the items.
     /// </summary>
     /// <value>The items.</value>
-    public override IBulbItem[] Items
+    public IBulbItem[] Items
     {
       get
       {
@@ -167,7 +172,19 @@ namespace AgentJohnson
     #endregion
 
     #region Methods
-
+    /// <summary>
+    /// Returns the Modification Cookie.
+    /// </summary>
+    /// <returns>The cookie.</returns>
+    [NotNull]
+    protected ModificationCookie EnsureWritable()
+    {
+        if (Solution != null)
+        {
+            return DocumentManager.GetInstance(Solution).EnsureWritable(TextControl.Document);
+        }
+        return new ModificationCookie(EnsureWritableResult.FAILURE);
+    }
     /// <summary>
     /// Executes this instance.
     /// </summary>
@@ -182,7 +199,7 @@ namespace AgentJohnson
     /// <param name="param">
     /// The parameters.
     /// </param>
-    protected override void ExecuteInternal(params object[] param)
+    protected void ExecuteInternal(params object[] param)
     {
       var element = param[0] as IElement;
 
@@ -215,7 +232,7 @@ namespace AgentJohnson
     /// <returns>
     /// <c>true</c> if this instance is available; otherwise, <c>false</c>.
     /// </returns>
-    protected abstract bool IsAvailable(IElement element);
+    public abstract bool IsAvailable(IUserDataHolder element);
 
     /// <summary>
     /// Called to check if ContextAction is available.
@@ -225,7 +242,7 @@ namespace AgentJohnson
     /// <returns>
     /// The is available internal.
     /// </returns>
-    protected override bool IsAvailableInternal()
+    protected bool IsAvailableInternal()
     {
       Shell.Instance.Locks.AssertReadAccessAllowed();
 
@@ -259,7 +276,7 @@ namespace AgentJohnson
         return;
       }
 
-      using (var cookie = this.TextControl.Document.EnsureWritable())
+      using (var cookie = EnsureWritable())
       {
         if (cookie.EnsureWritableResult != EnsureWritableResult.SUCCESS)
         {

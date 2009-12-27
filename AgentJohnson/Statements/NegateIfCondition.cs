@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using JetBrains.Util;
+
 namespace AgentJohnson.Statements
 {
   using JetBrains.ReSharper.Intentions;
@@ -69,9 +71,9 @@ namespace AgentJohnson.Statements
     /// <returns>
     /// <c>true</c> if this instance is available; otherwise, <c>false</c>.
     /// </returns>
-    protected override bool IsAvailable(IElement element)
+    public override bool IsAvailable(IUserDataHolder element)
     {
-      var ifStatement = element.GetContainingElement<IIfStatement>(true);
+        var ifStatement = this.Provider.GetSelectedElement<IIfStatement>(false, true);
       if (ifStatement == null)
       {
         return false;
@@ -83,7 +85,7 @@ namespace AgentJohnson.Statements
         return false;
       }
 
-      if (!condition.Contains(element))
+      if (!condition.Contains(ifStatement))
       {
         return false;
       }

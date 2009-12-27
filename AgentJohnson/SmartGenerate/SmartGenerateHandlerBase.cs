@@ -7,6 +7,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using JetBrains.DocumentModel;
+using JetBrains.ProjectModel;
+
 namespace AgentJohnson.SmartGenerate
 {
   using System.Collections.Generic;
@@ -55,6 +58,20 @@ namespace AgentJohnson.SmartGenerate
     #endregion
 
     #region Methods
+    /// <summary>
+    /// Returns a Modification Cookie.
+    /// </summary>
+    /// <param name="solution">The solution.</param>
+    /// <param name="document">The document.</param>
+    /// <returns>A cookie.</returns>
+    protected ModificationCookie EnsureWritable(ISolution solution, IDocument document)
+    {
+        if (solution != null)
+        {
+            return DocumentManager.GetInstance(solution).EnsureWritable(document);
+        }
+        return new ModificationCookie(EnsureWritableResult.FAILURE);
+    }
 
     /// <summary>
     /// Adds the specified text.
@@ -86,7 +103,7 @@ namespace AgentJohnson.SmartGenerate
     /// <param name="parameters">The parameters.</param>
     /// <returns>The menu item.</returns>
     [CanBeNull]
-    protected ISmartGenerateAction AddAction([NotNull] string text, [NotNull] string template, global::JetBrains.Util.TextRange selectionRange, params string[] parameters)
+    protected ISmartGenerateAction AddAction([NotNull] string text, [NotNull] string template, TextRange selectionRange, params string[] parameters)
     {
       var expandedTemplate = SmartGenerateManager.Instance.GetTemplate(template);
 

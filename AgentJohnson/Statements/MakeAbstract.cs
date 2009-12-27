@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using JetBrains.Util;
+
 namespace AgentJohnson.Statements
 {
   using JetBrains.ReSharper.Intentions;
@@ -96,22 +98,27 @@ namespace AgentJohnson.Statements
     /// <returns>
     /// <c>true</c> if this instance is available; otherwise, <c>false</c>.
     /// </returns>
-    protected override bool IsAvailable(IElement element)
+    public override bool IsAvailable(IUserDataHolder element)
     {
-      var text = element.GetText();
+        var classDeclaration = Provider.GetSelectedElement<IClassDeclaration>(false, true);//element.GetText();
+        
+        if(classDeclaration == null)
+        {
+            return false;
+        }
 
-      if (text != "virtual")
+      if (classDeclaration.IsAbstract)
       {
         return false;
       }
 
-      var functionDeclaration = element.GetContainingElement<IFunctionDeclaration>(true);
+      var functionDeclaration = classDeclaration.GetContainingElement<IFunctionDeclaration>(true);
       if (functionDeclaration != null)
       {
         return true;
       }
 
-      var propertyDeclaration = element.GetContainingElement<IPropertyDeclaration>(true);
+      var propertyDeclaration = classDeclaration.GetContainingElement<IPropertyDeclaration>(true);
       if (propertyDeclaration != null)
       {
         return true;

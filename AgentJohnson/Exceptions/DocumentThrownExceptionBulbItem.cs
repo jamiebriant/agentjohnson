@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using JetBrains.DocumentModel;
+
 namespace AgentJohnson.Exceptions
 {
   using System;
@@ -75,7 +77,7 @@ namespace AgentJohnson.Exceptions
           exceptionTypeName = exceptionType.GetPresentableName(throwStatement.Language);
         }
 
-        return String.Format("Add xml-docs comment for exception '{0}'", exceptionTypeName);
+        return String.Format("Add xml-docs comment for exception '{0}' [Agent Johnson]", exceptionTypeName);
       }
     }
 
@@ -102,16 +104,16 @@ namespace AgentJohnson.Exceptions
         return;
       }
 
-      using (var cookie = textControl.Document.EnsureWritable())
+      using (var cookie = DocumentManager.GetInstance(solution).EnsureWritable(textControl.Document))
       {
-        if (cookie.EnsureWritableResult != global::JetBrains.Util.EnsureWritableResult.SUCCESS)
+        if (cookie.EnsureWritableResult != JetBrains.Util.EnsureWritableResult.SUCCESS)
         {
           return;
         }
 
         using (CommandCookie.Create(string.Format("Context Action {0}", this.Text)))
         {
-          psiManager.DoTransaction(() => this.Execute());
+          psiManager.DoTransaction(this.Execute);
         }
       }
     }

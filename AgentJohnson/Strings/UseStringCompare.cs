@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using JetBrains.ReSharper.Feature.Services.Bulbs;
+
 namespace AgentJohnson.Strings
 {
   using JetBrains.ReSharper.Intentions;
@@ -21,7 +23,7 @@ namespace AgentJohnson.Strings
   /// Defines the equality operator to equals action class.
   /// </summary>
   [ContextAction(Group = "C#", Name = "Convert '==' to string.Compare", Description = "Converts usage of equality operator ('==') to a call to string.Compare method.")]
-  public class EqualityOperatorToEqualsAction : OneItemContextActionBase
+  public class EqualityOperatorToEqualsAction : OneItemContextActionBase, IBulbAction
   {
     #region Constructors and Destructors
 

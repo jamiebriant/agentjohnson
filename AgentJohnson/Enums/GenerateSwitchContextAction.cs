@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using JetBrains.Util;
+
 namespace AgentJohnson.Enums
 {
   using System.Text;
@@ -146,7 +148,7 @@ namespace AgentJohnson.Enums
     /// <returns>
     /// The is available.
     /// </returns>
-    protected override bool IsAvailable(IElement element)
+    public override bool IsAvailable(IUserDataHolder element)
     {
       var statement = this.Provider.GetSelectedElement<IExpressionStatement>(true, true);
       if (statement == null)
@@ -166,7 +168,7 @@ namespace AgentJohnson.Enums
         return false;
       }
 
-      return TypesUtil.IsEnumType(type);
+      return type.IsEnumType();
     }
 
     #endregion

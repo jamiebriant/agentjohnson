@@ -62,16 +62,16 @@ namespace AgentJohnson.Refactorings
         return;
       }
 
-      using (var cookie = textControl.Document.EnsureWritable())
+      using (var cookie = EnsureWritable(solution, textControl.Document))
       {
-        if (cookie.EnsureWritableResult != global::JetBrains.Util.EnsureWritableResult.SUCCESS)
+        if (cookie.EnsureWritableResult != EnsureWritableResult.SUCCESS)
         {
           return;
         }
 
         using (CommandCookie.Create("Context Action Implement IDisposable"))
         {
-          PsiManager.GetInstance(solution).DoTransaction(delegate { Execute(solution, classDeclaration); });
+          PsiManager.GetInstance(solution).DoTransaction(() => Execute(solution, classDeclaration));
         }
       }
     }
@@ -130,11 +130,11 @@ namespace AgentJohnson.Refactorings
     /// </param>
     private static void AddDestructor(IClassDeclaration classDeclaration, CSharpElementFactory factory)
     {
-      const string Code = @"~Disposable() {
+      const string code = @"~Disposable() {
           DisposeObject(false);
         }";
 
-      var memberDeclaration = factory.CreateTypeMemberDeclaration(Code) as IClassMemberDeclaration;
+      var memberDeclaration = factory.CreateTypeMemberDeclaration(code) as IClassMemberDeclaration;
 
       classDeclaration.AddClassMemberDeclaration(memberDeclaration);
     }

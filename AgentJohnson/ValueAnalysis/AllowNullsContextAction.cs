@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using JetBrains.Util;
+
 namespace AgentJohnson.ValueAnalysis
 {
   using JetBrains.ReSharper.Intentions;
@@ -16,7 +18,7 @@ namespace AgentJohnson.ValueAnalysis
   using JetBrains.ReSharper.Psi.CSharp;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.Tree;
-  using AgentJohnson.Psi.CodeStyle;
+  using Psi.CodeStyle;
 
   /// <summary>
   /// Represents the Context Action.
@@ -101,7 +103,7 @@ namespace AgentJohnson.ValueAnalysis
       */
 
       var range = attribute.GetDocumentRange();
-      CodeFormatter codeFormatter = new CodeFormatter();
+      var codeFormatter = new CodeFormatter();
       codeFormatter.Format(this.Solution, range);
     }
 
@@ -132,13 +134,13 @@ namespace AgentJohnson.ValueAnalysis
     /// ReadLock is taken
     /// Will not be called if PsiManager, ProjectFile of Solution == null
     /// </summary>
-    /// <param name="element">
+    /// <param name="cache">
     /// The element.
     /// </param>
     /// <returns>
     /// The is available.
     /// </returns>
-    protected override bool IsAvailable(IElement element)
+    public override bool IsAvailable(IUserDataHolder cache)
     {
       if (string.IsNullOrEmpty(ValueAnalysisSettings.Instance.AllowNullAttribute))
       {

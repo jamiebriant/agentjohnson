@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using JetBrains.Util;
+
 namespace AgentJohnson.Statements
 {
   using System.Text.RegularExpressions;
@@ -159,9 +161,10 @@ namespace AgentJohnson.Statements
     /// <returns>
     /// <c>true</c> if this instance is available; otherwise, <c>false</c>.
     /// </returns>
-    protected override bool IsAvailable(IElement element)
+    public override bool IsAvailable(IUserDataHolder element)
     {
-      var statement = element.ToTreeNode().Parent as IForStatement;
+        var statement = Provider.GetSelectedElement<IForStatement>(false, true);
+
       if (statement == null)
       {
         return false;
@@ -185,7 +188,7 @@ namespace AgentJohnson.Statements
         return false;
       }
 
-      if (localVariable.Type.GetPresentableName(element.Language) != "int")
+      if (localVariable.Type.GetPresentableName(statement.Language) != "int")
       {
         return false;
       }

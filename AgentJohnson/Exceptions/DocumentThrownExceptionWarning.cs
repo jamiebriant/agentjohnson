@@ -7,10 +7,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+
+
 namespace AgentJohnson.Exceptions
 {
   using JetBrains.DocumentModel;
-  using JetBrains.ProjectModel;
   using JetBrains.ReSharper.Daemon;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.Tree;

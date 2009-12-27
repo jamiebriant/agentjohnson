@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using JetBrains.Util;
+
 namespace AgentJohnson.Exceptions
 {
   using System.Collections.Generic;
@@ -105,41 +107,41 @@ namespace AgentJohnson.Exceptions
     /// <returns>
     /// <c>true</c> if the specified cache is available; otherwise, <c>false</c>.
     /// </returns>
-    protected override bool IsAvailable(IElement element)
+    public override bool IsAvailable(IUserDataHolder element)
     {
-      var node = element.ToTreeNode();
+        var node = Provider.GetSelectedElement<IInvocationExpression>(false, true);
       if (node == null)
       {
         return false;
       }
 
-      IInvocationExpression invocationExpression = null;
+      //IInvocationExpression invocationExpression = null;
 
-      while (node != null)
-      {
-        invocationExpression = node as IInvocationExpression;
+      //while (node != null)
+      //{
+      //  invocationExpression = node as IInvocationExpression;
 
-        if (invocationExpression != null)
-        {
-          break;
-        }
+      //  if (invocationExpression != null)
+      //  {
+      //    break;
+      //  }
 
-        if (node is IStatement)
-        {
-          break;
-        }
+      //  if (node is IStatement)
+      //  {
+      //    break;
+      //  }
 
-        node = node.Parent;
-      }
+      //  node = node.Parent;
+      //}
 
-      if (invocationExpression == null)
-      {
-        return false;
-      }
+      //if (invocationExpression == null)
+      //{
+      //  return false;
+      //}
 
       var exceptions = new List<string[]>();
 
-      GetExceptions(invocationExpression, exceptions);
+      GetExceptions(node, exceptions);
 
       return exceptions.Count > 0;
     }

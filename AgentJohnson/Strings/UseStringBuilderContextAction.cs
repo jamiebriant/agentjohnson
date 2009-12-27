@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using JetBrains.ReSharper.Feature.Services.Bulbs;
+
 namespace AgentJohnson.Strings
 {
   using System.Collections.Generic;
@@ -22,7 +24,7 @@ namespace AgentJohnson.Strings
   /// The string concatenation action.
   /// </summary>
   [ContextAction(Group = "C#", Name = "Use StringBuilder", Description = "Converts concatenation of a few strings and other objects to the use of StringBuilder class.")]
-  public class UseStringBuilderAction : OneItemContextActionBase
+  public class UseStringBuilderAction : OneItemContextActionBase, IBulbAction
   {
     #region Constants and Fields
 

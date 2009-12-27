@@ -6,7 +6,6 @@
 //   Represents the Context Action.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace AgentJohnson.ValueAnalysis
 {
   using JetBrains.ReSharper.Intentions;
@@ -16,7 +15,8 @@ namespace AgentJohnson.ValueAnalysis
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.Tree;
   using JetBrains.ReSharper.Psi.Util;
-  using AgentJohnson.Psi.CodeStyle;
+  using JetBrains.Util;
+  using Psi.CodeStyle;
 
   /// <summary>
   /// Represents the Context Action.
@@ -102,7 +102,7 @@ namespace AgentJohnson.ValueAnalysis
     /// <returns>
     /// The is available.
     /// </returns>
-    protected override bool IsAvailable(IElement element)
+    public override bool IsAvailable(IUserDataHolder element)
     {
       this.name = null;
 
@@ -114,7 +114,7 @@ namespace AgentJohnson.ValueAnalysis
         return false;
       }
 
-      global::JetBrains.Util.TextRange range;
+      TextRange range;
       IType declaredType;
 
       if (assignmentExpression != null)
@@ -147,7 +147,7 @@ namespace AgentJohnson.ValueAnalysis
 
         this.name = reference.GetName();
 
-        range = new global::JetBrains.Util.TextRange(destination.GetTreeStartOffset().Offset, source.GetTreeStartOffset().Offset);
+        range = new TextRange(destination.GetTreeStartOffset().Offset, source.GetTreeStartOffset().Offset);
       }
       else
       {
@@ -179,7 +179,7 @@ namespace AgentJohnson.ValueAnalysis
           return false;
         }
 
-        range = new global::JetBrains.Util.TextRange(identifier.GetTreeStartOffset().Offset, initial.GetTreeStartOffset().Offset);
+        range = new TextRange(identifier.GetTreeStartOffset().Offset, initial.GetTreeStartOffset().Offset);
       }
 
       if (declaredType == null)
@@ -315,5 +315,6 @@ namespace AgentJohnson.ValueAnalysis
     }
 
     #endregion
+
   }
 }

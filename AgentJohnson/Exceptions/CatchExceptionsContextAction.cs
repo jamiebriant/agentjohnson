@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using JetBrains.Util;
+
 namespace AgentJohnson.Exceptions
 {
   using System;
@@ -151,41 +153,43 @@ namespace AgentJohnson.Exceptions
     /// <returns>
     /// <c>true</c> if the specified cache is available; otherwise, <c>false</c>.
     /// </returns>
-    protected override bool IsAvailable(IElement element)
+    public override bool IsAvailable(IUserDataHolder element)
     {
       Shell.Instance.Locks.AssertReadAccessAllowed();
 
-      var node = element.ToTreeNode();
+    var node = Provider.GetSelectedElement<IInvocationExpression>(false, true);
+
+      //var node = ((IElement) element).ToTreeNode();
       if (node == null)
       {
         return false;
       }
 
-      IInvocationExpression invocationExpression = null;
+      //IInvocationExpression invocationExpression = null;
 
-      while (node != null)
-      {
-        invocationExpression = node as IInvocationExpression;
+      //while (node != null)
+      //{
+      //  invocationExpression = node as IInvocationExpression;
 
-        if (invocationExpression != null)
-        {
-          break;
-        }
+      //  if (invocationExpression != null)
+      //  {
+      //    break;
+      //  }
 
-        if (node is IStatement)
-        {
-          break;
-        }
+      //  if (node is IStatement)
+      //  {
+      //    break;
+      //  }
 
-        node = node.Parent;
-      }
+      //  node = node.Parent;
+      //}
 
-      if (invocationExpression == null)
-      {
-        return false;
-      }
+      //if (invocationExpression == null)
+      //{
+      //  return false;
+      //}
 
-      return IsVisible(invocationExpression);
+      return IsVisible(node);
     }
 
     #endregion

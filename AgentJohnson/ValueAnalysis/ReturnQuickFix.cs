@@ -78,7 +78,7 @@ namespace AgentJohnson.ValueAnalysis
     /// <returns>
     /// The is available.
     /// </returns>
-    public bool IsAvailable(global::JetBrains.Util.IUserDataHolder cache)
+    public bool IsAvailable(IUserDataHolder cache)
     {
       return true;
     }

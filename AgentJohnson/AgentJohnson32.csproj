@@ -55,128 +55,129 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DevExpress.XtraTreeList.v7.1">
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\DevExpress.XtraTreeList.v7.1.dll</HintPath>
+      <HintPath>C:\Program Files\JetBrains\ReSharper\v5.0\Bin\DevExpress.XtraTreeList.v7.1.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\PublicAssemblies\EnvDTE.dll</HintPath>
+      <HintPath>C:\Program Files\Microsoft Visual Studio 10.0\Common7\IDE\PublicAssemblies\EnvDTE.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.Annotations">
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\JetBrains.Annotations.dll</HintPath>
+      <HintPath>C:\Program Files\JetBrains\ReSharper\v5.0\Bin\JetBrains.Annotations.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.ActionManagement">
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\JetBrains.Platform.ReSharper.ActionManagement.dll</HintPath>
+      <HintPath>C:\Program Files\JetBrains\ReSharper\v5.0\Bin\JetBrains.Platform.ReSharper.ActionManagement.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.DocumentManager">
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\JetBrains.Platform.ReSharper.DocumentManager.dll</HintPath>
+      <HintPath>C:\Program Files\JetBrains\ReSharper\v5.0\Bin\JetBrains.Platform.ReSharper.DocumentManager.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.DocumentModel">
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\JetBrains.Platform.ReSharper.DocumentModel.dll</HintPath>
+      <HintPath>C:\Program Files\JetBrains\ReSharper\v5.0\Bin\JetBrains.Platform.ReSharper.DocumentModel.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.IDE">
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\JetBrains.Platform.ReSharper.IDE.dll</HintPath>
+      <HintPath>C:\Program Files\JetBrains\ReSharper\v5.0\Bin\JetBrains.Platform.ReSharper.IDE.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.ProjectModel">
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\JetBrains.Platform.ReSharper.ProjectModel.dll</HintPath>
+      <HintPath>C:\Program Files\JetBrains\ReSharper\v5.0\Bin\JetBrains.Platform.ReSharper.ProjectModel.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.Shell">
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\JetBrains.Platform.ReSharper.Shell.dll</HintPath>
+      <HintPath>C:\Program Files\JetBrains\ReSharper\v5.0\Bin\JetBrains.Platform.ReSharper.Shell.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.TextControl">
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\JetBrains.Platform.ReSharper.TextControl.dll</HintPath>
+      <HintPath>C:\Program Files\JetBrains\ReSharper\v5.0\Bin\JetBrains.Platform.ReSharper.TextControl.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.UI">
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\JetBrains.Platform.ReSharper.UI.dll</HintPath>
+      <HintPath>C:\Program Files\JetBrains\ReSharper\v5.0\Bin\JetBrains.Platform.ReSharper.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.UI.Avalon">
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\JetBrains.Platform.ReSharper.UI.Avalon.dll</HintPath>
+      <HintPath>C:\Program Files\JetBrains\ReSharper\v5.0\Bin\JetBrains.Platform.ReSharper.UI.Avalon.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.Util">
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\JetBrains.Platform.ReSharper.Util.dll</HintPath>
+      <HintPath>C:\Program Files\JetBrains\ReSharper\v5.0\Bin\JetBrains.Platform.ReSharper.Util.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.VSIntegration">
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\JetBrains.Platform.ReSharper.VSIntegration.dll</HintPath>
+      <HintPath>C:\Program Files\JetBrains\ReSharper\v5.0\Bin\JetBrains.Platform.ReSharper.VSIntegration.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Daemon">
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\JetBrains.ReSharper.Daemon.dll</HintPath>
+      <HintPath>C:\Program Files\JetBrains\ReSharper\v5.0\Bin\JetBrains.ReSharper.Daemon.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Daemon.CSharp">
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\JetBrains.ReSharper.Daemon.CSharp.dll</HintPath>
+      <HintPath>C:\Program Files\JetBrains\ReSharper\v5.0\Bin\JetBrains.ReSharper.Daemon.CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Feature.Services">
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\JetBrains.ReSharper.Feature.Services.dll</HintPath>
+      <HintPath>C:\Program Files\JetBrains\ReSharper\v5.0\Bin\JetBrains.ReSharper.Feature.Services.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Feature.Services.CSharp">
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\JetBrains.ReSharper.Feature.Services.CSharp.dll</HintPath>
+      <HintPath>C:\Program Files\JetBrains\ReSharper\v5.0\Bin\JetBrains.ReSharper.Feature.Services.CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Features.Common">
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\JetBrains.ReSharper.Features.Common.dll</HintPath>
+      <HintPath>C:\Program Files\JetBrains\ReSharper\v5.0\Bin\JetBrains.ReSharper.Features.Common.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Features.Environment">
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\JetBrains.ReSharper.Features.Environment.dll</HintPath>
+      <HintPath>C:\Program Files\JetBrains\ReSharper\v5.0\Bin\JetBrains.ReSharper.Features.Environment.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Features.Finding">
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\JetBrains.ReSharper.Features.Finding.dll</HintPath>
+      <HintPath>C:\Program Files\JetBrains\ReSharper\v5.0\Bin\JetBrains.ReSharper.Features.Finding.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Intentions">
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\JetBrains.ReSharper.Intentions.dll</HintPath>
+      <HintPath>C:\Program Files\JetBrains\ReSharper\v5.0\Bin\JetBrains.ReSharper.Intentions.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Intentions.CSharp">
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\JetBrains.ReSharper.Intentions.CSharp.dll</HintPath>
+      <HintPath>C:\Program Files\JetBrains\ReSharper\v5.0\Bin\JetBrains.ReSharper.Intentions.CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.LiveTemplates">
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\JetBrains.ReSharper.LiveTemplates.dll</HintPath>
+      <HintPath>C:\Program Files\JetBrains\ReSharper\v5.0\Bin\JetBrains.ReSharper.LiveTemplates.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.LiveTemplates.CSharp">
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\JetBrains.ReSharper.LiveTemplates.CSharp.dll</HintPath>
+      <HintPath>C:\Program Files\JetBrains\ReSharper\v5.0\Bin\JetBrains.ReSharper.LiveTemplates.CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Psi">
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\JetBrains.ReSharper.Psi.dll</HintPath>
+      <HintPath>C:\Program Files\JetBrains\ReSharper\v5.0\Bin\JetBrains.ReSharper.Psi.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Psi.CSharp">
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\JetBrains.ReSharper.Psi.CSharp.dll</HintPath>
+      <HintPath>C:\Program Files\JetBrains\ReSharper\v5.0\Bin\JetBrains.ReSharper.Psi.CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Psi.Services">
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\JetBrains.ReSharper.Psi.Services.dll</HintPath>
+      <HintPath>C:\Program Files\JetBrains\ReSharper\v5.0\Bin\JetBrains.ReSharper.Psi.Services.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.ReSharper.Psi.Services.CSharp">
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\JetBrains.ReSharper.Psi.Services.CSharp.dll</HintPath>
+      <HintPath>C:\Program Files\JetBrains\ReSharper\v5.0\Bin\JetBrains.ReSharper.Psi.Services.CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.OLE.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\Common Files\microsoft shared\VSTT\10.0\Microsoft.VisualStudio.OLE.Interop.dll</HintPath>
+      <HintPath>C:\Program Files\Common Files\microsoft shared\VSTT\10.0\Microsoft.VisualStudio.OLE.Interop.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Shell.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\Microsoft.VisualStudio.Shell.Interop.dll</HintPath>
+      <HintPath>C:\Program Files\JetBrains\ReSharper\v5.0\Bin\Microsoft.VisualStudio.Shell.Interop.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using JetBrains.Util;
+
 namespace AgentJohnson.Enums
 {
   using System;
@@ -67,7 +69,7 @@ namespace AgentJohnson.Enums
         return;
       }
 
-      using (var cookie = this.Provider.TextControl.Document.EnsureWritable())
+      using (var cookie = EnsureWritable())
       {
         if (cookie.EnsureWritableResult != global::JetBrains.Util.EnsureWritableResult.SUCCESS)
         {
@@ -111,7 +113,7 @@ namespace AgentJohnson.Enums
     /// <returns>
     /// <c>true</c>, if the context action is available.
     /// </returns>
-    protected override bool IsAvailable(IElement element)
+    public override bool IsAvailable(IUserDataHolder element)
     {
       var enumerate = this.Provider.GetSelectedElement<IEnumDeclaration>(true, true);
       return enumerate != null;

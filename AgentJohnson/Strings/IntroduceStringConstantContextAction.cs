@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using JetBrains.Util;
+
 namespace AgentJohnson.Strings
 {
   using JetBrains.ReSharper.Intentions;
@@ -69,9 +71,10 @@ namespace AgentJohnson.Strings
     /// <returns>
     /// <c>true</c> if this instance is available; otherwise, <c>false</c>.
     /// </returns>
-    protected override bool IsAvailable(IElement element)
+    public override bool IsAvailable(IUserDataHolder cache)
     {
-      return IntroduceStringConstantRefactoring.IsAvailable(element);
+        var element = Provider.GetSelectedElement<IElement>(false, true);
+      return IntroduceStringConstantRefactoring.IsAvailable(element );
     }
 
     #endregion

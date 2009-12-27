@@ -64,7 +64,7 @@ namespace AgentJohnson.Refactorings
         return;
       }
 
-      using (var cookie = textControl.Document.EnsureWritable())
+      using (var cookie = EnsureWritable(solution, textControl.Document))
       {
         if (cookie.EnsureWritableResult != global::JetBrains.Util.EnsureWritableResult.SUCCESS)
         {

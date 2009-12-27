@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using JetBrains.Util;
+
 namespace AgentJohnson.Statements
 {
   using System.Collections.Generic;
@@ -163,9 +165,9 @@ namespace AgentJohnson.Statements
     /// <returns>
     /// <c>true</c> if this instance is available; otherwise, <c>false</c>.
     /// </returns>
-    protected override bool IsAvailable(IElement element)
+    public override bool IsAvailable(IUserDataHolder element)
     {
-      var switchStatement = element.ToTreeNode().Parent as ISwitchStatement;
+        var switchStatement = Provider.GetSelectedElement<ISwitchStatement>(false, true);
       if (switchStatement == null)
       {
         return false;
@@ -207,7 +209,7 @@ namespace AgentJohnson.Statements
       }
 
       var type = condition.Type();
-      var typeName = type.GetPresentableName(element.Language);
+      var typeName = type.GetPresentableName(switchStatement.Language);
 
       if (typeName == "string")
       {

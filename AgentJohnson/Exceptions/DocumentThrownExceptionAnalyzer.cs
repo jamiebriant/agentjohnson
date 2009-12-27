@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Linq;
+
 namespace AgentJohnson.Exceptions
 {
   using System.Collections.Generic;
@@ -63,15 +65,7 @@ namespace AgentJohnson.Exceptions
     {
       var catchClauses = tryStatement.Catches;
 
-      foreach (var catchClause in catchClauses)
-      {
-        if (throwStatement.Exception == catchClause.ExceptionType)
-        {
-          return true;
-        }
-      }
-
-      return false;
+        return catchClauses.Any(catchClause => Equals(throwStatement.Exception, catchClause.ExceptionType));
     }
 
     /// <summary>

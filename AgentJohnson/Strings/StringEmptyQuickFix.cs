@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using JetBrains.DocumentModel;
+
 namespace AgentJohnson.Strings
 {
   using System.Collections.Generic;
@@ -94,7 +96,7 @@ namespace AgentJohnson.Strings
     /// <returns>
     /// The is available.
     /// </returns>
-    public bool IsAvailable(global::JetBrains.Util.IUserDataHolder cache)
+    public bool IsAvailable(IUserDataHolder cache)
     {
       return true;
     }
@@ -120,9 +122,9 @@ namespace AgentJohnson.Strings
         return;
       }
 
-      using (var cookie = textControl.Document.EnsureWritable())
+      using (var cookie = DocumentManager.GetInstance(solution).EnsureWritable(textControl.Document))
       {
-        if (cookie.EnsureWritableResult != global::JetBrains.Util.EnsureWritableResult.SUCCESS)
+        if (cookie.EnsureWritableResult != EnsureWritableResult.SUCCESS)
         {
           return;
         }

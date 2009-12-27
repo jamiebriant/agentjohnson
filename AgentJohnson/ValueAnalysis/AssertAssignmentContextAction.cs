@@ -20,7 +20,8 @@ namespace AgentJohnson.ValueAnalysis
   using JetBrains.ReSharper.Psi.Tree;
   using JetBrains.ReSharper.Psi.Util;
   using JetBrains.UI.PopupMenu;
-  using AgentJohnson.Psi.CodeStyle;
+  using JetBrains.Util;
+  using Psi.CodeStyle;
 
   /// <summary>
   /// Represents the Context Action.
@@ -106,7 +107,7 @@ namespace AgentJohnson.ValueAnalysis
     /// <returns>
     /// <c>true</c> if this instance is available; otherwise, <c>false</c>.
     /// </returns>
-    protected override bool IsAvailable(IElement element)
+    public override bool IsAvailable(IUserDataHolder element)
     {
       var localVariableDeclaration = this.Provider.GetSelectedElement<ILocalVariableDeclaration>(true, true);
       var assignmentExpression = this.Provider.GetSelectedElement<IAssignmentExpression>(true, true);
@@ -116,7 +117,7 @@ namespace AgentJohnson.ValueAnalysis
         return false;
       }
 
-      global::JetBrains.Util.TextRange range;
+      TextRange range;
       IType declaredType;
       PsiLanguageType language;
 
@@ -151,7 +152,7 @@ namespace AgentJohnson.ValueAnalysis
 
         this.name = reference.GetName();
 
-        range = new global::JetBrains.Util.TextRange(destination.GetTreeStartOffset().Offset, source.GetTreeStartOffset().Offset);
+        range = new TextRange(destination.GetTreeStartOffset().Offset, source.GetTreeStartOffset().Offset);
       }
       else
       {
@@ -184,7 +185,7 @@ namespace AgentJohnson.ValueAnalysis
 
         this.name = localVariable.ShortName;
 
-        range = new global::JetBrains.Util.TextRange(identifier.GetTreeStartOffset().Offset, initial.GetTreeStartOffset().Offset);
+        range = new TextRange(identifier.GetTreeStartOffset().Offset, initial.GetTreeStartOffset().Offset);
       }
 
       if (declaredType == null)
@@ -310,7 +311,7 @@ namespace AgentJohnson.ValueAnalysis
     /// </param>
     private void InsertAssertion(string assertion, IElement element)
     {
-      var psiManager = PsiManager.GetInstance(this.Provider.Solution);
+      var psiManager = PsiManager.GetInstance(Solution);
       if (psiManager == null)
       {
         return;
@@ -318,22 +319,24 @@ namespace AgentJohnson.ValueAnalysis
 
       using (ReadLockCookie.Create())
       {
-        using (var cookie = this.Provider.TextControl.Document.EnsureWritable())
+          using (var cookie = EnsureWritable())
         {
-          if (cookie.EnsureWritableResult != global::JetBrains.Util.EnsureWritableResult.SUCCESS)
+          if (cookie.EnsureWritableResult != EnsureWritableResult.SUCCESS)
           {
             return;
           }
 
           using (CommandCookie.Create(string.Format("Context Action {0}", this.GetText())))
           {
-            psiManager.DoTransaction(delegate { InsertAssertionCode(assertion, element); });
+            psiManager.DoTransaction(() => InsertAssertionCode(assertion, element));
           }
         }
       }
     }
 
-    /// <summary>
+
+
+      /// <summary>
     /// Inserts the assertion code.
     /// </summary>
     /// <param name="localVariableDeclaration">

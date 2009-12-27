@@ -60,7 +60,7 @@ namespace AgentJohnson
     /// <param name="toolTip">
     /// The tool tip.
     /// </param>
-    public SuggestionBase(string suggestionName, IElement element, DocumentRange highlightingRange, string toolTip)
+    protected SuggestionBase(string suggestionName, IElement element, DocumentRange highlightingRange, string toolTip)
     {
       this.range = highlightingRange;
       this.toolTip = toolTip;
@@ -125,7 +125,7 @@ namespace AgentJohnson
     }
 
     /// <summary>
-    /// Message for this highlighting to show in tooltip and in status bar (if <see cref="P:JetBrains.ReSharper.Daemon.HighlgihtingAttributeBase.ShowToolTipInStatusBar"/> is <c>true</c>)
+    /// Message for this highlighting to show in tooltip and in status bar
     /// </summary>
     /// <value></value>
     public string ErrorStripeToolTip
@@ -198,7 +198,7 @@ namespace AgentJohnson
     }
 
     /// <summary>
-    /// Message for this highlighting to show in tooltip and in status bar (if <see cref="P:JetBrains.ReSharper.Daemon.HighlgihtingAttributeBase.ShowToolTipInStatusBar"/> is <c>true</c>)
+    /// Message for this highlighting to show in tooltip and in status bar
     /// To override the default mechanism of tooltip, mark the implementation class with
     /// <see cref="T:JetBrains.ReSharper.Daemon.DaemonTooltipProviderAttribute"/> attribute, and then this property will not be called
     /// </summary>

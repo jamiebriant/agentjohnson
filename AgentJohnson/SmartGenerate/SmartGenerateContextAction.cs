@@ -131,7 +131,7 @@ namespace AgentJohnson.SmartGenerate
 
       if ((prefix.Length != 0) && (line.Length != prefix.Length))
       {
-        return global::JetBrains.Util.Special.GeneralUtil.IsAnyOf(line[prefix.Length], new[]
+        return JetBrains.Util.Special.GeneralUtil.IsAnyOf(line[prefix.Length], new[]
         {
           ' ', '\t'
         });
@@ -216,20 +216,7 @@ namespace AgentJohnson.SmartGenerate
           "Previous in scope",
           Keys.Left,
           false,
-          delegate()
-          {
-            Shell.Instance.Invocator.ReentrancyGuard.ExecuteOrQueue(
-              "SmartGenerate2", 
-              delegate
-            {
-              scopeIndex++;
-              var action = ActionManager.Instance.TryGetAction("SmartGenerate2") as IExecutableAction;
-              if (action != null)
-              {
-                ActionManager.Instance.ExecuteActionIfAvailable(action);
-              }
-            });
-          }));
+          OnHandler));
 
       menu.ToolbarButtons.Add(
         new ToolbarItemInfo(
@@ -237,25 +224,25 @@ namespace AgentJohnson.SmartGenerate
           "Next in scope",
           Keys.None,
           false,
-          delegate()
-          {
-            Shell.Instance.Invocator.ReentrancyGuard.ExecuteOrQueue(
-              "SmartGenerate2",
-              delegate
-              {
-                scopeIndex--;
-                var action = ActionManager.Instance.TryGetAction("SmartGenerate2") as IExecutableAction;
-                if (action != null)
-                {
-                  ActionManager.Instance.ExecuteActionIfAvailable(action);
-                }
-              });
-          }));
+          OnHandler));
 
       menu.Show();
     }
 
-    /// <summary>
+      private static void OnHandler()
+      {
+          Shell.Instance.Invocator.ReentrancyGuard.ExecuteOrQueue("SmartGenerate2", delegate
+            {
+                scopeIndex--;
+                var action = ActionManager.Instance.TryGetAction("SmartGenerate2") as IExecutableAction;
+                if (action != null)
+                {
+                    ActionManager.Instance.ExecuteActionIfAvailable(action);
+                }
+            });
+      }
+
+      /// <summary>
     /// Adds the menu item.
     /// </summary>
     /// <param name="items">The list of items.</param>
@@ -349,10 +336,10 @@ namespace AgentJohnson.SmartGenerate
     /// <summary>
     /// Executes action. Called after Update, that set <c>ActionPresentation</c>.Enabled to <c>true</c>.
     /// </summary>
-    /// <param name="dataContext">The context.</param>
-    private void Execute(IDataContext dataContext)
+    /// <param name="context">The context.</param>
+    private void Execute(IDataContext context)
     {
-      this.dataContext = dataContext;
+      this.dataContext = context;
 
       var solution = dataContext.GetData(JetBrains.IDE.DataConstants.SOLUTION);
       var textControl = dataContext.GetData(JetBrains.IDE.DataConstants.TEXT_CONTROL);
@@ -372,7 +359,7 @@ namespace AgentJohnson.SmartGenerate
 
       var items = new List<SimpleMenuItem>();
 
-      var range = global::JetBrains.Util.TextRange.InvalidRange;
+      var range = JetBrains.Util.TextRange.InvalidRange;
 
       var scope = Scope.Populate(element);
       if (scopeIndex >= scope.Count)

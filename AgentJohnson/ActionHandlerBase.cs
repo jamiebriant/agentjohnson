@@ -7,6 +7,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using JetBrains.DocumentModel;
+using JetBrains.Util;
+
 namespace AgentJohnson
 {
   using JetBrains.ActionManagement;
@@ -69,6 +72,20 @@ namespace AgentJohnson
     #endregion
 
     #region Methods
+    /// <summary>
+    /// Returns a Modification Cookie.
+    /// </summary>
+    /// <param name="solution">The solution.</param>
+    /// <param name="document">The document.</param>
+    /// <returns>A cookie.</returns>
+    protected ModificationCookie EnsureWritable(ISolution solution, IDocument document)
+    {
+        if (solution != null)
+        {
+            return DocumentManager.GetInstance(solution).EnsureWritable(document);
+        }
+        return new ModificationCookie(EnsureWritableResult.FAILURE);
+    }
 
     /// <summary>
     /// Gets the element at caret.

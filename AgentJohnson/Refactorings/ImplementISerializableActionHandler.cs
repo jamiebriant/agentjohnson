@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using JetBrains.DocumentModel;
+
 namespace AgentJohnson.Refactorings
 {
   using JetBrains.ActionManagement;
@@ -62,9 +64,9 @@ namespace AgentJohnson.Refactorings
         return;
       }
 
-      using (var cookie = textControl.Document.EnsureWritable())
+      using (var cookie = DocumentManager.GetInstance(solution).EnsureWritable(textControl.Document))
       {
-        if (cookie.EnsureWritableResult != global::JetBrains.Util.EnsureWritableResult.SUCCESS)
+        if (cookie.EnsureWritableResult != EnsureWritableResult.SUCCESS)
         {
           return;
         }
