@@ -12,6 +12,7 @@ using JetBrains.Util;
 namespace AgentJohnson.Statements
 {
   using System.Text.RegularExpressions;
+  using JetBrains.ReSharper.Feature.Services.Bulbs;
   using JetBrains.ReSharper.Intentions;
   using JetBrains.ReSharper.Intentions.CSharp.DataProviders;
   using JetBrains.ReSharper.Psi;

@@ -11,6 +11,7 @@ namespace AgentJohnson.Comments
 {
   using JetBrains.Annotations;
   using JetBrains.Application;
+  using JetBrains.ReSharper.Feature.Services.Bulbs;
   using JetBrains.ReSharper.Intentions;
   using JetBrains.ReSharper.Intentions.CSharp.DataProviders;
   using JetBrains.ReSharper.Psi.CSharp.Tree;

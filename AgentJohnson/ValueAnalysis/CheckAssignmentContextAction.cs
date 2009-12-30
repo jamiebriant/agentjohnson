@@ -8,9 +8,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace AgentJohnson.ValueAnalysis
 {
-  using JetBrains.ReSharper.Intentions;
-  using JetBrains.ReSharper.Intentions.CSharp.DataProviders;
-  using JetBrains.ReSharper.Psi;
+    using JetBrains.Annotations;
+    using JetBrains.ReSharper.Feature.Services.Bulbs;
+    using JetBrains.ReSharper.Intentions.CSharp.DataProviders;
+    using JetBrains.ReSharper.Psi;
   using JetBrains.ReSharper.Psi.CSharp;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.Tree;
@@ -52,10 +53,8 @@ namespace AgentJohnson.ValueAnalysis
     /// <summary>
     /// Executes the internal.
     /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
-    protected override void Execute(IElement element)
+    /// <param name="element">The element.</param>
+    protected override void Execute([NotNull] IElement element)
     {
       if (!this.IsAvailable(element))
       {
@@ -80,12 +79,11 @@ namespace AgentJohnson.ValueAnalysis
     /// <summary>
     /// Gets the text.
     /// </summary>
+    /// <returns>The get text.</returns>
     /// <value>
     /// The text.
     /// </value>
-    /// <returns>
-    /// The get text.
-    /// </returns>
+    [NotNull]
     protected override string GetText()
     {
       return string.Format("Check if '{0}' is null [Agent Johnson]", this.name ?? "[unknown]");
@@ -198,10 +196,8 @@ namespace AgentJohnson.ValueAnalysis
     /// <summary>
     /// Inserts the assertion code.
     /// </summary>
-    /// <param name="localVariableDeclaration">
-    /// The local variable declaration.
-    /// </param>
-    private void CheckAssignment(ILocalVariableDeclaration localVariableDeclaration)
+    /// <param name="localVariableDeclaration">The local variable declaration.</param>
+    private void CheckAssignment([NotNull] ILocalVariableDeclaration localVariableDeclaration)
     {
       var localVariable = localVariableDeclaration.DeclaredElement as ILocalVariable;
       if (localVariable == null)
@@ -239,7 +235,7 @@ namespace AgentJohnson.ValueAnalysis
     /// <param name="assignmentExpression">
     /// The assignment expression.
     /// </param>
-    private void CheckAssignment(IAssignmentExpression assignmentExpression)
+    private void CheckAssignment([NotNull] IAssignmentExpression assignmentExpression)
     {
       var destination = assignmentExpression.Dest;
       if (destination == null)
@@ -266,22 +262,23 @@ namespace AgentJohnson.ValueAnalysis
 
       var anchor = assignmentExpression.GetContainingStatement();
 
-      this.CheckAssignment(assignmentExpression, anchor, referenceExpression.Reference.GetName());
+      if (anchor != null)
+      {
+          this.CheckAssignment(assignmentExpression, anchor, referenceExpression.Reference.GetName());
+      }
     }
 
-    /// <summary>
-    /// Inserts the assert.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
-    /// <param name="anchor">
-    /// The anchor.
-    /// </param>
-    /// <param name="name">
-    /// The name.
-    /// </param>
-    private void CheckAssignment(IElement element, IStatement anchor, string name)
+      /// <summary>
+      /// Inserts the assert.
+      /// </summary>
+      /// <param name="element">The element.</param>
+      /// <param name="anchor">
+      /// The anchor.
+      /// </param>
+      /// <param name="assignmentName">
+      /// The assignmentName.
+      /// </param>
+      private void CheckAssignment([NotNull] IElement element, [NotNull] IStatement anchor, [NotNull] string assignmentName)
     {
       var functionDeclaration = anchor.GetContainingTypeMemberDeclaration() as IMethodDeclaration;
       if (functionDeclaration == null)
@@ -303,7 +300,7 @@ namespace AgentJohnson.ValueAnalysis
         return;
       }
 
-      var code = string.Format("if({0} == null) {{ }}", name);
+      var code = string.Format("if({0} == null) {{ }}", assignmentName);
 
       var statement = factory.CreateStatement(code);
 

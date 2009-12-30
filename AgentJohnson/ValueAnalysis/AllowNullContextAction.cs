@@ -10,11 +10,13 @@
 namespace AgentJohnson.ValueAnalysis
 {
   using System.Linq;
-  using JetBrains.ReSharper.Intentions;
+  using JetBrains.Annotations;
+  using JetBrains.ReSharper.Feature.Services.Bulbs;
   using JetBrains.ReSharper.Intentions.CSharp.DataProviders;
   using JetBrains.ReSharper.Intentions.Util;
   using JetBrains.ReSharper.Psi;
   using JetBrains.ReSharper.Psi.Caches;
+  using JetBrains.ReSharper.Psi.CSharp;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.Tree;
   using JetBrains.Util;
@@ -27,13 +29,11 @@ namespace AgentJohnson.ValueAnalysis
   {
     #region Constructors and Destructors
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="AllowNullContextAction"/> class.
-    /// </summary>
-    /// <param name="provider">
-    /// The provider.
-    /// </param>
-    public AllowNullContextAction(ICSharpContextActionDataProvider provider) : base(provider)
+      /// <summary>
+      /// Initializes a new instance of the <see cref="AllowNullContextAction"/> class.
+      /// </summary>
+      /// <param name="provider">The provider.</param>
+    public AllowNullContextAction([NotNull] ICSharpContextActionDataProvider provider) : base(provider)
     {
     }
 
@@ -44,10 +44,8 @@ namespace AgentJohnson.ValueAnalysis
     /// <summary>
     /// Executes the internal.
     /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
-    protected override void Execute(IElement element)
+    /// <param name="element">The element.</param>
+    protected override void Execute([NotNull] IElement element)
     {
       if (!this.IsAvailableInternal())
       {
@@ -73,7 +71,9 @@ namespace AgentJohnson.ValueAnalysis
 
       Logger.Assert(typeElement != null, "typeElement != null");
 
-      var attribute = this.Provider.ElementFactory.CreateAttribute(typeElement);
+      var elementFactory = CSharpElementFactory.GetInstance(Provider.PsiModule);
+
+      var attribute = elementFactory.CreateAttribute(typeElement);
 
       ContextActionUtils.FormatWithDefaultProfile(attributesOwnerDeclaration.AddAttributeAfter(attribute, null));
     }
@@ -81,12 +81,11 @@ namespace AgentJohnson.ValueAnalysis
     /// <summary>
     /// Gets the text.
     /// </summary>
+    /// <returns>The get text.</returns>
     /// <value>
     /// The text.
     /// </value>
-    /// <returns>
-    /// The get text.
-    /// </returns>
+    [NotNull]
     protected override string GetText()
     {
       var attribute = ValueAnalysisSettings.Instance.AllowNullAttribute;

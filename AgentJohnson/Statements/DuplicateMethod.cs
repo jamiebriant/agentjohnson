@@ -22,8 +22,8 @@ namespace AgentJohnson.Statements
   /// <summary>
   /// The invert return value action handler.
   /// </summary>
-  [ActionHandler("AgentJohnson.DuplicateMethod")]
-  public class DuplicateMethod : ActionHandlerBase
+    [ActionHandler("AgentJohnson.DuplicateMethod")]
+    public class DuplicateMethodActionHandler : ActionHandlerBase
   {
     #region Methods
 

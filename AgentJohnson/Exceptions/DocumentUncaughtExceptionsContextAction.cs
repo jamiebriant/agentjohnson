@@ -16,6 +16,7 @@ namespace AgentJohnson.Exceptions
   using System.Text.RegularExpressions;
   using System.Xml;
   using JetBrains.Application;
+  using JetBrains.ReSharper.Feature.Services.Bulbs;
   using JetBrains.ReSharper.Intentions;
   using JetBrains.ReSharper.Intentions.CSharp.DataProviders;
   using JetBrains.ReSharper.Psi;

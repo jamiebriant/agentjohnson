@@ -223,7 +223,6 @@
     <Compile Include="RecentChanges\RecentChanges.Designer.cs">
       <DependentUpon>RecentChanges.cs</DependentUpon>
     </Compile>
-    <Compile Include="Statements\DuplicateMethod.cs" />
     <Compile Include="Refactorings\ImplementICloneableActionHandler.cs" />
     <Compile Include="Refactorings\ImplementIDisposableActionHandler.cs" />
     <Compile Include="Refactorings\ImplementISerializableActionHandler.cs" />
@@ -279,6 +278,7 @@
     <Compile Include="SmartGenerate\SmartGenerateMenuSeperator.cs" />
     <Compile Include="SmartGenerate\SmartGenerateSettings.cs" />
     <Compile Include="SmartGenerate\StatementUtil.cs" />
+    <Compile Include="Statements\DuplicateMethod.cs" />
     <Compile Include="Statements\MakeVirtual.cs" />
     <Compile Include="Statements\NegateIfCondition.cs" />
     <Compile Include="Statements\PullParameters.cs" />
@@ -398,6 +398,7 @@
     <EmbeddedResource Include="Resources\RightArrow.png" />
     <Content Include="SmartGenerate.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>

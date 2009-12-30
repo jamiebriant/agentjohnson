@@ -17,6 +17,7 @@ namespace AgentJohnson.Exceptions
   using System.Xml;
   using JetBrains.Application;
   using JetBrains.Application.Progress;
+  using JetBrains.ReSharper.Feature.Services.Bulbs;
   using JetBrains.ReSharper.Intentions;
   using JetBrains.ReSharper.Intentions.CSharp.DataProviders;
   using JetBrains.ReSharper.Psi.CodeStyle;

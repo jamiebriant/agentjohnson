@@ -31,8 +31,13 @@ namespace AgentJohnson
     /// <summary>
     /// The current provider.
     /// </summary>
-    private readonly ICSharpContextActionDataProvider provider;
-      public ICSharpContextActionDataProvider Provider
+      private readonly IContextActionDataProvider provider;
+    /// <summary>
+    /// Gets the provider.
+    /// </summary>
+    /// <value>The provider.</value>
+    [NotNull]
+    public IContextActionDataProvider Provider
       {
           get { return provider; }
       }
@@ -52,7 +57,7 @@ namespace AgentJohnson
     /// <param name="provider">
     /// The provider.
     /// </param>
-    protected ContextActionBase(ICSharpContextActionDataProvider provider)
+    protected ContextActionBase([NotNull] ICSharpContextActionDataProvider provider)
     {
         this.provider = provider;
     }

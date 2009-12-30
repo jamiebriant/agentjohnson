@@ -6,230 +6,203 @@
 //   Base suggestion for Agent Johnson suggestions.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace AgentJohnson
 {
-  using System.Drawing;
-  using JetBrains.DocumentModel;
-  using JetBrains.ReSharper.Daemon;
-  using JetBrains.ReSharper.Psi.Tree;
-
-  /// <summary>
-  /// Base suggestion for Agent Johnson suggestions.
-  /// </summary>
-  public abstract class SuggestionBase : IHighlighting
-  {
-    #region Constants and Fields
+    using System.Drawing;
+    using JetBrains.DocumentModel;
+    using JetBrains.ReSharper.Daemon;
+    using JetBrains.ReSharper.Psi.Tree;
 
     /// <summary>
-    /// The _element.
+    /// Base suggestion for Agent Johnson suggestions.
     /// </summary>
-    private readonly IElement element;
-
-    /// <summary>
-    /// The _range.
-    /// </summary>
-    private readonly DocumentRange range;
-
-    /// <summary>
-    /// The _suggestion name.
-    /// </summary>
-    private readonly string suggestionName;
-
-    /// <summary>
-    /// The _tool tip.
-    /// </summary>
-    private readonly string toolTip;
-
-    #endregion
-
-    #region Constructors and Destructors
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="SuggestionBase"/> class.
-    /// </summary>
-    /// <param name="suggestionName">
-    /// Name of the suggestion.
-    /// </param>
-    /// <param name="element">
-    /// The element.
-    /// </param>
-    /// <param name="highlightingRange">
-    /// The highlighting range.
-    /// </param>
-    /// <param name="toolTip">
-    /// The tool tip.
-    /// </param>
-    protected SuggestionBase(string suggestionName, IElement element, DocumentRange highlightingRange, string toolTip)
+    public abstract class SuggestionBase : IHighlighting
     {
-      this.range = highlightingRange;
-      this.toolTip = toolTip;
-      this.element = element;
-      this.suggestionName = suggestionName;
-    }
+        #region Constants and Fields
 
-    #endregion
+        /// <summary>
+        /// The _element.
+        /// </summary>
+        private readonly IElement element;
 
-    #region Properties
+        /// <summary>
+        /// The _range.
+        /// </summary>
+        private readonly DocumentRange range;
 
-    /// <summary>
-    /// Gets the attribute id.
-    /// </summary>
-    /// <value>The attribute id.</value>
-    public virtual string AttributeId
-    {
-      get
-      {
-        switch (this.Severity)
+        /// <summary>
+        /// The _suggestion name.
+        /// </summary>
+        private readonly string suggestionName;
+
+        /// <summary>
+        /// The _tool tip.
+        /// </summary>
+        private readonly string toolTip;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SuggestionBase"/> class.
+        /// </summary>
+        /// <param name="suggestionName">
+        /// Name of the suggestion.
+        /// </param>
+        /// <param name="element">
+        /// The element.
+        /// </param>
+        /// <param name="highlightingRange">
+        /// The highlighting range.
+        /// </param>
+        /// <param name="toolTip">
+        /// The tool tip.
+        /// </param>
+        protected SuggestionBase(string suggestionName, IElement element, DocumentRange highlightingRange,
+                                 string toolTip)
         {
-          case Severity.ERROR:
-            return HighlightingAttributeIds.ERROR_ATTRIBUTE;
-          case Severity.WARNING:
-            return HighlightingAttributeIds.WARNING_ATTRIBUTE;
-          case Severity.SUGGESTION:
-            return HighlightingAttributeIds.SUGGESTION_ATTRIBUTE;
-          case Severity.HINT:
-            return HighlightingAttributeIds.HINT_ATTRIBUTE;
-          case Severity.INFO:
-          case Severity.DO_NOT_SHOW:
-            return null;
+            this.range = highlightingRange;
+            this.toolTip = toolTip;
+            this.element = element;
+            this.suggestionName = suggestionName;
         }
 
-        return null;
-      }
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets the attribute id.
+        /// </summary>
+        /// <value>The attribute id.</value>
+        public virtual string AttributeId
+        {
+            get
+            {
+                switch (this.Severity)
+                {
+                    case Severity.ERROR:
+                        return HighlightingAttributeIds.ERROR_ATTRIBUTE;
+                    case Severity.WARNING:
+                        return HighlightingAttributeIds.WARNING_ATTRIBUTE;
+                    case Severity.SUGGESTION:
+                        return HighlightingAttributeIds.SUGGESTION_ATTRIBUTE;
+                    case Severity.HINT:
+                        return HighlightingAttributeIds.HINT_ATTRIBUTE;
+                    case Severity.INFO:
+                    case Severity.DO_NOT_SHOW:
+                        return null;
+                }
+
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Color on gutter for this highlighting
+        /// NOTE: Will be called only if Severity == INFO
+        /// </summary>
+        /// <value></value>
+        public virtual Color ColorOnStripe
+        {
+            get { return Color.Empty; }
+        }
+
+        /// <summary>
+        /// Gets the element.
+        /// </summary>
+        /// <value>The element.</value>
+        public IElement Element
+        {
+            get { return this.element; }
+        }
+
+        /// <summary>
+        /// Message for this highlighting to show in tooltip and in status bar
+        /// </summary>
+        /// <value></value>
+        public string ErrorStripeToolTip
+        {
+            get { return this.ToolTip; }
+        }
+
+        /// <summary>
+        /// Gets the navigation offset.
+        /// </summary>
+        /// <value>The navigation offset.</value>
+        public int NavigationOffset
+        {
+            get { return 0; }
+        }
+
+        /// <summary>
+        /// Specifies the offset from the <c>Range.StartOffset</c> to set the cursor to when navigating
+        /// to this highlighting. Usually returns <c>0</c>
+        /// </summary>
+        /// <value></value>
+        public int NavigationOffsetPatch
+        {
+            get { return 0; }
+        }
+
+        /// <summary>
+        /// Gets the range.
+        /// </summary>
+        /// <value>The range.</value>
+        public virtual DocumentRange Range
+        {
+            get { return this.range; }
+        }
+
+        /// <summary>
+        /// Gets the severity of this highlighting
+        /// </summary>
+        /// <value>The severity.</value>
+        public virtual Severity Severity
+        {
+            get { return HighlightingSettingsManager.Instance.Settings.GetSeverity(this.suggestionName); }
+        }
+
+        /// <summary>
+        /// Identifies if the tooltip message should be shown in the status bar when the cursor is over the highlighting
+        /// </summary>
+        /// <value></value>
+        public bool ShowToolTipInStatusBar
+        {
+            get { return true; }
+        }
+
+        /// <summary>
+        /// Message for this highlighting to show in tooltip and in status bar
+        /// To override the default mechanism of tooltip, mark the implementation class with
+        /// <see cref="T:JetBrains.ReSharper.Daemon.DaemonTooltipProviderAttribute"/> attribute, and then this property will not be called
+        /// </summary>
+        /// <value></value>
+        public virtual string ToolTip
+        {
+            get { return this.toolTip; }
+        }
+
+        #endregion
+
+        #region Implemented Interfaces
+
+        #region IHighlighting
+
+        /// <summary>
+        /// Returns true if data (PSI, text ranges) associated with highlighting is valid
+        /// </summary>
+        /// <returns>
+        /// The is valid.
+        /// </returns>
+        public bool IsValid()
+        {
+            return true;
+        }
+
+        #endregion
+
+        #endregion
     }
-
-    /// <summary>
-    /// Color on gutter for this highlighting
-    /// NOTE: Will be called only if Severity == INFO
-    /// </summary>
-    /// <value></value>
-    public virtual Color ColorOnStripe
-    {
-      get
-      {
-        return Color.Empty;
-      }
-    }
-
-    /// <summary>
-    /// Gets the element.
-    /// </summary>
-    /// <value>The element.</value>
-    public IElement Element
-    {
-      get
-      {
-        return this.element;
-      }
-    }
-
-    /// <summary>
-    /// Message for this highlighting to show in tooltip and in status bar
-    /// </summary>
-    /// <value></value>
-    public string ErrorStripeToolTip
-    {
-      get
-      {
-        return this.ToolTip;
-      }
-    }
-
-    /// <summary>
-    /// Gets the navigation offset.
-    /// </summary>
-    /// <value>The navigation offset.</value>
-    public int NavigationOffset
-    {
-      get
-      {
-        return 0;
-      }
-    }
-
-    /// <summary>
-    /// Specifies the offset from the <c>Range.StartOffset</c> to set the cursor to when navigating
-    /// to this highlighting. Usually returns <c>0</c>
-    /// </summary>
-    /// <value></value>
-    public int NavigationOffsetPatch
-    {
-      get
-      {
-        return 0;
-      }
-    }
-
-    /// <summary>
-    /// Gets the range.
-    /// </summary>
-    /// <value>The range.</value>
-    public virtual DocumentRange Range
-    {
-      get
-      {
-        return this.range;
-      }
-    }
-
-    /// <summary>
-    /// Gets the severity of this highlighting
-    /// </summary>
-    /// <value>The severity.</value>
-    public virtual Severity Severity
-    {
-      get
-      {
-        return HighlightingSettingsManager.Instance.Settings.GetSeverity(this.suggestionName);
-      }
-    }
-
-    /// <summary>
-    /// Identifies if the tooltip message should be shown in the status bar when the cursor is over the highlighting
-    /// </summary>
-    /// <value></value>
-    public bool ShowToolTipInStatusBar
-    {
-      get
-      {
-        return true;
-      }
-    }
-
-    /// <summary>
-    /// Message for this highlighting to show in tooltip and in status bar
-    /// To override the default mechanism of tooltip, mark the implementation class with
-    /// <see cref="T:JetBrains.ReSharper.Daemon.DaemonTooltipProviderAttribute"/> attribute, and then this property will not be called
-    /// </summary>
-    /// <value></value>
-    public virtual string ToolTip
-    {
-      get
-      {
-        return this.toolTip;
-      }
-    }
-
-    #endregion
-
-    #region Implemented Interfaces
-
-    #region IHighlighting
-
-    /// <summary>
-    /// Returns true if data (PSI, text ranges) associated with highlighting is valid
-    /// </summary>
-    /// <returns>
-    /// The is valid.
-    /// </returns>
-    public bool IsValid()
-    {
-      return true;
-    }
-
-    #endregion
-
-    #endregion
-  }
 }

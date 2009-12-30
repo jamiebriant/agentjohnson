@@ -6,12 +6,12 @@
 //   Agent Johnson stage.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace AgentJohnson
 {
-  using JetBrains.ProjectModel;
-  using JetBrains.ReSharper.Daemon;
-  using JetBrains.ReSharper.Daemon.CSharp.Stages;
+    using JetBrains.Annotations;
+    using JetBrains.ProjectModel;
+    using JetBrains.ReSharper.Daemon;
+    using JetBrains.ReSharper.Daemon.CSharp.Stages;
 
   /// <summary>
   /// Agent Johnson stage.
@@ -39,7 +39,8 @@ namespace AgentJohnson
     /// <returns>
     /// Returns the IDaemon stage process.
     /// </returns>
-    public override IDaemonStageProcess CreateProcess(IDaemonProcess process, DaemonProcessKind processKind)
+    [CanBeNull]
+    public override IDaemonStageProcess CreateProcess([NotNull] IDaemonProcess process, [CanBeNull] DaemonProcessKind processKind)
     {
       if (!IsSupported(process.ProjectFile))
       {
@@ -58,7 +59,7 @@ namespace AgentJohnson
     /// <returns>
     /// Returns the error stripe request.
     /// </returns>
-    public override ErrorStripeRequest NeedsErrorStripe(IProjectFile projectFile)
+    public override ErrorStripeRequest NeedsErrorStripe([NotNull] IProjectFile projectFile)
     {
       if (!IsSupported(projectFile))
       {
