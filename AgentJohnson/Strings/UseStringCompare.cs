@@ -11,6 +11,8 @@ using JetBrains.ReSharper.Feature.Services.Bulbs;
 
 namespace AgentJohnson.Strings
 {
+  using System;
+  using JetBrains.Annotations;
   using JetBrains.ReSharper.Intentions;
   using JetBrains.ReSharper.Intentions.CSharp.DataProviders;
   using JetBrains.ReSharper.Intentions.CSharp.ContextActions.Util;
@@ -44,6 +46,7 @@ namespace AgentJohnson.Strings
     /// <summary>
     /// Gets Text.
     /// </summary>
+    [NotNull]
     public override string Text
     {
       get
@@ -77,8 +80,8 @@ namespace AgentJohnson.Strings
 
       var operands = new object[]
       {
-        Deparenthesize<ICSharpExpression>(expression.LeftOperand), 
-        Deparenthesize<ICSharpExpression>(expression.RightOperand)
+        expression.LeftOperand, 
+        expression.RightOperand
       };
 
       var newExpression = expression.ReplaceBy(this.Provider.ElementFactory.CreateExpression("string.Compare($0, $1) " + expressionNode.OperatorSign.GetText() + " 0", operands));

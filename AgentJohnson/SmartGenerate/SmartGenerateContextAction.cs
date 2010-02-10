@@ -14,7 +14,7 @@ namespace AgentJohnson.SmartGenerate
   using System.Reflection;
   using System.Windows.Forms;
   using System.Xml;
-  using Scopes;
+  using AgentJohnson.SmartGenerate.Scopes;
   using JetBrains.ActionManagement;
   using JetBrains.Application;
   using JetBrains.CommonControls;
@@ -28,6 +28,8 @@ namespace AgentJohnson.SmartGenerate
   using JetBrains.TextControl;
   using JetBrains.UI;
   using JetBrains.UI.PopupMenu;
+  using JetBrains.Util;
+  using JetBrains.Util.Special;
 
   /// <summary>
   /// Handles Smart Generation, see <c>Actions.xml</c>
@@ -131,7 +133,7 @@ namespace AgentJohnson.SmartGenerate
 
       if ((prefix.Length != 0) && (line.Length != prefix.Length))
       {
-        return JetBrains.Util.Special.GeneralUtil.IsAnyOf(line[prefix.Length], new[]
+        return GeneralUtil.IsAnyOf(line[prefix.Length], new[]
         {
           ' ', '\t'
         });
@@ -184,6 +186,19 @@ namespace AgentJohnson.SmartGenerate
       return true;
     }
 
+    private static void OnHandler()
+    {
+      Shell.Instance.Invocator.ReentrancyGuard.ExecuteOrQueue("SmartGenerate2", delegate
+      {
+        scopeIndex--;
+        var action = ActionManager.Instance.TryGetAction("SmartGenerate2") as IExecutableAction;
+        if (action != null)
+        {
+          ActionManager.Instance.ExecuteActionIfAvailable(action);
+        }
+      });
+    }
+
     /// <summary>
     /// Shows the popup menu.
     /// </summary>
@@ -193,7 +208,7 @@ namespace AgentJohnson.SmartGenerate
     /// <param name="items">
     /// The items.
     /// </param>
-    private static void ShowPopupMenu(IDataContext context, List<SimpleMenuItem> items)
+    private void ShowPopupMenu(IDataContext context, List<SimpleMenuItem> items)
     {
       var menu = new JetPopupMenu();
 
@@ -229,20 +244,7 @@ namespace AgentJohnson.SmartGenerate
       menu.Show();
     }
 
-      private static void OnHandler()
-      {
-          Shell.Instance.Invocator.ReentrancyGuard.ExecuteOrQueue("SmartGenerate2", delegate
-            {
-                scopeIndex--;
-                var action = ActionManager.Instance.TryGetAction("SmartGenerate2") as IExecutableAction;
-                if (action != null)
-                {
-                    ActionManager.Instance.ExecuteActionIfAvailable(action);
-                }
-            });
-      }
-
-      /// <summary>
+    /// <summary>
     /// Adds the menu item.
     /// </summary>
     /// <param name="items">The list of items.</param>
@@ -264,7 +266,9 @@ namespace AgentJohnson.SmartGenerate
       {
         simpleMenuItem = new SimpleMenuItem
         {
-          Text = text, Style = MenuItemStyle.Enabled, Tag = item
+          Text = text,
+          Style = MenuItemStyle.Enabled,
+          Tag = item
         };
 
         if (items.Count < 9)
@@ -323,7 +327,7 @@ namespace AgentJohnson.SmartGenerate
       var popupWindowContext = this.dataContext.GetData(DataConstants.POPUP_WINDOW_CONTEXT);
       if (popupWindowContext != null)
       {
-        menu.Layouter = popupWindowContext.CreateLayouter();
+        Shell.Instance.Invocator.ReentrancyGuard.ExecuteOrQueue("Create Live Template", () => ReadLockCookie.Execute(delegate { menu.Layouter = popupWindowContext.CreateLayouter(); }));
       }
 
       menu.Caption.Value = WindowlessControl.Create("Create live template");
@@ -341,8 +345,8 @@ namespace AgentJohnson.SmartGenerate
     {
       this.dataContext = context;
 
-      var solution = dataContext.GetData(JetBrains.IDE.DataConstants.SOLUTION);
-      var textControl = dataContext.GetData(JetBrains.IDE.DataConstants.TEXT_CONTROL);
+      var solution = this.dataContext.GetData(JetBrains.IDE.DataConstants.SOLUTION);
+      var textControl = this.dataContext.GetData(JetBrains.IDE.DataConstants.TEXT_CONTROL);
 
       this.ResetIndex();
 
@@ -359,7 +363,7 @@ namespace AgentJohnson.SmartGenerate
 
       var items = new List<SimpleMenuItem>();
 
-      var range = JetBrains.Util.TextRange.InvalidRange;
+      var range = TextRange.InvalidRange;
 
       var scope = Scope.Populate(element);
       if (scopeIndex >= scope.Count)
@@ -380,7 +384,7 @@ namespace AgentJohnson.SmartGenerate
             {
               Solution = solution,
               TextControl = textControl,
-              Context = dataContext,
+              Context = this.dataContext,
               Element = element,
               Scope = scope,
               ScopeIndex = scopeIndex
@@ -408,7 +412,7 @@ namespace AgentJohnson.SmartGenerate
           {
             TextControl = textControl,
             Solution = solution,
-            Context = dataContext,
+            Context = this.dataContext,
             Element = element,
             Scope = scope,
             ScopeIndex = scopeIndex
@@ -423,7 +427,9 @@ namespace AgentJohnson.SmartGenerate
 
         var item = new SimpleMenuItem
         {
-          Text = "Create live template", Style = MenuItemStyle.Enabled, Tag = liveTemplates
+          Text = "Create live template",
+          Style = MenuItemStyle.Enabled,
+          Tag = liveTemplates
         };
 
         item.Clicked += this.CreateLiveTemplates_OnClicked;
@@ -431,7 +437,7 @@ namespace AgentJohnson.SmartGenerate
         items.Add(item);
       }
 
-      ShowPopupMenu(dataContext, items);
+      ShowPopupMenu(this.dataContext, items);
     }
 
     /// <summary>
@@ -485,7 +491,9 @@ namespace AgentJohnson.SmartGenerate
           return;
         }
 
-        template = Template.CreateFromXml(documentElement);
+        var templateFamily = LiveTemplatesManager.Instance.TemplateFamily;
+
+        template = Template.CreateFromXml(templateFamily.UserStorage, documentElement);
       }
       else
       {

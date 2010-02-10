@@ -96,7 +96,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.UI">
-      <HintPath>C:\Program Files (x86) (x86)\JetBrains\ReSharper\v5.0\Bin\JetBrains.Platform.ReSharper.UI.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\JetBrains.Platform.ReSharper.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.UI.Avalon">
@@ -105,7 +105,7 @@
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.Util">
       <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\JetBrains.Platform.ReSharper.Util.dll</HintPath>
-<Private>False</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="JetBrains.Platform.ReSharper.VSIntegration">
       <HintPath>C:\Program Files (x86)\JetBrains\ReSharper\v5.0\Bin\JetBrains.Platform.ReSharper.VSIntegration.dll</HintPath>
