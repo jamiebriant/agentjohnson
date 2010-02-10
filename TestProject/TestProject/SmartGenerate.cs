@@ -6,7 +6,7 @@ namespace TestProject
 {
   using System;
   using System.Collections.Generic;
-  using Sitecore.Annotations;
+  using Sitecore;
   using Sitecore.Diagnostics;
 
   /// <summary>
@@ -97,10 +97,9 @@ namespace TestProject
     /// </summary>
     /// <param name="test">The test variable.</param>
     /// <returns>The boolean.</returns>
-    public virtual bool GetBool([NotNull] string test)
+    public virtual bool GetBool([AllowNull] string test)
     {
       Assert.ArgumentNotNull(test, "test");
-
       return test == "1";
     }
 
@@ -180,6 +179,8 @@ namespace TestProject
         }
 
         string s = list.ToString();
+
+        return null;
       }
     }
 
@@ -193,6 +194,7 @@ namespace TestProject
     /// <returns>The bool result.</returns>
     public bool GetBool()
     {
+      return true;
     }
 
     /// <summary>

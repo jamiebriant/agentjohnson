@@ -13,7 +13,7 @@
     public void Test() {
       int v = GetInt();
 
-      if(v > v + 2) {
+      if(v + 2 < v) {
         return;
       }
 

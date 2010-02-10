@@ -4,7 +4,7 @@
 
 namespace TestProject
 {
-  using Sitecore.Annotations;
+  using Sitecore;
 
   /// <summary>
   /// The Numbers

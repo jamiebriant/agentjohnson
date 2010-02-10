@@ -14,7 +14,7 @@ namespace TestProject
 
       var text2 = text + "123" + string.Format("{0}", 0);
 
-      if (text != text2)
+      if (text2 != text)
       {
         text = "123";
       }
@@ -24,7 +24,6 @@ namespace TestProject
 
       if (i != j)
       {
-        text = 123;
       }
     }
 

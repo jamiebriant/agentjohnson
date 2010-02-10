@@ -29,7 +29,6 @@ namespace TestProject
     /// <summary>
     /// Throws the not implemented.
     /// </summary>
-    /// <exception cref="NotImplementedException"><c>NotImplementedException</c>.</exception>
     public void ThrowNotImplemented()
     {
       File.Delete("c:\autoexec.bat");

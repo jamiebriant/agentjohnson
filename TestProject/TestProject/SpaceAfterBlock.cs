@@ -4,8 +4,6 @@
 
 namespace TestProject
 {
-  using Sitecore.Annotations;
-
   /// <summary>
   /// Defines the space after block class.
   /// </summary>
@@ -55,7 +53,7 @@ namespace TestProject
     /// <returns>The string.</returns>
     public string Method2(int index)
     {
-      object o = Method(i);
+      object o = Method(index);
 
       return o.ToString();
     }
