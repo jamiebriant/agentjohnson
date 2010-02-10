@@ -23,7 +23,7 @@
 		
 		<!-- Version of Visual Studio we're installing for. -->
 		<!-- Can be overridden on the command line when running the installation. -->
-		<VsVersion>9.0</VsVersion>
+		<VsVersion>10.0</VsVersion>
 
 		<!-- The plugin assembly file. -->
 		<AssemblyFile>$(AgentJohnsonBinariesDir)/AgentJohnson.dll</AssemblyFile>
