@@ -223,6 +223,8 @@
     <Compile Include="RecentChanges\RecentChanges.Designer.cs">
       <DependentUpon>RecentChanges.cs</DependentUpon>
     </Compile>
+    <Compile Include="SmartGenerate\LiveTemplates\MethodBegin.cs" />
+    <Compile Include="SmartGenerate\LiveTemplates\StartOfBlock.cs" />
     <Compile Include="Statements\DuplicateMethod.cs" />
     <Compile Include="Refactorings\ImplementICloneableActionHandler.cs" />
     <Compile Include="Refactorings\ImplementIDisposableActionHandler.cs" />

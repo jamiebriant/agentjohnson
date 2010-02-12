@@ -12,6 +12,7 @@ namespace AgentJohnson.SmartGenerate
   using JetBrains.Annotations;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.Tree;
+  using JetBrains.Util;
 
   /// <summary>
   /// Defines the statement utility class.
@@ -29,12 +30,12 @@ namespace AgentJohnson.SmartGenerate
     /// <returns>
     /// The new statement position.
     /// </returns>
-    public static global::JetBrains.Util.TextRange GetNewStatementPosition(IElement element)
+    public static TextRange GetNewStatementPosition(IElement element)
     {
       var block = element.GetContainingElement(typeof(IBlock), true) as IBlock;
       if (block == null)
       {
-        return global::JetBrains.Util.TextRange.InvalidRange;
+        return TextRange.InvalidRange;
       }
 
       var statement = element.GetContainingElement(typeof(IStatement), true) as IStatement;
@@ -42,10 +43,10 @@ namespace AgentJohnson.SmartGenerate
       {
         var range = statement.GetTreeTextRange();
 
-        return new global::JetBrains.Util.TextRange(range.EndOffset.Offset + 1);
+        return new TextRange(range.EndOffset.Offset + 1);
       }
 
-      return global::JetBrains.Util.TextRange.InvalidRange;
+      return TextRange.InvalidRange;
     }
 
     /// <summary>
@@ -134,6 +135,38 @@ namespace AgentJohnson.SmartGenerate
       }
 
       return true;
+    }
+
+    /// <summary>
+    /// Determines whether [is before first statement] [the specified element].
+    /// </summary>
+    /// <param name="element">The element.</param>
+    /// <returns>
+    /// 	<c>true</c> if [is before first statement] [the specified element]; otherwise, <c>false</c>.
+    /// </returns>
+    public static bool IsBeforeFirstStatement(IElement element)
+    {
+      var block = element.GetContainingElement(typeof(IBlock), true) as IBlock;
+      if (block == null)
+      {
+        return false;
+      }
+
+      if (block.Statements.Count <= 0)
+      {
+        return true;
+      }
+
+      var statement = block.Statements[0];
+      var statementRange = statement.GetDocumentRange();
+      var statementStart = statementRange.TextRange.StartOffset;
+
+      if (element.GetTreeTextRange().StartOffset.Offset < statementStart)
+      {
+        return true;
+      }
+
+      return false;
     }
 
     #endregion
