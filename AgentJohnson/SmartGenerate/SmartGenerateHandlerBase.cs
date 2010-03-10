@@ -7,19 +7,16 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using JetBrains.DocumentModel;
-using JetBrains.ProjectModel;
-
 namespace AgentJohnson.SmartGenerate
 {
   using System.Collections.Generic;
   using System.Security;
   using JetBrains.Annotations;
+  using JetBrains.DocumentModel;
+  using JetBrains.ProjectModel;
   using JetBrains.Util;
 
-  /// <summary>
-  /// Defines the smart generate base class.
-  /// </summary>
+  /// <summary>Defines the smart generate base class.</summary>
   public abstract class SmartGenerateHandlerBase : ISmartGenerateHandler
   {
     #region Constants and Fields
@@ -35,15 +32,9 @@ namespace AgentJohnson.SmartGenerate
 
     #region ISmartGenerateHandler
 
-    /// <summary>
-    /// Gets the items.
-    /// </summary>
-    /// <param name="smartGenerateParameters">
-    /// The get menu items parameters.
-    /// </param>
-    /// <returns>
-    /// The items.
-    /// </returns>
+    /// <summary>Gets the items.</summary>
+    /// <param name="smartGenerateParameters">The get menu items parameters.</param>
+    /// <returns>The items.</returns>
     public virtual IEnumerable<ISmartGenerateAction> GetMenuItems(SmartGenerateParameters smartGenerateParameters)
     {
       this.items = new List<ISmartGenerateAction>();
@@ -58,45 +49,19 @@ namespace AgentJohnson.SmartGenerate
     #endregion
 
     #region Methods
-    /// <summary>
-    /// Returns a Modification Cookie.
-    /// </summary>
-    /// <param name="solution">The solution.</param>
-    /// <param name="document">The document.</param>
-    /// <returns>A cookie.</returns>
-    protected ModificationCookie EnsureWritable(ISolution solution, IDocument document)
-    {
-        if (solution != null)
-        {
-            return DocumentManager.GetInstance(solution).EnsureWritable(document);
-        }
-        return new ModificationCookie(EnsureWritableResult.FAILURE);
-    }
 
-    /// <summary>
-    /// Adds the specified text.
-    /// </summary>
-    /// <param name="text">
-    /// The text.
-    /// </param>
-    /// <param name="template">
-    /// The template.
-    /// </param>
-    /// <param name="parameters">
-    /// The parameters.
-    /// </param>
-    /// <returns>
-    /// The menu item.
-    /// </returns>
+    /// <summary>Adds the specified text.</summary>
+    /// <param name="text">The text.</param>
+    /// <param name="template">The template.</param>
+    /// <param name="parameters">The parameters.</param>
+    /// <returns>The menu item.</returns>
     [CanBeNull]
     protected ISmartGenerateAction AddAction([NotNull] string text, [NotNull] string template, params string[] parameters)
     {
-      return this.AddAction(text, template, global::JetBrains.Util.TextRange.InvalidRange, parameters);
+      return this.AddAction(text, template, TextRange.InvalidRange, parameters);
     }
 
-    /// <summary>
-    /// Adds the specified text.
-    /// </summary>
+    /// <summary>Adds the specified text.</summary>
     /// <param name="text">The text.</param>
     /// <param name="template">The template.</param>
     /// <param name="selectionRange">The selection range.</param>
@@ -135,31 +100,35 @@ namespace AgentJohnson.SmartGenerate
       return action;
     }
 
-    /// <summary>
-    /// Adds the menu item.
-    /// </summary>
-    /// <param name="action">
-    /// The menu item.
-    /// </param>
+    /// <summary>Adds the menu item.</summary>
+    /// <param name="action">The menu item.</param>
     protected void AddAction([NotNull] ISmartGenerateAction action)
     {
       this.items.Add(action);
     }
 
-    /// <summary>
-    /// Adds the menu separator.
-    /// </summary>
+    /// <summary>Adds the menu separator.</summary>
     protected void AddMenuSeparator()
     {
       this.AddAction(new SmartGenerateMenuSeparator());
     }
 
-    /// <summary>
-    /// Gets the smart generate items.
-    /// </summary>
-    /// <param name="smartGenerateParameters">
-    /// The get menu items parameters.
-    /// </param>
+    /// <summary>Returns a Modification Cookie.</summary>
+    /// <param name="solution">The solution.</param>
+    /// <param name="document">The document.</param>
+    /// <returns>A cookie.</returns>
+    protected ModificationCookie EnsureWritable(ISolution solution, IDocument document)
+    {
+      if (solution != null)
+      {
+        return DocumentManager.GetInstance(solution).EnsureWritable(document);
+      }
+
+      return new ModificationCookie(EnsureWritableResult.FAILURE);
+    }
+
+    /// <summary>Gets the smart generate items.</summary>
+    /// <param name="smartGenerateParameters">The get menu items parameters.</param>
     protected abstract void GetItems(SmartGenerateParameters smartGenerateParameters);
 
     #endregion

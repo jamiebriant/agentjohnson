@@ -15,22 +15,14 @@ namespace AgentJohnson.SmartGenerate.Scopes
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.Tree;
 
-  /// <summary>
-  /// Defines the scope class.
-  /// </summary>
+  /// <summary>Defines the scope class.</summary>
   public class Scope
   {
     #region Public Methods
 
-    /// <summary>
-    /// Gets the nearest variable.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
-    /// <returns>
-    /// The populated list.
-    /// </returns>
+    /// <summary>Gets the nearest variable.</summary>
+    /// <param name="element">The element.</param>
+    /// <returns>The populated list.</returns>
     public static List<ScopeEntry> Populate(IElement element)
     {
       var result = new List<ScopeEntry>();
@@ -64,15 +56,9 @@ namespace AgentJohnson.SmartGenerate.Scopes
 
     #region Methods
 
-    /// <summary>
-    /// Gets the 'for' loop.
-    /// </summary>
-    /// <param name="entries">
-    /// The entries.
-    /// </param>
-    /// <param name="node">
-    /// The tree node.
-    /// </param>
+    /// <summary>Gets the 'for' loop.</summary>
+    /// <param name="entries">The entries.</param>
+    /// <param name="node">The tree node.</param>
     private static void GetFor(List<ScopeEntry> entries, ITreeNode node)
     {
       var forStatement = node as IForStatement;
@@ -91,9 +77,9 @@ namespace AgentJohnson.SmartGenerate.Scopes
 
         var entry = new ScopeEntry
         {
-          Element = forStatement,
-          Name = localVariable.ShortName,
-          Type = localVariable.Type,
+          Element = forStatement, 
+          Name = localVariable.ShortName, 
+          Type = localVariable.Type, 
           IsAssigned = true
         };
 
@@ -101,15 +87,9 @@ namespace AgentJohnson.SmartGenerate.Scopes
       }
     }
 
-    /// <summary>
-    /// Gets for each.
-    /// </summary>
-    /// <param name="entries">
-    /// The entries.
-    /// </param>
-    /// <param name="treeNode">
-    /// The tree node.
-    /// </param>
+    /// <summary>Gets for each.</summary>
+    /// <param name="entries">The entries.</param>
+    /// <param name="treeNode">The tree node.</param>
     private static void GetForEach(List<ScopeEntry> entries, ITreeNode treeNode)
     {
       var foreachStatement = treeNode as IForeachStatement;
@@ -147,24 +127,18 @@ namespace AgentJohnson.SmartGenerate.Scopes
 
       var entry = new ScopeEntry
       {
-        Element = foreachStatement,
-        Name = foreachStatement.IteratorName,
-        Type = type,
+        Element = foreachStatement, 
+        Name = foreachStatement.IteratorName, 
+        Type = type, 
         IsAssigned = true
       };
 
       entries.Add(entry);
     }
 
-    /// <summary>
-    /// Gets the function parameters.
-    /// </summary>
-    /// <param name="entries">
-    /// The entries.
-    /// </param>
-    /// <param name="node">
-    /// The tree node.
-    /// </param>
+    /// <summary>Gets the function parameters.</summary>
+    /// <param name="entries">The entries.</param>
+    /// <param name="node">The tree node.</param>
     private static void GetFunctionParameters(List<ScopeEntry> entries, ITreeNode node)
     {
       var parametersOwner = node as IParametersOwner;
@@ -182,9 +156,9 @@ namespace AgentJohnson.SmartGenerate.Scopes
       {
         var entry = new ScopeEntry
         {
-          Element = parameter as IParameterDeclaration,
-          Name = parameter.ShortName,
-          Type = parameter.Type,
+          Element = parameter as IParameterDeclaration, 
+          Name = parameter.ShortName, 
+          Type = parameter.Type, 
           IsAssigned = true
         };
 
@@ -192,15 +166,9 @@ namespace AgentJohnson.SmartGenerate.Scopes
       }
     }
 
-    /// <summary>
-    /// Gets the local variable.
-    /// </summary>
-    /// <param name="entries">
-    /// The entries.
-    /// </param>
-    /// <param name="node">
-    /// The tree node.
-    /// </param>
+    /// <summary>Gets the local variable.</summary>
+    /// <param name="entries">The entries.</param>
+    /// <param name="node">The tree node.</param>
     private static void GetLocalVariable(List<ScopeEntry> entries, ITreeNode node)
     {
       var declarationStatement = node as IDeclarationStatement;
@@ -219,9 +187,9 @@ namespace AgentJohnson.SmartGenerate.Scopes
 
         var entry = new ScopeEntry
         {
-          Element = localVariableDeclaration,
-          Name = localVariable.ShortName,
-          Type = localVariable.Type,
+          Element = localVariableDeclaration, 
+          Name = localVariable.ShortName, 
+          Type = localVariable.Type, 
           IsAssigned = localVariableDeclaration.Initial != null
         };
 
@@ -229,15 +197,9 @@ namespace AgentJohnson.SmartGenerate.Scopes
       }
     }
 
-    /// <summary>
-    /// Gets 'using' statement.
-    /// </summary>
-    /// <param name="entries">
-    /// The entries.
-    /// </param>
-    /// <param name="node">
-    /// The tree node.
-    /// </param>
+    /// <summary>Gets 'using' statement.</summary>
+    /// <param name="entries">The entries.</param>
+    /// <param name="node">The tree node.</param>
     private static void GetUsing(List<ScopeEntry> entries, ITreeNode node)
     {
       var usingStatement = node as IUsingStatement;
@@ -258,9 +220,9 @@ namespace AgentJohnson.SmartGenerate.Scopes
 
         var entry = new ScopeEntry
         {
-          Element = localVariableDeclaration,
-          Name = localVariable.ShortName,
-          Type = localVariable.Type,
+          Element = localVariableDeclaration, 
+          Name = localVariable.ShortName, 
+          Type = localVariable.Type, 
           IsAssigned = localVariableDeclaration.Initial != null
         };
 

@@ -13,9 +13,7 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
   using System.Text;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
 
-  /// <summary>
-  /// The method with signature.
-  /// </summary>
+  /// <summary>The method with signature.</summary>
   [LiveTemplate("Method with signature", "Generate body in a method with a signature")]
   public class MethodWithSignature : ILiveTemplate
   {
@@ -23,15 +21,9 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
 
     #region ILiveTemplate
 
-    /// <summary>
-    /// Gets the items.
-    /// </summary>
-    /// <param name="parameters">
-    /// The parameters.
-    /// </param>
-    /// <returns>
-    /// The items.
-    /// </returns>
+    /// <summary>Gets the items.</summary>
+    /// <param name="parameters">The parameters.</param>
+    /// <returns>The items.</returns>
     public IEnumerable<LiveTemplateItem> GetItems(SmartGenerateParameters parameters)
     {
       var element = parameters.Element;
@@ -81,8 +73,8 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
       {
         new LiveTemplateItem
         {
-          MenuText = string.Format("Body in method with signature ({0})", signature),
-          Description = string.Format("Body in method with signature ({0})", signature),
+          MenuText = string.Format("Body in method with signature ({0})", signature), 
+          Description = string.Format("Body in method with signature ({0})", signature), 
           Shortcut = string.Format("Body in method with signature ({0})", signature)
         }
       };

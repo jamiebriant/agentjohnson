@@ -11,22 +11,14 @@ namespace AgentJohnson.Util
 {
   using JetBrains.ReSharper.Psi;
 
-  /// <summary>
-  /// The methods.
-  /// </summary>
+  /// <summary>The methods.</summary>
   public static class Methods
   {
     #region Public Methods
 
-    /// <summary>
-    /// Gets the full name of the method.
-    /// </summary>
-    /// <param name="method">
-    /// The method.
-    /// </param>
-    /// <returns>
-    /// The get full method name.
-    /// </returns>
+    /// <summary>Gets the full name of the method.</summary>
+    /// <param name="method">The method.</param>
+    /// <returns>The get full method name.</returns>
     public static string GetFullMethodName(IDeclaredElement method)
     {
       var result = method.ShortName;

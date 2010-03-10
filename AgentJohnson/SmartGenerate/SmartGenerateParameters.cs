@@ -10,16 +10,14 @@
 namespace AgentJohnson.SmartGenerate
 {
   using System.Collections.Generic;
-  using Scopes;
+  using AgentJohnson.SmartGenerate.Scopes;
   using JetBrains.ActionManagement;
   using JetBrains.ProjectModel;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.Tree;
   using JetBrains.TextControl;
 
-  /// <summary>
-  /// Defines the get menu items parameters class.
-  /// </summary>
+  /// <summary>Defines the get menu items parameters class.</summary>
   public class SmartGenerateParameters
   {
     #region Constants and Fields

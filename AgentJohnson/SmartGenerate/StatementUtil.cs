@@ -14,22 +14,14 @@ namespace AgentJohnson.SmartGenerate
   using JetBrains.ReSharper.Psi.Tree;
   using JetBrains.Util;
 
-  /// <summary>
-  /// Defines the statement utility class.
-  /// </summary>
+  /// <summary>Defines the statement utility class.</summary>
   public static class StatementUtil
   {
     #region Public Methods
 
-    /// <summary>
-    /// Gets the new statement position.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
-    /// <returns>
-    /// The new statement position.
-    /// </returns>
+    /// <summary>Gets the new statement position.</summary>
+    /// <param name="element">The element.</param>
+    /// <returns>The new statement position.</returns>
     public static TextRange GetNewStatementPosition(IElement element)
     {
       var block = element.GetContainingElement(typeof(IBlock), true) as IBlock;
@@ -49,14 +41,9 @@ namespace AgentJohnson.SmartGenerate
       return TextRange.InvalidRange;
     }
 
-    /// <summary>
-    /// Gets the previous statement.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
-    /// <returns>
-    /// </returns>
+    /// <summary>Gets the previous statement.</summary>
+    /// <param name="element">The element.</param>
+    /// <returns></returns>
     [CanBeNull]
     public static IStatement GetPreviousStatement(IElement element)
     {
@@ -75,15 +62,9 @@ namespace AgentJohnson.SmartGenerate
       return GetPreviousStatement(block, element);
     }
 
-    /// <summary>
-    /// Gets the previous statement.
-    /// </summary>
-    /// <param name="block">
-    /// The block.
-    /// </param>
-    /// <param name="element">
-    /// The element.
-    /// </param>
+    /// <summary>Gets the previous statement.</summary>
+    /// <param name="block">The block.</param>
+    /// <param name="element">The element.</param>
     public static IStatement GetPreviousStatement(IBlock block, IElement element)
     {
       IStatement result = null;
@@ -103,15 +84,9 @@ namespace AgentJohnson.SmartGenerate
       return result;
     }
 
-    /// <summary>
-    /// Determines whether [is after last statement] [the specified element].
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
-    /// <returns>
-    /// <c>true</c> if [is after last statement] [the specified element]; otherwise, <c>false</c>.
-    /// </returns>
+    /// <summary>Determines whether [is after last statement] [the specified element].</summary>
+    /// <param name="element">The element.</param>
+    /// <returns><c>true</c> if [is after last statement] [the specified element]; otherwise, <c>false</c>.</returns>
     public static bool IsAfterLastStatement(IElement element)
     {
       var block = element.GetContainingElement(typeof(IBlock), true) as IBlock;
@@ -137,13 +112,9 @@ namespace AgentJohnson.SmartGenerate
       return true;
     }
 
-    /// <summary>
-    /// Determines whether [is before first statement] [the specified element].
-    /// </summary>
+    /// <summary>Determines whether [is before first statement] [the specified element].</summary>
     /// <param name="element">The element.</param>
-    /// <returns>
-    /// 	<c>true</c> if [is before first statement] [the specified element]; otherwise, <c>false</c>.
-    /// </returns>
+    /// <returns><c>true</c> if [is before first statement] [the specified element]; otherwise, <c>false</c>.</returns>
     public static bool IsBeforeFirstStatement(IElement element)
     {
       var block = element.GetContainingElement(typeof(IBlock), true) as IBlock;

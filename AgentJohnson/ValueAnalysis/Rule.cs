@@ -12,27 +12,20 @@ namespace AgentJohnson.ValueAnalysis
   using System.Collections.Generic;
   using JetBrains.ReSharper.Psi;
 
-  /// <summary>
-  /// The rule.
-  /// </summary>
+  /// <summary>The rule.</summary>
   public class Rule
   {
     #region Constants and Fields
 
     /// <summary>
-    /// The _can be null.
+    /// The _value assertions.
     /// </summary>
-    private bool canBeNull;
+    private readonly List<string> valueAssertions = new List<string>();
 
     /// <summary>
     /// The _non public parameter assertion.
     /// </summary>
     private string nonPublicParameterAssertion;
-
-    /// <summary>
-    /// The _not null.
-    /// </summary>
-    private bool notNull;
 
     /// <summary>
     /// The _public parameter assertion.
@@ -49,11 +42,6 @@ namespace AgentJohnson.ValueAnalysis
     /// </summary>
     private string typeName;
 
-    /// <summary>
-    /// The _value assertions.
-    /// </summary>
-    private List<string> valueAssertions = new List<string>();
-
     #endregion
 
     #region Properties
@@ -62,20 +50,9 @@ namespace AgentJohnson.ValueAnalysis
     /// Gets or sets a value indicating whether this instance can be null.
     /// </summary>
     /// <value>
-    /// 	<c>true</c> if this instance can be null; otherwise, <c>false</c>.
+    /// <c>true</c> if this instance can be null; otherwise, <c>false</c>.
     /// </value>
-    public bool CanBeNull
-    {
-      get
-      {
-        return this.canBeNull;
-      }
-
-      set
-      {
-        this.canBeNull = value;
-      }
-    }
+    public bool CanBeNull { get; set; }
 
     /// <summary>
     /// Gets or sets the non public parameters assertion.
@@ -98,18 +75,7 @@ namespace AgentJohnson.ValueAnalysis
     /// Gets or sets a value indicating whether [not null].
     /// </summary>
     /// <value><c>true</c> if [not null]; otherwise, <c>false</c>.</value>
-    public bool NotNull
-    {
-      get
-      {
-        return this.notNull;
-      }
-
-      set
-      {
-        this.notNull = value;
-      }
-    }
+    public bool NotNull { get; set; }
 
     /// <summary>
     /// Gets or sets the public parameter assertion.
@@ -163,7 +129,7 @@ namespace AgentJohnson.ValueAnalysis
     }
 
     /// <summary>
-    /// Gets or sets the value assertions.
+    /// Gets the value assertions.
     /// </summary>
     /// <value>The value assertions.</value>
     public List<string> ValueAssertions
@@ -172,23 +138,14 @@ namespace AgentJohnson.ValueAnalysis
       {
         return this.valueAssertions;
       }
-
-      set
-      {
-        this.valueAssertions = value;
-      }
     }
 
     #endregion
 
     #region Public Methods
 
-    /// <summary>
-    /// Gets the default type configuration.
-    /// </summary>
-    /// <returns>
-    /// The default type configuration.
-    /// </returns>
+    /// <summary>Gets the default type configuration.</summary>
+    /// <returns>The default type configuration.</returns>
     public static Rule GetDefaultRule()
     {
       var configurations = ValueAnalysisSettings.Instance.Rules;
@@ -204,18 +161,10 @@ namespace AgentJohnson.ValueAnalysis
       return null;
     }
 
-    /// <summary>
-    /// Gets the type configuration.
-    /// </summary>
-    /// <param name="type">
-    /// The type.
-    /// </param>
-    /// <param name="languageType">
-    /// Type of the language.
-    /// </param>
-    /// <returns>
-    /// The type configuration.
-    /// </returns>
+    /// <summary>Gets the type configuration.</summary>
+    /// <param name="type">The type.</param>
+    /// <param name="languageType">Type of the language.</param>
+    /// <returns>The type configuration.</returns>
     public static Rule GetRule(IType type, PsiLanguageType languageType)
     {
       string clrName = null;
@@ -282,21 +231,19 @@ namespace AgentJohnson.ValueAnalysis
       return null;
     }
 
-    /// <summary>
-    /// Clones this instance.
-    /// </summary>
-    /// <returns>
-    /// </returns>
+    /// <summary>Clones this instance.</summary>
+    /// <returns>Returns the rule.</returns>
     public Rule Clone()
     {
-      var result = new Rule();
-
-      result.TypeName = this.TypeName;
-      result.NotNull = this.NotNull;
-      result.CanBeNull = this.CanBeNull;
-      result.PublicParameterAssertion = this.PublicParameterAssertion;
-      result.NonPublicParameterAssertion = this.NonPublicParameterAssertion;
-      result.ReturnAssertion = this.ReturnAssertion;
+      var result = new Rule
+      {
+        TypeName = this.TypeName, 
+        NotNull = this.NotNull, 
+        CanBeNull = this.CanBeNull, 
+        PublicParameterAssertion = this.PublicParameterAssertion, 
+        NonPublicParameterAssertion = this.NonPublicParameterAssertion, 
+        ReturnAssertion = this.ReturnAssertion
+      };
 
       foreach (var valueAssertion in this.ValueAssertions)
       {
@@ -306,12 +253,8 @@ namespace AgentJohnson.ValueAnalysis
       return result;
     }
 
-    /// <summary>
-    /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
-    /// </summary>
-    /// <returns>
-    /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
-    /// </returns>
+    /// <summary>Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.</summary>
+    /// <returns>A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.</returns>
     /// <filterpriority>2</filterpriority>
     public override string ToString()
     {

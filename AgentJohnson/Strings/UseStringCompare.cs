@@ -7,34 +7,25 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using JetBrains.ReSharper.Feature.Services.Bulbs;
-
 namespace AgentJohnson.Strings
 {
-  using System;
   using JetBrains.Annotations;
-  using JetBrains.ReSharper.Intentions;
-  using JetBrains.ReSharper.Intentions.CSharp.DataProviders;
+  using JetBrains.ReSharper.Feature.Services.Bulbs;
   using JetBrains.ReSharper.Intentions.CSharp.ContextActions.Util;
+  using JetBrains.ReSharper.Intentions.CSharp.DataProviders;
   using JetBrains.ReSharper.Intentions.Util;
   using JetBrains.ReSharper.Psi;
-  using JetBrains.ReSharper.Psi.Tree;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
+  using JetBrains.ReSharper.Psi.Tree;
 
-  /// <summary>
-  /// Defines the equality operator to equals action class.
-  /// </summary>
+  /// <summary>Defines the equality operator to equals action class.</summary>
   [ContextAction(Group = "C#", Name = "Convert '==' to string.Compare", Description = "Converts usage of equality operator ('==') to a call to string.Compare method.")]
   public class EqualityOperatorToEqualsAction : OneItemContextActionBase, IBulbAction
   {
     #region Constructors and Destructors
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="EqualityOperatorToEqualsAction"/> class.
-    /// </summary>
-    /// <param name="dataProvider">
-    /// The data provider.
-    /// </param>
+    /// <summary>Initializes a new instance of the <see cref="EqualityOperatorToEqualsAction"/> class.</summary>
+    /// <param name="dataProvider">The data provider.</param>
     public EqualityOperatorToEqualsAction(ICSharpContextActionDataProvider dataProvider) : base(dataProvider)
     {
     }
@@ -70,9 +61,7 @@ namespace AgentJohnson.Strings
 
     #region Methods
 
-    /// <summary>
-    /// The execute internal.
-    /// </summary>
+    /// <summary>The execute internal.</summary>
     protected override void ExecuteInternal()
     {
       var expression = this.FindEqualityExpression();
@@ -89,14 +78,10 @@ namespace AgentJohnson.Strings
       ContextActionUtils.FormatWithDefaultProfile(newExpression);
     }
 
-    /// <summary>
-    /// Called to check if ContextAction is available.
+    /// <summary>Called to check if ContextAction is available.
     /// ReadLock is taken
-    /// Will not be called if <c>PsiManager</c>, ProjectFile of Solution == <c>null</c>
-    /// </summary>
-    /// <returns>
-    /// <c>true</c>, if available.
-    /// </returns>
+    /// Will not be called if <c>PsiManager</c>, ProjectFile of Solution == <c>null</c></summary>
+    /// <returns><c>true</c>, if available.</returns>
     protected override bool IsAvailableInternal()
     {
       if (!this.Provider.PsiManager.CachesIdle)
@@ -115,7 +100,7 @@ namespace AgentJohnson.Strings
       {
         return false;
       }
-                                               
+
       if (expression.RightOperand == null)
       {
         return false;
@@ -129,12 +114,8 @@ namespace AgentJohnson.Strings
       return expression.LeftOperand.Type().Equals(this.SystemString) && expression.RightOperand.Type().Equals(this.SystemString);
     }
 
-    /// <summary>
-    /// The find equality expression.
-    /// </summary>
-    /// <returns>
-    /// Returns the equality expression.
-    /// </returns>
+    /// <summary>The find equality expression.</summary>
+    /// <returns>Returns the equality expression.</returns>
     private IEqualityExpression FindEqualityExpression()
     {
       return this.Provider.GetSelectedElement<IEqualityExpression>(true, true);

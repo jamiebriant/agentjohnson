@@ -11,20 +11,14 @@ namespace AgentJohnson.SmartGenerate.Generators
 {
   using JetBrains.ReSharper.Psi.CSharp.Tree;
 
-  /// <summary>
-  /// The switch case.
-  /// </summary>
+  /// <summary>The switch case.</summary>
   [SmartGenerate("'case'", "Adds a new 'case' entry in a 'switch' statement.", Priority = 0)]
   public class SwitchCase : SmartGenerateHandlerBase
   {
     #region Methods
 
-    /// <summary>
-    /// Gets the items.
-    /// </summary>
-    /// <param name="smartGenerateParameters">
-    /// The get menu items parameters.
-    /// </param>
+    /// <summary>Gets the items.</summary>
+    /// <param name="smartGenerateParameters">The get menu items parameters.</param>
     protected override void GetItems(SmartGenerateParameters smartGenerateParameters)
     {
       var element = smartGenerateParameters.Element;

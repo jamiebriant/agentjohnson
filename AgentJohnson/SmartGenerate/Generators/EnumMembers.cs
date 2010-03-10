@@ -11,20 +11,14 @@ namespace AgentJohnson.SmartGenerate.Generators
 {
   using JetBrains.ReSharper.Psi.CSharp.Tree;
 
-  /// <summary>
-  /// The enum members.
-  /// </summary>
+  /// <summary>The enum members.</summary>
   [SmartGenerate("Add enum member", "Adds a new constant to the enumeration.", Priority = 0)]
   public class EnumMembers : SmartGenerateHandlerBase
   {
     #region Methods
 
-    /// <summary>
-    /// Gets the items.
-    /// </summary>
-    /// <param name="smartGenerateParameters">
-    /// The get menu items parameters.
-    /// </param>
+    /// <summary>Gets the items.</summary>
+    /// <param name="smartGenerateParameters">The get menu items parameters.</param>
     protected override void GetItems(SmartGenerateParameters smartGenerateParameters)
     {
       var element = smartGenerateParameters.Element;

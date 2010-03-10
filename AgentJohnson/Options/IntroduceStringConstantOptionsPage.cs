@@ -11,12 +11,10 @@ namespace AgentJohnson.Options
 {
   using System;
   using System.Windows.Forms;
-  using Strings;
+  using AgentJohnson.Strings;
   using JetBrains.UI.Options;
 
-  /// <summary>
-  /// The introduce string constant options page.
-  /// </summary>
+  /// <summary>The introduce string constant options page.</summary>
   [OptionsPage("AgentJohnson.IntroduceStringConstant", "Introduce String Constant", "AgentJohnson.Resources.StringConstant.gif", ParentId = ImportExportPage.NAME)]
   public partial class IntroduceStringConstantOptionsPage : UserControl, IOptionsPage
   {
@@ -42,19 +40,9 @@ namespace AgentJohnson.Options
 
     #endregion
 
-    #region Properties
+    #region Implemented Interfaces
 
-    /// <summary>
-    /// Gets the instance.
-    /// </summary>
-    /// <value>The instance.</value>
-    public static IntroduceStringConstantOptionsPage Instance
-    {
-      get
-      {
-        return _instance;
-      }
-    }
+    #region IOptionsPage
 
     /// <summary>
     /// Control to be shown as page
@@ -83,11 +71,27 @@ namespace AgentJohnson.Options
 
     #endregion
 
-    #region Public Methods
+    #endregion
+
+    #region Properties
 
     /// <summary>
-    /// Commits the specified settings.
+    /// Gets the instance.
     /// </summary>
+    /// <value>The instance.</value>
+    public static IntroduceStringConstantOptionsPage Instance
+    {
+      get
+      {
+        return _instance;
+      }
+    }
+
+    #endregion
+
+    #region Public Methods
+
+    /// <summary>Commits the specified settings.</summary>
     public void Commit()
     {
       var settings = IntroduceStringConstantSettings.Instance;
@@ -112,9 +116,7 @@ namespace AgentJohnson.Options
       settings.GenerateXmlComment = this.cbGenerateXmlComment.Checked;
     }
 
-    /// <summary>
-    /// Displays this instance.
-    /// </summary>
+    /// <summary>Displays this instance.</summary>
     public void Display()
     {
       var settings = IntroduceStringConstantSettings.Instance;
@@ -137,12 +139,8 @@ namespace AgentJohnson.Options
       this.cbGenerateXmlComment.Checked = settings.GenerateXmlComment;
     }
 
-    /// <summary>
-    /// Invoked when this page is selected/unselected in the tree.
-    /// </summary>
-    /// <param name="activated">
-    /// <c>True</c>, when page is selected; <c>False</c>, when page is unselected.
-    /// </param>
+    /// <summary>Invoked when this page is selected/unselected in the tree.</summary>
+    /// <param name="activated"><c>True</c>, when page is selected; <c>False</c>, when page is unselected.</param>
     public void OnActivated(bool activated)
     {
     }
@@ -153,14 +151,10 @@ namespace AgentJohnson.Options
 
     #region IOptionsPage
 
-    /// <summary>
-    /// Invoked when OK button in the options dialog is pressed
+    /// <summary>Invoked when OK button in the options dialog is pressed
     /// If the page returns <c>false</c>, the the options dialog won't be closed, and focus
-    /// will be put into this page
-    /// </summary>
-    /// <returns>
-    /// The on ok.
-    /// </returns>
+    /// will be put into this page</summary>
+    /// <returns>The on ok.</returns>
     public bool OnOk()
     {
       this.Commit();
@@ -168,12 +162,8 @@ namespace AgentJohnson.Options
       return true;
     }
 
-    /// <summary>
-    /// Check if the settings on the page are consistent, and page could be closed
-    /// </summary>
-    /// <returns>
-    /// <c>true</c> if page data is consistent
-    /// </returns>
+    /// <summary>Check if the settings on the page are consistent, and page could be closed</summary>
+    /// <returns><c>true</c> if page data is consistent</returns>
     public bool ValidatePage()
     {
       return true;
@@ -185,12 +175,8 @@ namespace AgentJohnson.Options
 
     #region Methods
 
-    /// <summary>
-    /// Raises the <see cref="E:System.Windows.Forms.UserControl.Load"></see> event.
-    /// </summary>
-    /// <param name="e">
-    /// An <see cref="T:System.EventArgs"></see> that contains the event data. 
-    /// </param>
+    /// <summary>Raises the <see cref="E:System.Windows.Forms.UserControl.Load"></see> event.</summary>
+    /// <param name="e">An <see cref="T:System.EventArgs"></see> that contains the event data. </param>
     protected override void OnLoad(EventArgs e)
     {
       base.OnLoad(e);

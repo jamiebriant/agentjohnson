@@ -10,13 +10,11 @@
 namespace AgentJohnson.ValueAnalysis
 {
   using System.Collections.Generic;
-  using Strings;
+  using AgentJohnson.Strings;
   using JetBrains.ProjectModel;
   using JetBrains.ReSharper.Psi.Tree;
 
-  /// <summary>
-  /// The value analysis analyzer.
-  /// </summary>
+  /// <summary>The value analysis analyzer.</summary>
   public class ValueAnalysisAnalyzer : ITypeMemberDeclarationAnalyzer
   {
     #region Constants and Fields
@@ -30,13 +28,9 @@ namespace AgentJohnson.ValueAnalysis
 
     #region Constructors and Destructors
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ValueAnalysisAnalyzer"/> class. 
-    /// Initializes a new instance of the <see cref="StringEmptyAnalyzer"/> class.
-    /// </summary>
-    /// <param name="solution">
-    /// The solution.
-    /// </param>
+    /// <summary>Initializes a new instance of the <see cref="ValueAnalysisAnalyzer"/> class. 
+    /// Initializes a new instance of the <see cref="StringEmptyAnalyzer"/> class.</summary>
+    /// <param name="solution">The solution.</param>
     public ValueAnalysisAnalyzer(ISolution solution)
     {
       this.solution = solution;
@@ -48,15 +42,9 @@ namespace AgentJohnson.ValueAnalysis
 
     #region ITypeMemberDeclarationAnalyzer
 
-    /// <summary>
-    /// Analyzes the specified statement.
-    /// </summary>
-    /// <param name="typeMemberDeclaration">
-    /// The type member declaration.
-    /// </param>
-    /// <returns>
-    /// Returns the suggestion base[].
-    /// </returns>
+    /// <summary>Analyzes the specified statement.</summary>
+    /// <param name="typeMemberDeclaration">The type member declaration.</param>
+    /// <returns>Returns the suggestion base[].</returns>
     public SuggestionBase[] Analyze(ITypeMemberDeclaration typeMemberDeclaration)
     {
       var modifiersOwnerDeclaration = typeMemberDeclaration as IModifiersOwnerDeclaration;
@@ -72,9 +60,10 @@ namespace AgentJohnson.ValueAnalysis
         return null;
       }
 
-      var suggestions = new List<SuggestionBase>();
-
-      suggestions.Add(new ValueAnalysisSuggestion(this.solution, typeMemberDeclaration));
+      var suggestions = new List<SuggestionBase>
+      {
+        new ValueAnalysisSuggestion(typeMemberDeclaration)
+      };
 
       return suggestions.ToArray();
     }

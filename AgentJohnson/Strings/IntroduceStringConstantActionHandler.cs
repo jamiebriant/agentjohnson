@@ -13,23 +13,15 @@ namespace AgentJohnson.Strings
   using JetBrains.IDE;
   using JetBrains.ProjectModel;
 
-  /// <summary>
-  /// The introduce string constant action handler.
-  /// </summary>
+  /// <summary>The introduce string constant action handler.</summary>
   [ActionHandler("AgentJohnson.IntroduceStringConstant")]
   public class IntroduceStringConstantActionHandler : ActionHandlerBase
   {
     #region Methods
 
-    /// <summary>
-    /// Executes action. Called after Update, that set ActionPresentation.Enabled to true.
-    /// </summary>
-    /// <param name="solution">
-    /// The solution.
-    /// </param>
-    /// <param name="context">
-    /// The context.
-    /// </param>
+    /// <summary>Executes action. Called after Update, that set ActionPresentation.Enabled to true.</summary>
+    /// <param name="solution">The solution.</param>
+    /// <param name="context">The context.</param>
     protected override void Execute(ISolution solution, IDataContext context)
     {
       var textControl = context.GetData(DataConstants.TEXT_CONTROL);
@@ -43,15 +35,9 @@ namespace AgentJohnson.Strings
       introduceStringConstantRefactoring.Execute();
     }
 
-    /// <summary>
-    /// Updates the specified context.
-    /// </summary>
-    /// <param name="context">
-    /// The context.
-    /// </param>
-    /// <returns>
-    /// The update.
-    /// </returns>
+    /// <summary>Updates the specified context.</summary>
+    /// <param name="context">The context.</param>
+    /// <returns>The update.</returns>
     protected override bool Update(IDataContext context)
     {
       if (!context.CheckAllNotNull(DataConstants.SOLUTION))

@@ -11,12 +11,9 @@ namespace AgentJohnson.ValueAnalysis
 {
   using System.Collections.Generic;
   using JetBrains.ReSharper.Feature.Services.Bulbs;
-  using JetBrains.ReSharper.Intentions;
   using JetBrains.Util;
 
-  /// <summary>
-  /// Defines the return quick fix class.
-  /// </summary>
+  /// <summary>Defines the return quick fix class.</summary>
   [QuickFix]
   public class ReturnQuickFix : IQuickFix
   {
@@ -31,12 +28,8 @@ namespace AgentJohnson.ValueAnalysis
 
     #region Constructors and Destructors
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ReturnQuickFix"/> class.
-    /// </summary>
-    /// <param name="warning">
-    /// The suggestion.
-    /// </param>
+    /// <summary>Initializes a new instance of the <see cref="ReturnQuickFix"/> class.</summary>
+    /// <param name="warning">The suggestion.</param>
     public ReturnQuickFix(ReturnWarning warning)
     {
       this.warning = warning;
@@ -44,7 +37,9 @@ namespace AgentJohnson.ValueAnalysis
 
     #endregion
 
-    #region Properties
+    #region Implemented Interfaces
+
+    #region IBulbAction
 
     /// <summary>
     /// Gets the items.
@@ -65,6 +60,8 @@ namespace AgentJohnson.ValueAnalysis
 
     #endregion
 
+    #endregion
+
     #region Implemented Interfaces
 
     #region IBulbAction
@@ -73,11 +70,8 @@ namespace AgentJohnson.ValueAnalysis
     /// Check if this action is available at the constructed context.
     /// Actions could store precalculated info in <paramref name="cache"/> to share it between different actions
     /// </summary>
-    /// <param name="cache">
-    /// </param>
-    /// <returns>
-    /// The is available.
-    /// </returns>
+    /// <param name="cache">The cache.</param>
+    /// <returns>The is available.</returns>
     public bool IsAvailable(IUserDataHolder cache)
     {
       return true;

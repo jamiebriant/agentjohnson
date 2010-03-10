@@ -12,9 +12,7 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
   using System.Collections.Generic;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
 
-  /// <summary>
-  /// The struct members.
-  /// </summary>
+  /// <summary>The struct members.</summary>
   [LiveTemplate("Struct member", "Generate struct member")]
   public class StructMembers : ILiveTemplate
   {
@@ -22,15 +20,9 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
 
     #region ILiveTemplate
 
-    /// <summary>
-    /// Gets the items.
-    /// </summary>
-    /// <param name="parameters">
-    /// The parameters.
-    /// </param>
-    /// <returns>
-    /// The items.
-    /// </returns>
+    /// <summary>Gets the items.</summary>
+    /// <param name="parameters">The parameters.</param>
+    /// <returns>The items.</returns>
     public IEnumerable<LiveTemplateItem> GetItems(SmartGenerateParameters parameters)
     {
       var element = parameters.Element;
@@ -51,8 +43,8 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
 
       var liveTemplateItem = new LiveTemplateItem
       {
-        MenuText = "Struct member",
-        Description = "Struct member",
+        MenuText = "Struct member", 
+        Description = "Struct member", 
         Shortcut = "Struct member"
       };
 

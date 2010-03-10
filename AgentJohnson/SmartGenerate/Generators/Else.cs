@@ -11,20 +11,14 @@ namespace AgentJohnson.SmartGenerate.Generators
 {
   using JetBrains.ReSharper.Psi.CSharp.Tree;
 
-  /// <summary>
-  /// The else.
-  /// </summary>
+  /// <summary>The else.</summary>
   [SmartGenerate("Generate else", "Generates an 'else' or 'else if' statement.", Priority = 100)]
   public class Else : SmartGenerateHandlerBase
   {
     #region Methods
 
-    /// <summary>
-    /// Gets the items.
-    /// </summary>
-    /// <param name="smartGenerateParameters">
-    /// The get menu items parameters.
-    /// </param>
+    /// <summary>Gets the items.</summary>
+    /// <param name="smartGenerateParameters">The get menu items parameters.</param>
     protected override void GetItems(SmartGenerateParameters smartGenerateParameters)
     {
       var element = smartGenerateParameters.Element;

@@ -7,13 +7,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Linq;
-
 namespace AgentJohnson.ValueAnalysis
 {
   using System;
   using System.Collections.Generic;
+  using System.Linq;
+  using AgentJohnson.Psi.CodeStyle;
   using JetBrains.Annotations;
+  using JetBrains.Application;
   using JetBrains.ProjectModel;
   using JetBrains.ReSharper.Psi;
   using JetBrains.ReSharper.Psi.Caches;
@@ -27,14 +28,11 @@ namespace AgentJohnson.ValueAnalysis
   using JetBrains.ReSharper.Psi.Tree;
   using JetBrains.ReSharper.Psi.Util;
   using JetBrains.Text;
-  using Psi.CodeStyle;
 
-  /// <summary>
-  /// Defines the value analysis refactoring class.
-  /// </summary>
+  /// <summary>Defines the value analysis refactoring class.</summary>
   internal class ValueAnalysisRefactoring
   {
-    #region Fields
+    #region Constants and Fields
 
     /// <summary>
     /// The can be null attribute clr name.
@@ -64,14 +62,10 @@ namespace AgentJohnson.ValueAnalysis
 
     #endregion
 
-    #region Constructors
+    #region Constructors and Destructors
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ValueAnalysisRefactoring"/> class.
-    /// </summary>
-    /// <param name="typeMemberDeclaration">
-    /// The type member declaration.
-    /// </param>
+    /// <summary>Initializes a new instance of the <see cref="ValueAnalysisRefactoring"/> class.</summary>
+    /// <param name="typeMemberDeclaration">The type member declaration.</param>
     public ValueAnalysisRefactoring([NotNull] ITypeMemberDeclaration typeMemberDeclaration)
     {
       this.typeMemberDeclaration = typeMemberDeclaration;
@@ -124,9 +118,7 @@ namespace AgentJohnson.ValueAnalysis
 
     #region Public Methods
 
-    /// <summary>
-    /// Executes the specified element.
-    /// </summary>
+    /// <summary>Executes the specified element.</summary>
     public void Execute()
     {
       if (!this.IsAttributesDefined())
@@ -152,16 +144,11 @@ namespace AgentJohnson.ValueAnalysis
       if (functionDeclaration != null)
       {
         this.ExecuteFunction(functionDeclaration);
-        return;
       }
     }
 
-    /// <summary>
-    /// Determines whether this instance is available.
-    /// </summary>
-    /// <returns>
-    /// <c>true</c> if this instance is available; otherwise, <c>false</c>.
-    /// </returns>
+    /// <summary>Determines whether this instance is available.</summary>
+    /// <returns><c>true</c> if this instance is available; otherwise, <c>false</c>.</returns>
     public bool IsAvailable()
     {
       if (!this.IsAttributesDefined())
@@ -194,18 +181,10 @@ namespace AgentJohnson.ValueAnalysis
 
     #region Methods
 
-    /// <summary>
-    /// Finds the attribute.
-    /// </summary>
-    /// <param name="attributeName">
-    /// Name of the attribute.
-    /// </param>
-    /// <param name="attributesOwner">
-    /// The attributes owner.
-    /// </param>
-    /// <returns>
-    /// The attribute.
-    /// </returns>
+    /// <summary>Finds the attribute.</summary>
+    /// <param name="attributeName">Name of the attribute.</param>
+    /// <param name="attributesOwner">The attributes owner.</param>
+    /// <returns>The attribute.</returns>
     [CanBeNull]
     private static IAttributeInstance FindAttribute([NotNull] string attributeName, [NotNull] IAttributesOwner attributesOwner)
     {
@@ -220,15 +199,9 @@ namespace AgentJohnson.ValueAnalysis
       return null;
     }
 
-    /// <summary>
-    /// Gets the access rights.
-    /// </summary>
-    /// <param name="functionDeclaration">
-    /// The function declaration.
-    /// </param>
-    /// <returns>
-    /// The access rights.
-    /// </returns>
+    /// <summary>Gets the access rights.</summary>
+    /// <param name="functionDeclaration">The function declaration.</param>
+    /// <returns>The access rights.</returns>
     private static AccessRights GetAccessRights([NotNull] ICSharpFunctionDeclaration functionDeclaration)
     {
       var accessRights = functionDeclaration.GetAccessRights();
@@ -246,15 +219,9 @@ namespace AgentJohnson.ValueAnalysis
       return containingTypeDeclaration.GetAccessRights();
     }
 
-    /// <summary>
-    /// Gets the anchor.
-    /// </summary>
-    /// <param name="body">
-    /// The body.
-    /// </param>
-    /// <returns>
-    /// The anchor.
-    /// </returns>
+    /// <summary>Gets the anchor.</summary>
+    /// <param name="body">The body.</param>
+    /// <returns>The anchor.</returns>
     [CanBeNull]
     private static IStatement GetAnchor([NotNull] IBlock body)
     {
@@ -268,27 +235,13 @@ namespace AgentJohnson.ValueAnalysis
       return null;
     }
 
-    /// <summary>
-    /// Gets the code.
-    /// </summary>
-    /// <param name="assertion">
-    /// The assertion.
-    /// </param>
-    /// <param name="accessRights">
-    /// The access rights.
-    /// </param>
-    /// <returns>
-    /// The code.
-    /// </returns>
+    /// <summary>Gets the code.</summary>
+    /// <param name="assertion">The assertion.</param>
+    /// <param name="accessRights">The access rights.</param>
+    /// <returns>The code.</returns>
     private static string GetCode([NotNull] ParameterStatement assertion, AccessRights accessRights)
     {
-      var rule = Rule.GetRule(assertion.Parameter.Type, assertion.Parameter.Language);
-
-      if (rule == null)
-      {
-        rule = Rule.GetDefaultRule();
-      }
-
+      var rule = Rule.GetRule(assertion.Parameter.Type, assertion.Parameter.Language) ?? Rule.GetDefaultRule();
       if (rule == null)
       {
         return null;
@@ -309,12 +262,8 @@ namespace AgentJohnson.ValueAnalysis
       return string.IsNullOrEmpty(code) ? null : code;
     }
 
-    /// <summary>
-    /// Executes the parameters.
-    /// </summary>
-    /// <param name="functionDeclaration">
-    /// The function declaration.
-    /// </param>
+    /// <summary>Executes the parameters.</summary>
+    /// <param name="functionDeclaration">The function declaration.</param>
     private void ExecuteFunction([NotNull] ICSharpFunctionDeclaration functionDeclaration)
     {
       if (this.IsAvailableGetterFunction(functionDeclaration))
@@ -401,12 +350,8 @@ namespace AgentJohnson.ValueAnalysis
       }
     }
 
-    /// <summary>
-    /// Executes the indexer.
-    /// </summary>
-    /// <param name="indexerDeclaration">
-    /// The property declaration.
-    /// </param>
+    /// <summary>Executes the indexer.</summary>
+    /// <param name="indexerDeclaration">The property declaration.</param>
     private void ExecuteIndexer([NotNull] IIndexerDeclaration indexerDeclaration)
     {
       foreach (var accessorDeclaration in indexerDeclaration.AccessorDeclarations)
@@ -418,33 +363,34 @@ namespace AgentJohnson.ValueAnalysis
 
         var accessorName = accessorDeclaration.ToTreeNode().AccessorName.GetText();
 
-        if (accessorName == "get")
+        switch (accessorName)
         {
-          if (this.IsAvailableGetterFunction(accessorDeclaration))
+          case "get":
           {
-            this.ExecuteReturnValueAttribute(accessorDeclaration);
+            if (this.IsAvailableGetterFunction(accessorDeclaration))
+            {
+              this.ExecuteReturnValueAttribute(accessorDeclaration);
+            }
+
+            var parametersOwner = accessorDeclaration.DeclaredElement as IParametersOwner;
+
+            if (parametersOwner != null && parametersOwner.Parameters.Count > 0)
+            {
+              this.ExecuteFunction(accessorDeclaration);
+            }
           }
 
-          var parametersOwner = accessorDeclaration.DeclaredElement as IParametersOwner;
+          break;
 
-          if (parametersOwner != null && parametersOwner.Parameters.Count > 0)
-          {
+          case "set":
             this.ExecuteFunction(accessorDeclaration);
-          }
-        }
-        else if (accessorName == "set")
-        {
-          this.ExecuteFunction(accessorDeclaration);
+            break;
         }
       }
     }
 
-    /// <summary>
-    /// Executes the property.
-    /// </summary>
-    /// <param name="propertyDeclaration">
-    /// The declaration.
-    /// </param>
+    /// <summary>Executes the property.</summary>
+    /// <param name="propertyDeclaration">The declaration.</param>
     private void ExecuteProperty([NotNull] IPropertyDeclaration propertyDeclaration)
     {
       foreach (var accessorDeclaration in propertyDeclaration.AccessorDeclarations)
@@ -456,26 +402,25 @@ namespace AgentJohnson.ValueAnalysis
 
         var accessorName = accessorDeclaration.ToTreeNode().AccessorName.GetText();
 
-        if (accessorName == "get")
+        switch (accessorName)
         {
-          if (this.IsAvailableGetterFunction(accessorDeclaration))
-          {
-            this.ExecuteReturnValueAttribute(accessorDeclaration);
-          }
-        }
-        else if (accessorName == "set")
-        {
-          this.ExecuteFunction(accessorDeclaration);
+          case "get":
+            if (this.IsAvailableGetterFunction(accessorDeclaration))
+            {
+              this.ExecuteReturnValueAttribute(accessorDeclaration);
+            }
+
+            break;
+
+          case "set":
+            this.ExecuteFunction(accessorDeclaration);
+            break;
         }
       }
     }
 
-    /// <summary>
-    /// Executes the attribute.
-    /// </summary>
-    /// <param name="functionDeclaration">
-    /// The function declaration.
-    /// </param>
+    /// <summary>Executes the attribute.</summary>
+    /// <param name="functionDeclaration">The function declaration.</param>
     private void ExecuteReturnValueAttribute([NotNull] ICSharpFunctionDeclaration functionDeclaration)
     {
       if (this.HasAnnotation())
@@ -510,12 +455,8 @@ namespace AgentJohnson.ValueAnalysis
       }
     }
 
-    /// <summary>
-    /// Finds the attributes.
-    /// </summary>
-    /// <param name="parameterStatement">
-    /// The parameter statement.
-    /// </param>
+    /// <summary>Finds the attributes.</summary>
+    /// <param name="parameterStatement">The parameter statement.</param>
     private void FindAttributes([NotNull] ParameterStatement parameterStatement)
     {
       if (this.notNullTypeElement == null || this.canBeNullTypeElement == null)
@@ -555,15 +496,9 @@ namespace AgentJohnson.ValueAnalysis
       }
     }
 
-    /// <summary>
-    /// Gets the assertion parameters.
-    /// </summary>
-    /// <param name="functionDeclaration">
-    /// The function declaration.
-    /// </param>
-    /// <param name="result">
-    /// The result.
-    /// </param>
+    /// <summary>Gets the assertion parameters.</summary>
+    /// <param name="functionDeclaration">The function declaration.</param>
+    /// <param name="result">The result.</param>
     private void GetAssertionParameters([NotNull] ICSharpFunctionDeclaration functionDeclaration, [NotNull] List<ParameterStatement> result)
     {
       IParametersOwner parametersOwner = functionDeclaration.DeclaredElement;
@@ -666,15 +601,9 @@ namespace AgentJohnson.ValueAnalysis
       }
     }
 
-    /// <summary>
-    /// Gets the assertion statements.
-    /// </summary>
-    /// <param name="functionDeclaration">
-    /// The function declaration.
-    /// </param>
-    /// <param name="result">
-    /// The result.
-    /// </param>
+    /// <summary>Gets the assertion statements.</summary>
+    /// <param name="functionDeclaration">The function declaration.</param>
+    /// <param name="result">The result.</param>
     private void GetAssertionStatements([NotNull] ICSharpFunctionDeclaration functionDeclaration, [NotNull] List<ParameterStatement> result)
     {
       var function = functionDeclaration.DeclaredElement;
@@ -786,21 +715,11 @@ namespace AgentJohnson.ValueAnalysis
       }
     }
 
-    /// <summary>
-    /// Gets the assertions.
-    /// </summary>
-    /// <param name="functionDeclaration">
-    /// The function declaration.
-    /// </param>
-    /// <param name="findStatements">
-    /// if set to <c>true</c> [find statements].
-    /// </param>
-    /// <returns>
-    /// The assertions.
-    /// </returns>
-    /// <exception cref="ArgumentNullException">
-    /// <c>functionDeclaration</c> is null.
-    /// </exception>
+    /// <summary>Gets the assertions.</summary>
+    /// <param name="functionDeclaration">The function declaration.</param>
+    /// <param name="findStatements">if set to <c>true</c> [find statements].</param>
+    /// <returns>The assertions.</returns>
+    /// <exception cref="ArgumentNullException"><c>functionDeclaration</c> is null.</exception>
     [NotNull]
     private List<ParameterStatement> GetAssertions([NotNull] ICSharpFunctionDeclaration functionDeclaration, bool findStatements)
     {
@@ -816,15 +735,9 @@ namespace AgentJohnson.ValueAnalysis
       return result;
     }
 
-    /// <summary>
-    /// Gets the attribute.
-    /// </summary>
-    /// <param name="attributeName">
-    /// Name of the attribute.
-    /// </param>
-    /// <returns>
-    /// The attribute.
-    /// </returns>
+    /// <summary>Gets the attribute.</summary>
+    /// <param name="attributeName">Name of the attribute.</param>
+    /// <returns>The attribute.</returns>
     [CanBeNull]
     private ITypeElement GetAttribute([NotNull] string attributeName)
     {
@@ -841,24 +754,18 @@ namespace AgentJohnson.ValueAnalysis
       return typeElement;
     }
 
-    /// <summary>
-    /// Determines whether this instance has annotation.
-    /// </summary>
-    /// <returns>
-    /// <c>true</c> if this instance has annotation; otherwise, <c>false</c>.
-    /// </returns>
+    /// <summary>Determines whether this instance has annotation.</summary>
+    /// <returns><c>true</c> if this instance has annotation; otherwise, <c>false</c>.</returns>
     private bool HasAnnotation()
     {
       var attributes = this.TypeMemberDeclaration.DeclaredElement.GetAttributeInstances(true);
 
       var codeAnnotationsCache = CodeAnnotationsCache.GetInstance(this.Solution);
 
-        return attributes.Any(codeAnnotationsCache.IsAnnotationAttribute);
+      return attributes.Any(codeAnnotationsCache.IsAnnotationAttribute);
     }
 
-    /// <summary>
-    /// Inserts the blank line.
-    /// </summary>
+    /// <summary>Inserts the blank line.</summary>
     /// <param name="anchor">The anchor.</param>
     /// <param name="codeFormatter">The code formatter.</param>
     private void InsertBlankLine([NotNull] IStatement anchor, [NotNull] CodeFormatter codeFormatter)
@@ -883,35 +790,23 @@ namespace AgentJohnson.ValueAnalysis
 
       ITreeNode element = TreeElementFactory.CreateLeafElement(CSharpTokenType.NEW_LINE, newLineText, 0, newLineText.Length);
 
-      LowLevelModificationUtil.AddChildBefore(anchorTreeNode, element);
+      WriteLockCookie.Execute(() => LowLevelModificationUtil.AddChildBefore(anchorTreeNode, element));
 
       var range = element.GetDocumentRange();
       codeFormatter.Format(this.Solution, range);
     }
 
-    /// <summary>
-    /// Determines whether the value analysis attributes are defined.
-    /// </summary>
-    /// <returns>
-    /// <c>true</c> if the value analysis attributes are defined; otherwise, <c>false</c>.
-    /// </returns>
+    /// <summary>Determines whether the value analysis attributes are defined.</summary>
+    /// <returns><c>true</c> if the value analysis attributes are defined; otherwise, <c>false</c>.</returns>
     private bool IsAttributesDefined()
     {
       return this.notNullTypeElement != null && this.canBeNullTypeElement != null;
     }
 
-    /// <summary>
-    /// Determines whether [is available function] [the specified declaration].
-    /// </summary>
-    /// <param name="getterFunctionDeclaration">
-    /// The function declaration.
-    /// </param>
-    /// <param name="setterFunctionDeclaration">
-    /// The setter function declaration.
-    /// </param>
-    /// <returns>
-    /// <c>true</c> if [is available function] [the specified declaration]; otherwise, <c>false</c>.
-    /// </returns>
+    /// <summary>Determines whether [is available function] [the specified declaration].</summary>
+    /// <param name="getterFunctionDeclaration">The function declaration.</param>
+    /// <param name="setterFunctionDeclaration">The setter function declaration.</param>
+    /// <returns><c>true</c> if [is available function] [the specified declaration]; otherwise, <c>false</c>.</returns>
     private bool IsAvailableFunction([CanBeNull] ICSharpFunctionDeclaration getterFunctionDeclaration, [CanBeNull] ICSharpFunctionDeclaration setterFunctionDeclaration)
     {
       if (getterFunctionDeclaration != null)
@@ -935,15 +830,9 @@ namespace AgentJohnson.ValueAnalysis
       return false;
     }
 
-    /// <summary>
-    /// Determines whether [is available getter function] [the specified getter function declaration].
-    /// </summary>
-    /// <param name="getterFunctionDeclaration">
-    /// The getter function declaration.
-    /// </param>
-    /// <returns>
-    /// <c>true</c> if [is available getter function] [the specified getter function declaration]; otherwise, <c>false</c>.
-    /// </returns>
+    /// <summary>Determines whether [is available getter function] [the specified getter function declaration].</summary>
+    /// <param name="getterFunctionDeclaration">The getter function declaration.</param>
+    /// <returns><c>true</c> if [is available getter function] [the specified getter function declaration]; otherwise, <c>false</c>.</returns>
     private bool IsAvailableGetterFunction([NotNull] IFunctionDeclaration getterFunctionDeclaration)
     {
       var method = getterFunctionDeclaration.DeclaredElement as IMethod;
@@ -961,15 +850,9 @@ namespace AgentJohnson.ValueAnalysis
       return !this.HasAnnotation();
     }
 
-    /// <summary>
-    /// Determines whether [is available indexer] [the specified indexer declaration].
-    /// </summary>
-    /// <param name="indexerDeclaration">
-    /// The indexer declaration.
-    /// </param>
-    /// <returns>
-    /// <c>true</c> if [is available indexer] [the specified indexer declaration]; otherwise, <c>false</c>.
-    /// </returns>
+    /// <summary>Determines whether [is available indexer] [the specified indexer declaration].</summary>
+    /// <param name="indexerDeclaration">The indexer declaration.</param>
+    /// <returns><c>true</c> if [is available indexer] [the specified indexer declaration]; otherwise, <c>false</c>.</returns>
     private bool IsAvailableIndexer([NotNull] IIndexerDeclaration indexerDeclaration)
     {
       ICSharpFunctionDeclaration getterFunctionDeclaration = null;
@@ -984,28 +867,24 @@ namespace AgentJohnson.ValueAnalysis
 
         var accessorName = accessorDeclaration.ToTreeNode().AccessorName.GetText();
 
-        if (accessorName == "get")
+        switch (accessorName)
         {
-          getterFunctionDeclaration = accessorDeclaration;
-        }
-        else if (accessorName == "set")
-        {
-          setterFunctionDeclaration = accessorDeclaration;
+          case "get":
+            getterFunctionDeclaration = accessorDeclaration;
+            break;
+
+          case "set":
+            setterFunctionDeclaration = accessorDeclaration;
+            break;
         }
       }
 
       return this.IsAvailableFunction(getterFunctionDeclaration, setterFunctionDeclaration);
     }
 
-    /// <summary>
-    /// Determines whether [is available property] [the specified property declaration].
-    /// </summary>
-    /// <param name="propertyDeclaration">
-    /// The property declaration.
-    /// </param>
-    /// <returns>
-    /// <c>true</c> if [is available property] [the specified property declaration]; otherwise, <c>false</c>.
-    /// </returns>
+    /// <summary>Determines whether [is available property] [the specified property declaration].</summary>
+    /// <param name="propertyDeclaration">The property declaration.</param>
+    /// <returns><c>true</c> if [is available property] [the specified property declaration]; otherwise, <c>false</c>.</returns>
     private bool IsAvailableProperty([NotNull] IPropertyDeclaration propertyDeclaration)
     {
       ICSharpFunctionDeclaration getterFunctionDeclaration = null;
@@ -1039,15 +918,9 @@ namespace AgentJohnson.ValueAnalysis
       return this.IsAvailableFunction(getterFunctionDeclaration, setterFunctionDeclaration);
     }
 
-    /// <summary>
-    /// Determines whether [is available parameters] [the specified function declaration].
-    /// </summary>
-    /// <param name="functionDeclaration">
-    /// The function declaration.
-    /// </param>
-    /// <returns>
-    /// <c>true</c> if [is available parameters] [the specified function declaration]; otherwise, <c>false</c>.
-    /// </returns>
+    /// <summary>Determines whether [is available parameters] [the specified function declaration].</summary>
+    /// <param name="functionDeclaration">The function declaration.</param>
+    /// <returns><c>true</c> if [is available parameters] [the specified function declaration]; otherwise, <c>false</c>.</returns>
     private bool IsAvailableSetterFunction([NotNull] ICSharpFunctionDeclaration functionDeclaration)
     {
       if (functionDeclaration.IsAbstract || functionDeclaration.IsExtern)
@@ -1083,12 +956,8 @@ namespace AgentJohnson.ValueAnalysis
       return false;
     }
 
-    /// <summary>
-    /// Marks the parameter with attribute.
-    /// </summary>
-    /// <param name="assertion">
-    /// The assertion.
-    /// </param>
+    /// <summary>Marks the parameter with attribute.</summary>
+    /// <param name="assertion">The assertion.</param>
     private void MarkParameterWithAttribute([NotNull] ParameterStatement assertion)
     {
       var rule = Rule.GetRule(assertion.Parameter.Type, assertion.Parameter.Language);
@@ -1143,21 +1012,23 @@ namespace AgentJohnson.ValueAnalysis
         return;
       }
 
-      var regularParameterDeclaration = assertion.Parameter as IRegularParameterDeclaration;
-      if (regularParameterDeclaration == null)
+      var declarations = assertion.Parameter.GetDeclarations();
+      if (declarations.Count == 0)
       {
         return;
       }
 
-      this.MarkWithAttribute(valueAttribute, regularParameterDeclaration);
+      var declaration = declarations[0] as IAttributesOwnerDeclaration;
+      if (declaration == null)
+      {
+        return;
+      }
+
+      this.MarkWithAttribute(valueAttribute, declaration);
     }
 
-    /// <summary>
-    /// Marks the with attribute.
-    /// </summary>
-    /// <param name="attributeName">
-    /// Name of the attribute.
-    /// </param>
+    /// <summary>Marks the with attribute.</summary>
+    /// <param name="attributeName">Name of the attribute.</param>
     private void MarkWithAttribute([NotNull] string attributeName)
     {
       var attributesOwner = this.TypeMemberDeclaration as IAttributesOwnerDeclaration;
@@ -1169,15 +1040,9 @@ namespace AgentJohnson.ValueAnalysis
       this.MarkWithAttribute(attributeName, attributesOwner);
     }
 
-    /// <summary>
-    /// Marks the with attribute.
-    /// </summary>
-    /// <param name="attributeName">
-    /// Name of the attribute.
-    /// </param>
-    /// <param name="attributesOwnerDeclaration">
-    /// The meta info target declaration.
-    /// </param>
+    /// <summary>Marks the with attribute.</summary>
+    /// <param name="attributeName">Name of the attribute.</param>
+    /// <param name="attributesOwnerDeclaration">The meta info target declaration.</param>
     private void MarkWithAttribute([NotNull] string attributeName, [NotNull] IAttributesOwnerDeclaration attributesOwnerDeclaration)
     {
       var typeElement = this.GetAttribute(attributeName);
@@ -1187,12 +1052,23 @@ namespace AgentJohnson.ValueAnalysis
       }
 
       var factory = CSharpElementFactory.GetInstance(attributesOwnerDeclaration.GetPsiModule());
+      if (factory == null)
+      {
+        return;
+      }
 
       var objects = new object[]
       {
         typeElement
       };
-      var attribute = factory.CreateTypeMemberDeclaration("[$0]void Foo(){}", objects).Attributes[0];
+
+      var declaration = factory.CreateTypeMemberDeclaration("[$0]void Foo(){}", objects);
+      if (declaration == null)
+      {
+        return;
+      }
+
+      var attribute = declaration.Attributes[0];
 
       attribute = attributesOwnerDeclaration.AddAttributeAfter(attribute, null);
 

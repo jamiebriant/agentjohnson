@@ -20,9 +20,7 @@ namespace AgentJohnson.SmartGenerate
   using JetBrains.ReSharper.LiveTemplates.UI.TemplateEditor;
   using JetBrains.UI.PopupMenu;
 
-  /// <summary>
-  /// The live template manager.
-  /// </summary>
+  /// <summary>The live template manager.</summary>
   [ShellComponentImplementation(ProgramConfigurations.VS_ADDIN)]
   [ShellComponentInterface(ProgramConfigurations.ALL)]
   public class LiveTemplateManager : ITypeLoadingHandler, IShellComponent, IComparer<LiveTemplateInfo>
@@ -33,6 +31,29 @@ namespace AgentJohnson.SmartGenerate
     /// The _live template infos.
     /// </summary>
     private List<LiveTemplateInfo> liveTemplateInfos = new List<LiveTemplateInfo>();
+
+    #endregion
+
+    #region Implemented Interfaces
+
+    #region ITypeLoadingHandler
+
+    /// <summary>
+    /// Gets the attribute types.
+    /// </summary>
+    /// <value>The attribute types.</value>
+    public Type[] AttributeTypes
+    {
+      get
+      {
+        return new[]
+        {
+          typeof(LiveTemplateAttribute)
+        };
+      }
+    }
+
+    #endregion
 
     #endregion
 
@@ -47,21 +68,6 @@ namespace AgentJohnson.SmartGenerate
       get
       {
         return Shell.Instance.GetComponent<LiveTemplateManager>();
-      }
-    }
-
-    /// <summary>
-    /// Gets the attribute types.
-    /// </summary>
-    /// <value>The attribute types.</value>
-    public Type[] AttributeTypes
-    {
-      get
-      {
-        return new[]
-        {
-          typeof(LiveTemplateAttribute)
-        };
       }
     }
 
@@ -81,15 +87,9 @@ namespace AgentJohnson.SmartGenerate
 
     #region Public Methods
 
-    /// <summary>
-    /// Handles the Clicked event of the menuItem control.
-    /// </summary>
-    /// <param name="sender">
-    /// The source of the event.
-    /// </param>
-    /// <param name="e">
-    /// The <see cref="System.EventArgs"/> instance containing the event data.
-    /// </param>
+    /// <summary>Handles the Clicked event of the menuItem control.</summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
     public static void AddLiveTemplate(object sender, EventArgs e)
     {
       var simpleMenuItem = sender as SimpleMenuItem;
@@ -118,15 +118,9 @@ namespace AgentJohnson.SmartGenerate
       });
     }
 
-    /// <summary>
-    /// Gets the items.
-    /// </summary>
-    /// <param name="parameters">
-    /// The parameters.
-    /// </param>
-    /// <returns>
-    /// The live templates.
-    /// </returns>
+    /// <summary>Gets the items.</summary>
+    /// <param name="parameters">The parameters.</param>
+    /// <returns>The live templates.</returns>
     public List<LiveTemplateItem> GetLiveTemplates(SmartGenerateParameters parameters)
     {
       var result = new List<LiveTemplateItem>();
@@ -166,18 +160,10 @@ namespace AgentJohnson.SmartGenerate
 
     #region IComparer<LiveTemplateInfo>
 
-    /// <summary>
-    /// Compares two objects and returns a value indicating whether one is less than, equal to, or greater than the other.
-    /// </summary>
-    /// <returns>
-    /// Value Condition Less than zero<paramref name="x"/> is less than <paramref name="y"/>.Zero<paramref name="x"/> equals <paramref name="y"/>.Greater than zero<paramref name="x"/> is greater than <paramref name="y"/>.
-    /// </returns>
-    /// <param name="x">
-    /// The first object to compare.
-    /// </param>
-    /// <param name="y">
-    /// The second object to compare.
-    /// </param>
+    /// <summary>Compares two objects and returns a value indicating whether one is less than, equal to, or greater than the other.</summary>
+    /// <returns>Value Condition Less than zero<paramref name="x"/> is less than <paramref name="y"/>.Zero<paramref name="x"/> equals <paramref name="y"/>.Greater than zero<paramref name="x"/> is greater than <paramref name="y"/>.</returns>
+    /// <param name="x">The first object to compare.</param>
+    /// <param name="y">The second object to compare.</param>
     int IComparer<LiveTemplateInfo>.Compare(LiveTemplateInfo x, LiveTemplateInfo y)
     {
       return x.Priority - y.Priority;
@@ -187,14 +173,12 @@ namespace AgentJohnson.SmartGenerate
 
     #region IComponent
 
-    /// <summary>
-    /// Initializes this instance.
-    /// </summary>
+    /// <summary>Initializes this instance.</summary>
     public void Init()
     {
       Shell.Instance.RegisterTypeLoadingHandler(this);
 
-      IUpdatableAction action = ActionManager.Instance.TryGetAction("CompleteStatement") as IUpdatableAction;
+      var action = ActionManager.Instance.TryGetAction("CompleteStatement") as IUpdatableAction;
       if (action != null)
       {
         action.AddHandler(new SmartGenerateContextAction());
@@ -205,9 +189,7 @@ namespace AgentJohnson.SmartGenerate
 
     #region IDisposable
 
-    /// <summary>
-    /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-    /// </summary>
+    /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
     public void Dispose()
     {
       this.liveTemplateInfos = new List<LiveTemplateInfo>();
@@ -217,15 +199,9 @@ namespace AgentJohnson.SmartGenerate
 
     #region ITypeLoadingHandler
 
-    /// <summary>
-    /// Called when types have been loaded.
-    /// </summary>
-    /// <param name="assemblies">
-    /// The assemblies.
-    /// </param>
-    /// <param name="types">
-    /// The types.
-    /// </param>
+    /// <summary>Called when types have been loaded.</summary>
+    /// <param name="assemblies">The assemblies.</param>
+    /// <param name="types">The types.</param>
     public void TypesLoaded(ICollection<Assembly> assemblies, ICollection<Type> types)
     {
       foreach (var type in types)
@@ -241,9 +217,9 @@ namespace AgentJohnson.SmartGenerate
 
         var entry = new LiveTemplateInfo
         {
-          Priority = liveLiveTemplateAttribute.Priority,
-          Name = liveLiveTemplateAttribute.Name,
-          Description = liveLiveTemplateAttribute.Description,
+          Priority = liveLiveTemplateAttribute.Priority, 
+          Name = liveLiveTemplateAttribute.Name, 
+          Description = liveLiveTemplateAttribute.Description, 
           Type = type
         };
 
@@ -253,15 +229,9 @@ namespace AgentJohnson.SmartGenerate
       this.liveTemplateInfos.Sort(this);
     }
 
-    /// <summary>
-    /// Called when types have been loaded.
-    /// </summary>
-    /// <param name="assemblies">
-    /// The assemblies.
-    /// </param>
-    /// <param name="types">
-    /// The types.
-    /// </param>
+    /// <summary>Called when types have been loaded.</summary>
+    /// <param name="assemblies">The assemblies.</param>
+    /// <param name="types">The types.</param>
     public void TypesUnloaded(ICollection<Assembly> assemblies, ICollection<Type> types)
     {
     }

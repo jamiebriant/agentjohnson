@@ -1,7 +1,3 @@
-// <copyright file="DaemonStageProcess.cs" company="Sitecore A/S">
-//   Copyright (c) Sitecore A/S. All rights reserved.
-// </copyright>
-
 namespace AgentJohnson
 {
   using System;
@@ -54,7 +50,7 @@ namespace AgentJohnson
     /// Failing to do so may cause the program to prevent user from typing while analysing the code.
     /// Stage results should be passed to <param name="commiter"/>. If DaemonStageResult is <c>null</c>, it means that no highlightings available
     /// </summary>
-    /// <param name="commiter"></param>
+    /// <param name="commiter">The commiter.</param>
     public override void Execute(Action<DaemonStageResult> commiter)
     {
       this.HighlightInFile((file, consumer) => file.ProcessDescendants(this, consumer), commiter);
@@ -65,7 +61,7 @@ namespace AgentJohnson
     /// </summary>
     /// <param name="constructorDeclaration">The constructor declaration.</param>
     /// <param name="consumer">The consumer.</param>
-    /// <returns></returns>
+    /// <returns>An object.</returns>
     public override object VisitConstructorDeclaration(IConstructorDeclaration constructorDeclaration, IHighlightingConsumer consumer)
     {
       this.VisitTypeMember(constructorDeclaration, consumer);
@@ -77,7 +73,7 @@ namespace AgentJohnson
     /// </summary>
     /// <param name="element">The param.</param>
     /// <param name="consumer">The context.</param>
-    /// <returns></returns>
+    /// <returns>Returns the element.</returns>
     public override object VisitElement(IElement element, IHighlightingConsumer consumer)
     {
       var tokenType = element as ITokenNode;
@@ -94,7 +90,7 @@ namespace AgentJohnson
     /// </summary>
     /// <param name="indexerDeclarationParam">The indexer declaration param.</param>
     /// <param name="consumer">The consumer.</param>
-    /// <returns></returns>
+    /// <returns>Returns the indexer declaration.</returns>
     public override object VisitIndexerDeclaration(IIndexerDeclaration indexerDeclarationParam, IHighlightingConsumer consumer)
     {
       this.VisitTypeMember(indexerDeclarationParam, consumer);
@@ -106,7 +102,7 @@ namespace AgentJohnson
     /// </summary>
     /// <param name="methodDeclaration">The method declaration.</param>
     /// <param name="consumer">The consumer.</param>
-    /// <returns></returns>
+    /// <returns>Returns the method declaration.</returns>
     public override object VisitMethodDeclaration(IMethodDeclaration methodDeclaration, IHighlightingConsumer consumer)
     {
       this.VisitTypeMember(methodDeclaration, consumer);
@@ -118,7 +114,7 @@ namespace AgentJohnson
     /// </summary>
     /// <param name="propertyDeclaration">The property declaration.</param>
     /// <param name="consumer">The consumer.</param>
-    /// <returns></returns>
+    /// <returns>Returns the property declaration.</returns>
     public override object VisitPropertyDeclaration(IPropertyDeclaration propertyDeclaration, IHighlightingConsumer consumer)
     {
       this.VisitTypeMember(propertyDeclaration, consumer);
@@ -130,7 +126,7 @@ namespace AgentJohnson
     /// </summary>
     /// <param name="returnStatement">The return statement.</param>
     /// <param name="consumer">The consumer.</param>
-    /// <returns></returns>
+    /// <returns>Returns the return statement.</returns>
     public override object VisitReturnStatement(IReturnStatement returnStatement, IHighlightingConsumer consumer)
     {
       AddHighlighting(consumer, this.returnAnalyzer.AnalyzeReturnStatement(returnStatement));
@@ -143,7 +139,7 @@ namespace AgentJohnson
     /// </summary>
     /// <param name="throwStatement">The throw statement.</param>
     /// <param name="consumer">The consumer.</param>
-    /// <returns></returns>
+    /// <returns>Returns the throw statement.</returns>
     public override object VisitThrowStatement(IThrowStatement throwStatement, IHighlightingConsumer consumer)
     {
       AddHighlighting(consumer, this.documentThrownExceptionAnalyzer.AnalyzeThrowStatement(throwStatement));
@@ -176,8 +172,8 @@ namespace AgentJohnson
     /// <summary>
     /// Adds the highlighting.
     /// </summary>
-    ///<param name="consumer">The consumer.</param>
-    ///<param name="highlighting">The highlighting.</param>
+    /// <param name="consumer">The consumer.</param>
+    /// <param name="highlighting">The highlighting.</param>
     private static void AddHighlighting(IHighlightingConsumer consumer, SuggestionBase highlighting)
     {
       var range = highlighting.Range;
@@ -194,7 +190,6 @@ namespace AgentJohnson
     /// </summary>
     /// <param name="typeMemberDeclaration">The type member declaration.</param>
     /// <param name="consumer">The consumer.</param>
-    /// <returns></returns>
     private void VisitTypeMember(ITypeMemberDeclaration typeMemberDeclaration, IHighlightingConsumer consumer)
     {
       AddHighlighting(consumer, this.valueAnalysisAnalyzer.Analyze(typeMemberDeclaration));

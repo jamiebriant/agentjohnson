@@ -7,14 +7,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using JetBrains.Util;
-
 namespace AgentJohnson.Statements
 {
   using System.Collections.Generic;
   using System.Text;
   using JetBrains.ReSharper.Feature.Services.Bulbs;
-  using JetBrains.ReSharper.Intentions;
   using JetBrains.ReSharper.Intentions.CSharp.DataProviders;
   using JetBrains.ReSharper.Psi;
   using JetBrains.ReSharper.Psi.CSharp;
@@ -22,22 +19,94 @@ namespace AgentJohnson.Statements
   using JetBrains.ReSharper.Psi.Tree;
   using JetBrains.ReSharper.Psi.Util;
 
-  /// <summary>
-  /// Defines the make abstract class.
-  /// </summary>
+  /// <summary>Defines the make abstract class.</summary>
   [ContextAction(Description = "Sort case statements.", Name = "Sort case statements", Priority = -1, Group = "C#")]
   public class SortCaseStatements : ContextActionBase, IComparer<SortCaseStatements.KeyCode>
   {
     #region Constructors and Destructors
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="SortCaseStatements"/> class.
-    /// </summary>
-    /// <param name="provider">
-    /// The provider.
-    /// </param>
+    /// <summary>Initializes a new instance of the <see cref="SortCaseStatements"/> class.</summary>
+    /// <param name="provider">The provider.</param>
     public SortCaseStatements(ICSharpContextActionDataProvider provider) : base(provider)
     {
+    }
+
+    #endregion
+
+    #region Public Methods
+
+    /// <summary>Determines whether this instance is available.</summary>
+    /// <param name="element">The element.</param>
+    /// <returns><c>true</c> if this instance is available; otherwise, <c>false</c>.</returns>
+    public override bool IsAvailable(IElement element)
+    {
+      var switchStatement = this.Provider.GetSelectedElement<ISwitchStatement>(false, true);
+      if (switchStatement == null)
+      {
+        return false;
+      }
+
+      IExpression condition = switchStatement.Condition;
+      if (condition == null)
+      {
+        return false;
+      }
+
+      var block = switchStatement.Block;
+      if (block == null)
+      {
+        return false;
+      }
+
+      var statements = block.Statements;
+      if (statements == null)
+      {
+        return false;
+      }
+
+      var found = false;
+
+      foreach (var statement in statements)
+      {
+        var switchLabelStatement = statement as ISwitchLabelStatement;
+        if (switchLabelStatement != null && !switchLabelStatement.IsDefault)
+        {
+          found = true;
+          break;
+        }
+      }
+
+      if (!found)
+      {
+        return false;
+      }
+
+      var type = condition.Type();
+      var typeName = type.GetLongPresentableName(switchStatement.Language);
+
+      if (typeName == "string")
+      {
+        return true;
+      }
+
+      if (typeName == "int" || typeName == "sbyte" || typeName == "byte" || typeName == "ushort" || typeName == "short" || typeName == "uint" || typeName == "long" || typeName == "ulong")
+      {
+        return true;
+      }
+
+      var isEnumType = TypesUtil.IsEnumType(type);
+      if (isEnumType)
+      {
+        return true;
+      }
+
+      var isInt = PredefinedType.IsPredefinedIntegralNumeric(typeName);
+      if (isInt)
+      {
+        return true;
+      }
+
+      return false;
     }
 
     #endregion
@@ -46,25 +115,14 @@ namespace AgentJohnson.Statements
 
     #region IComparer<KeyCode>
 
-    /// <summary>
-    /// Compares two objects and returns a value indicating whether one is less than, equal to, or greater than the other.
-    /// </summary>
-    /// <param name="x">
-    /// The first object to compare.
-    /// </param>
-    /// <param name="y">
-    /// The second object to compare.
-    /// </param>
-    /// <returns>
-    /// Value
+    /// <summary>Compares two objects and returns a value indicating whether one is less than, equal to, or greater than the other.</summary>
+    /// <param name="x">The first object to compare.</param>
+    /// <param name="y">The second object to compare.</param>
+    /// <returns>Value
     /// Condition
-    /// Less than zero
-    /// <paramref name="x"/> is less than <paramref name="y"/>.
-    /// Zero
-    /// <paramref name="x"/> equals <paramref name="y"/>.
-    /// Greater than zero
-    /// <paramref name="x"/> is greater than <paramref name="y"/>.
-    /// </returns>
+    /// Less than zero<paramref name="x"/> is less than <paramref name="y"/>.
+    /// Zero<paramref name="x"/> equals <paramref name="y"/>.
+    /// Greater than zero<paramref name="x"/> is greater than <paramref name="y"/>.</returns>
     public int Compare(KeyCode x, KeyCode y)
     {
       if (x.Case == null && y.Case == null)
@@ -96,12 +154,8 @@ namespace AgentJohnson.Statements
 
     #region Methods
 
-    /// <summary>
-    /// Executes this instance.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
+    /// <summary>Executes this instance.</summary>
+    /// <param name="element">The element.</param>
     protected override void Execute(IElement element)
     {
       var switchStatement = element.ToTreeNode().Parent as ISwitchStatement;
@@ -146,101 +200,16 @@ namespace AgentJohnson.Statements
       switchStatement.SetBlock(factory.CreateBlock(code.ToString()));
     }
 
-    /// <summary>
-    /// Gets the text.
-    /// </summary>
-    /// <returns>
-    /// The text in the context menu.
-    /// </returns>
+    /// <summary>Gets the text.</summary>
+    /// <returns>The text in the context menu.</returns>
     protected override string GetText()
     {
       return "Sort cases [Agent Johnson]";
     }
 
-    /// <summary>
-    /// Determines whether this instance is available.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
-    /// <returns>
-    /// <c>true</c> if this instance is available; otherwise, <c>false</c>.
-    /// </returns>
-    public override bool IsAvailable(IUserDataHolder element)
-    {
-        var switchStatement = Provider.GetSelectedElement<ISwitchStatement>(false, true);
-      if (switchStatement == null)
-      {
-        return false;
-      }
-
-      IExpression condition = switchStatement.Condition;
-      if (condition == null)
-      {
-        return false;
-      }
-
-      var block = switchStatement.Block;
-      if (block == null)
-      {
-        return false;
-      }
-
-      var statements = block.Statements;
-      if (statements == null)
-      {
-        return false;
-      }
-
-      var found = false;
-
-      foreach (var statement in statements)
-      {
-        var switchLabelStatement = statement as ISwitchLabelStatement;
-        if (switchLabelStatement != null && !switchLabelStatement.IsDefault)
-        {
-          found = true;
-          break;
-        }
-      }
-
-      if (!found)
-      {
-        return false;
-      }
-
-      var type = condition.Type();
-      var typeName = type.GetPresentableName(switchStatement.Language);
-
-      if (typeName == "string")
-      {
-        return true;
-      }
-
-      var isEnumType = TypesUtil.IsEnumType(type);
-      if (isEnumType)
-      {
-        return true;
-      }
-
-      var isInt = PredefinedType.IsPredefinedIntegral(typeName);
-      if (isInt)
-      {
-        return true;
-      }
-
-      return false;
-    }
-
-    /// <summary>
-    /// Gets the cases.
-    /// </summary>
-    /// <param name="list">
-    /// The list of statements.
-    /// </param>
-    /// <param name="statements">
-    /// The statements.
-    /// </param>
+    /// <summary>Gets the cases.</summary>
+    /// <param name="list">The list of statements.</param>
+    /// <param name="statements">The statements.</param>
     private static void GetCases(List<KeyCode> list, IList<IStatement> statements)
     {
       object caseValue = null;
@@ -255,7 +224,7 @@ namespace AgentJohnson.Statements
           {
             list.Add(new KeyCode
             {
-              Case = caseValue,
+              Case = caseValue, 
               Code = code.ToString()
             });
           }
@@ -278,7 +247,7 @@ namespace AgentJohnson.Statements
       {
         list.Add(new KeyCode
         {
-          Case = caseValue,
+          Case = caseValue, 
           Code = code.ToString()
         });
       }
@@ -286,9 +255,7 @@ namespace AgentJohnson.Statements
 
     #endregion
 
-    /// <summary>
-    /// Defines the key code class.
-    /// </summary>
+    /// <summary>Defines the key code class.</summary>
     public class KeyCode
     {
       #region Properties

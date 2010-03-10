@@ -21,96 +21,28 @@ namespace AgentJohnson.ValueAnalysis
   using JetBrains.ReSharper.Psi.Tree;
   using JetBrains.Util;
 
-  /// <summary>
-  /// Represents the Context Action.
-  /// </summary>
+  /// <summary>Represents the Context Action.</summary>
   [ContextAction(Description = "Annotates the parameter under the caret with the Allow Null attribute.", Name = "Annotate with AllowNull attribute for the current parameter", Priority = -1, Group = "C#")]
   public class AllowNullContextAction : ContextActionBase
   {
     #region Constructors and Destructors
 
-      /// <summary>
-      /// Initializes a new instance of the <see cref="AllowNullContextAction"/> class.
-      /// </summary>
-      /// <param name="provider">The provider.</param>
+    /// <summary>Initializes a new instance of the <see cref="AllowNullContextAction"/> class.</summary>
+    /// <param name="provider">The provider.</param>
     public AllowNullContextAction([NotNull] ICSharpContextActionDataProvider provider) : base(provider)
     {
     }
 
     #endregion
 
-    #region Methods
+    #region Public Methods
 
-    /// <summary>
-    /// Executes the internal.
-    /// </summary>
-    /// <param name="element">The element.</param>
-    protected override void Execute([NotNull] IElement element)
-    {
-      if (!this.IsAvailableInternal())
-      {
-        return;
-      }
-
-      var attributesOwnerDeclaration = this.Provider.GetSelectedElement<IAttributesOwnerDeclaration>(true, true);
-      if (attributesOwnerDeclaration == null)
-      {
-        return;
-      }
-
-      var psiModule = attributesOwnerDeclaration.GetPsiModule();
-      var scope = DeclarationsScopeFactory.ModuleScope(psiModule, true);
-      string allowNullAttribute = ValueAnalysisSettings.Instance.AllowNullAttribute;
-
-      if (!allowNullAttribute.EndsWith("Attribute"))
-      {
-        allowNullAttribute += "Attribute";
-      }
-
-      var typeElement = PsiManager.GetInstance(psiModule.GetSolution()).GetDeclarationsCache(scope, true).GetTypeElementsByCLRName(new CLRTypeName(allowNullAttribute)).FirstOrDefault();
-
-      Logger.Assert(typeElement != null, "typeElement != null");
-
-      var elementFactory = CSharpElementFactory.GetInstance(Provider.PsiModule);
-
-      var attribute = elementFactory.CreateAttribute(typeElement);
-
-      ContextActionUtils.FormatWithDefaultProfile(attributesOwnerDeclaration.AddAttributeAfter(attribute, null));
-    }
-
-    /// <summary>
-    /// Gets the text.
-    /// </summary>
-    /// <returns>The get text.</returns>
-    /// <value>
-    /// The text.
-    /// </value>
-    [NotNull]
-    protected override string GetText()
-    {
-      var attribute = ValueAnalysisSettings.Instance.AllowNullAttribute;
-
-      var n = attribute.LastIndexOf('.');
-      if (n >= 0)
-      {
-        attribute = attribute.Substring(n + 1);
-      }
-
-      return string.Format("Annotate with '{0}' [Agent Johnson]", attribute);
-    }
-
-    /// <summary>
-    /// Called to check if ContextAction is available.
+    /// <summary>Called to check if ContextAction is available.
     /// ReadLock is taken
-    /// Will not be called if PsiManager, ProjectFile of Solution == null
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
-    /// <returns>
-    /// The is available.
-    /// </returns>
-    public override bool IsAvailable(IUserDataHolder element)
+    /// Will not be called if PsiManager, ProjectFile of Solution == null</summary>
+    /// <param name="element">The element.</param>
+    /// <returns>The is available.</returns>
+    public override bool IsAvailable(IElement element)
     {
       if (string.IsNullOrEmpty(ValueAnalysisSettings.Instance.AllowNullAttribute))
       {
@@ -179,6 +111,62 @@ namespace AgentJohnson.ValueAnalysis
       }
 
       return true;
+    }
+
+    #endregion
+
+    #region Methods
+
+    /// <summary>Executes the internal.</summary>
+    /// <param name="element">The element.</param>
+    protected override void Execute([NotNull] IElement element)
+    {
+      if (!this.IsAvailableInternal())
+      {
+        return;
+      }
+
+      var attributesOwnerDeclaration = this.Provider.GetSelectedElement<IAttributesOwnerDeclaration>(true, true);
+      if (attributesOwnerDeclaration == null)
+      {
+        return;
+      }
+
+      var psiModule = attributesOwnerDeclaration.GetPsiModule();
+      var scope = DeclarationsScopeFactory.ModuleScope(psiModule, true);
+      var allowNullAttribute = ValueAnalysisSettings.Instance.AllowNullAttribute;
+
+      if (!allowNullAttribute.EndsWith("Attribute"))
+      {
+        allowNullAttribute += "Attribute";
+      }
+
+      var typeElement = PsiManager.GetInstance(psiModule.GetSolution()).GetDeclarationsCache(scope, true).GetTypeElementsByCLRName(new CLRTypeName(allowNullAttribute)).FirstOrDefault();
+
+      Logger.Assert(typeElement != null, "typeElement != null");
+
+      var elementFactory = CSharpElementFactory.GetInstance(this.Provider.PsiModule);
+
+      var attribute = elementFactory.CreateAttribute(typeElement);
+
+      ContextActionUtils.FormatWithDefaultProfile(attributesOwnerDeclaration.AddAttributeAfter(attribute, null));
+    }
+
+    /// <summary>Gets the text.</summary>
+    /// <returns>The get text.</returns>
+    /// <value>The text.</value>
+    [NotNull]
+    protected override string GetText()
+    {
+      var attribute = ValueAnalysisSettings.Instance.AllowNullAttribute;
+
+      var n = attribute.LastIndexOf('.');
+      if (n >= 0)
+      {
+        attribute = attribute.Substring(n + 1);
+      }
+
+      return string.Format("Annotate with '{0}' [Agent Johnson]", attribute);
     }
 
     #endregion

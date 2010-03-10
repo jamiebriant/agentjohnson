@@ -18,9 +18,7 @@ namespace AgentJohnson.SmartGenerate
   using JetBrains.Application;
   using JetBrains.ComponentModel;
 
-  /// <summary>
-  /// The smart generate manager.
-  /// </summary>
+  /// <summary>The smart generate manager.</summary>
   [ShellComponentImplementation(ProgramConfigurations.VS_ADDIN)]
   [ShellComponentInterface(ProgramConfigurations.ALL)]
   public class SmartGenerateManager : ITypeLoadingHandler, IShellComponent, IComparer<SmartGenerateHandlerData>
@@ -39,19 +37,9 @@ namespace AgentJohnson.SmartGenerate
 
     #endregion
 
-    #region Properties
+    #region Implemented Interfaces
 
-    /// <summary>
-    /// Gets the instance.
-    /// </summary>
-    /// <value>The instance.</value>
-    public static SmartGenerateManager Instance
-    {
-      get
-      {
-        return Shell.Instance.GetComponent<SmartGenerateManager>();
-      }
-    }
+    #region ITypeLoadingHandler
 
     /// <summary>
     /// Gets the attribute types.
@@ -65,6 +53,24 @@ namespace AgentJohnson.SmartGenerate
         {
           typeof(SmartGenerateAttribute)
         };
+      }
+    }
+
+    #endregion
+
+    #endregion
+
+    #region Properties
+
+    /// <summary>
+    /// Gets the instance.
+    /// </summary>
+    /// <value>The instance.</value>
+    public static SmartGenerateManager Instance
+    {
+      get
+      {
+        return Shell.Instance.GetComponent<SmartGenerateManager>();
       }
     }
 
@@ -84,12 +90,8 @@ namespace AgentJohnson.SmartGenerate
 
     #region Public Methods
 
-    /// <summary>
-    /// Gets the handlers.
-    /// </summary>
-    /// <returns>
-    /// The handlers.
-    /// </returns>
+    /// <summary>Gets the handlers.</summary>
+    /// <returns>The handlers.</returns>
     [NotNull]
     public IEnumerable<ISmartGenerateHandler> GetHandlers()
     {
@@ -110,15 +112,9 @@ namespace AgentJohnson.SmartGenerate
       return result;
     }
 
-    /// <summary>
-    /// Gets the template.
-    /// </summary>
-    /// <param name="template">
-    /// The template.
-    /// </param>
-    /// <returns>
-    /// The template.
-    /// </returns>
+    /// <summary>Gets the template.</summary>
+    /// <param name="template">The template.</param>
+    /// <returns>The template.</returns>
     [CanBeNull]
     public string GetTemplate([NotNull] string template)
     {
@@ -156,18 +152,10 @@ namespace AgentJohnson.SmartGenerate
 
     #region IComparer<SmartGenerateHandlerData>
 
-    /// <summary>
-    /// Compares two objects and returns a value indicating whether one is less than, equal to, or greater than the other.
-    /// </summary>
-    /// <param name="x">
-    /// The first object to compare.
-    /// </param>
-    /// <param name="y">
-    /// The second object to compare.
-    /// </param>
-    /// <returns>
-    /// Value Condition Less than zero<paramref name="x"/> is less than <paramref name="y"/>.Zero<paramref name="x"/> equals <paramref name="y"/>.Greater than zero<paramref name="x"/> is greater than <paramref name="y"/>.
-    /// </returns>
+    /// <summary>Compares two objects and returns a value indicating whether one is less than, equal to, or greater than the other.</summary>
+    /// <param name="x">The first object to compare.</param>
+    /// <param name="y">The second object to compare.</param>
+    /// <returns>Value Condition Less than zero<paramref name="x"/> is less than <paramref name="y"/>.Zero<paramref name="x"/> equals <paramref name="y"/>.Greater than zero<paramref name="x"/> is greater than <paramref name="y"/>.</returns>
     int IComparer<SmartGenerateHandlerData>.Compare(SmartGenerateHandlerData x, SmartGenerateHandlerData y)
     {
       return x.Priority - y.Priority;
@@ -177,9 +165,7 @@ namespace AgentJohnson.SmartGenerate
 
     #region IComponent
 
-    /// <summary>
-    /// Initializes this instance.
-    /// </summary>
+    /// <summary>Initializes this instance.</summary>
     public void Init()
     {
       Shell.Instance.RegisterTypeLoadingHandler(this);
@@ -189,9 +175,7 @@ namespace AgentJohnson.SmartGenerate
 
     #region IDisposable
 
-    /// <summary>
-    /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-    /// </summary>
+    /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
     public void Dispose()
     {
       this._handlers = new List<SmartGenerateHandlerData>();
@@ -201,15 +185,9 @@ namespace AgentJohnson.SmartGenerate
 
     #region ITypeLoadingHandler
 
-    /// <summary>
-    /// Called when types have been loaded.
-    /// </summary>
-    /// <param name="assemblies">
-    /// The assemblies.
-    /// </param>
-    /// <param name="types">
-    /// The types.
-    /// </param>
+    /// <summary>Called when types have been loaded.</summary>
+    /// <param name="assemblies">The assemblies.</param>
+    /// <param name="types">The types.</param>
     public void TypesLoaded(ICollection<Assembly> assemblies, ICollection<Type> types)
     {
       foreach (var type in types)
@@ -231,7 +209,10 @@ namespace AgentJohnson.SmartGenerate
 
           var entry = new SmartGenerateHandlerData
           {
-            Priority = smartGenerateAttribute.Priority, Name = smartGenerateAttribute.Name, Description = smartGenerateAttribute.Description, Handler = handler
+            Priority = smartGenerateAttribute.Priority, 
+            Name = smartGenerateAttribute.Name, 
+            Description = smartGenerateAttribute.Description, 
+            Handler = handler
           };
 
           this._handlers.Add(entry);
@@ -241,15 +222,9 @@ namespace AgentJohnson.SmartGenerate
       this._handlers.Sort(this);
     }
 
-    /// <summary>
-    /// Called when types have been loaded.
-    /// </summary>
-    /// <param name="assemblies">
-    /// The assemblies.
-    /// </param>
-    /// <param name="types">
-    /// The types.
-    /// </param>
+    /// <summary>Called when types have been loaded.</summary>
+    /// <param name="assemblies">The assemblies.</param>
+    /// <param name="types">The types.</param>
     public void TypesUnloaded(ICollection<Assembly> assemblies, ICollection<Type> types)
     {
     }

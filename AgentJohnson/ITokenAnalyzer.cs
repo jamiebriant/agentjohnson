@@ -11,21 +11,14 @@ namespace AgentJohnson
 {
   using JetBrains.ReSharper.Psi.Tree;
 
-  /// <summary>
-  /// Declaration analyzers should implement this.
-  /// </summary>
+  /// <summary>Declaration analyzers should implement this.</summary>
   public interface ITokenTypeAnalyzer
   {
     #region Public Methods
 
-    /// <summary>
-    /// Analyzes the specified statement.
-    /// </summary>
-    /// <param name="node">
-    /// The node.
-    /// </param>
-    /// <returns>
-    /// </returns>
+    /// <summary>Analyzes the specified statement.</summary>
+    /// <param name="node">The node.</param>
+    /// <returns>Returns the suggestion base.</returns>
     SuggestionBase[] Analyze(ITokenNode node);
 
     #endregion

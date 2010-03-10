@@ -11,20 +11,14 @@ namespace AgentJohnson.SmartGenerate.Generators
 {
   using JetBrains.ReSharper.Psi.Tree;
 
-  /// <summary>
-  /// Defines the generate boolean expression class.
-  /// </summary>
+  /// <summary>Defines the generate boolean expression class.</summary>
   [SmartGenerate("Surround with 'if'", "Surrounds the boolean expression with 'if'.", Priority = -20)]
   public class BooleanExpression : SmartGenerateHandlerBase
   {
     #region Methods
 
-    /// <summary>
-    /// Gets the items.
-    /// </summary>
-    /// <param name="smartGenerateParameters">
-    /// The get menu items parameters.
-    /// </param>
+    /// <summary>Gets the items.</summary>
+    /// <param name="smartGenerateParameters">The get menu items parameters.</param>
     protected override void GetItems(SmartGenerateParameters smartGenerateParameters)
     {
       var element = smartGenerateParameters.Element;

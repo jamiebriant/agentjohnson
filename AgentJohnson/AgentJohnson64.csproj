@@ -187,6 +187,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionHandlerBase.cs" />
+    <Compile Include="CodeCleanup\Options\ValueAnalysisOptions.cs" />
+    <Compile Include="CodeCleanup\AgentJohnsonCodeCleanupModule.cs" />
+    <Compile Include="CodeCleanup\Descriptors\ValueAnalysisDescriptor.cs" />
+    <Compile Include="CodeCleanup\Rules\ValueAnalysisRules.cs" />
     <Compile Include="Comments\CopySummary.cs" />
     <Compile Include="ContextActionBase.cs" />
     <Compile Include="Enums\SortEnums.cs" />

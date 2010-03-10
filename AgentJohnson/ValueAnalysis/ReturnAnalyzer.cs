@@ -17,12 +17,10 @@ namespace AgentJohnson.ValueAnalysis
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.Util;
 
-  /// <summary>
-  /// The return analyzer.
-  /// </summary>
+  /// <summary>The return analyzer.</summary>
   public class ReturnAnalyzer
   {
-    #region Fields
+    #region Constants and Fields
 
     /// <summary>
     /// The solution.
@@ -31,14 +29,10 @@ namespace AgentJohnson.ValueAnalysis
 
     #endregion
 
-    #region Constructors
+    #region Constructors and Destructors
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ReturnAnalyzer"/> class.
-    /// </summary>
-    /// <param name="solution">
-    /// The solution.
-    /// </param>
+    /// <summary>Initializes a new instance of the <see cref="ReturnAnalyzer"/> class.</summary>
+    /// <param name="solution">The solution.</param>
     public ReturnAnalyzer(ISolution solution)
     {
       this.solution = solution;
@@ -62,18 +56,13 @@ namespace AgentJohnson.ValueAnalysis
 
     #endregion
 
-    #region Methods
-
-    #region Public methods
+    #region Public Methods
 
     /// <summary>
     /// Analyzes the return statement.
     /// </summary>
-    /// <param name="returnStatement">
-    /// The return statement.
-    /// </param>
-    /// <returns>
-    /// </returns>
+    /// <param name="returnStatement">The return statement.</param>
+    /// <returns>Returns the return statement.</returns>
     public IEnumerable<SuggestionBase> AnalyzeReturnStatement(IReturnStatement returnStatement)
     {
       var suggestions = new List<SuggestionBase>();
@@ -85,7 +74,7 @@ namespace AgentJohnson.ValueAnalysis
 
       if (this.RequiresAssertion(returnStatement))
       {
-        suggestions.Add(new ReturnWarning(this.solution, returnStatement));
+        suggestions.Add(new ReturnWarning(returnStatement));
       }
 
       return suggestions;
@@ -93,20 +82,12 @@ namespace AgentJohnson.ValueAnalysis
 
     #endregion
 
-    #region Private methods
+    #region Methods
 
-    /// <summary>
-    /// Gets the value analysis.
-    /// </summary>
-    /// <param name="returnStatement">
-    /// The return statement.
-    /// </param>
-    /// <param name="function">
-    /// The function.
-    /// </param>
-    /// <returns>
-    /// Returns the boolean.
-    /// </returns>
+    /// <summary>Gets the value analysis.</summary>
+    /// <param name="returnStatement">The return statement.</param>
+    /// <param name="function">The function.</param>
+    /// <returns>Returns the boolean.</returns>
     private static bool GetValueAnalysis(IReturnStatement returnStatement, IFunction function)
     {
       var referenceExpression = returnStatement.Value as IReferenceExpression;
@@ -138,15 +119,9 @@ namespace AgentJohnson.ValueAnalysis
       return true;
     }
 
-    /// <summary>
-    /// Gets the is asserted.
-    /// </summary>
-    /// <param name="returnStatement">
-    /// The return statement.
-    /// </param>
-    /// <returns>
-    /// Returns the boolean.
-    /// </returns>
+    /// <summary>Gets the is asserted.</summary>
+    /// <param name="returnStatement">The return statement.</param>
+    /// <returns>Returns the boolean.</returns>
     private bool GetIsAsserted(IReturnStatement returnStatement)
     {
       var invocationExpression = returnStatement.Value as IInvocationExpression;
@@ -186,15 +161,9 @@ namespace AgentJohnson.ValueAnalysis
       return codeAnnotationsCache.IsAssertionMethod(method);
     }
 
-    /// <summary>
-    /// Determines whether this instance has annotation.
-    /// </summary>
-    /// <param name="function">
-    /// The function.
-    /// </param>
-    /// <returns>
-    /// <c>true</c> if this instance has annotation; otherwise, <c>false</c>.
-    /// </returns>
+    /// <summary>Determines whether this instance has annotation.</summary>
+    /// <param name="function">The function.</param>
+    /// <returns><c>true</c> if this instance has annotation; otherwise, <c>false</c>.</returns>
     private bool HasAnnotation(IFunction function)
     {
       var codeAnnotationsCache = CodeAnnotationsCache.GetInstance(this.Solution);
@@ -211,15 +180,9 @@ namespace AgentJohnson.ValueAnalysis
       return false;
     }
 
-    /// <summary>
-    /// Determines whether this instance is asserted.
-    /// </summary>
-    /// <param name="returnStatement">
-    /// The return statement.
-    /// </param>
-    /// <returns>
-    /// <c>true</c> if this instance is asserted; otherwise, <c>false</c>.
-    /// </returns>
+    /// <summary>Determines whether this instance is asserted.</summary>
+    /// <param name="returnStatement">The return statement.</param>
+    /// <returns><c>true</c> if this instance is asserted; otherwise, <c>false</c>.</returns>
     private bool RequiresAssertion(IReturnStatement returnStatement)
     {
       var canBeNullName = CodeAnnotationsCache.CanBeNullAttributeShortName;
@@ -287,8 +250,6 @@ namespace AgentJohnson.ValueAnalysis
 
       return GetValueAnalysis(returnStatement, function);
     }
-
-    #endregion
 
     #endregion
   }

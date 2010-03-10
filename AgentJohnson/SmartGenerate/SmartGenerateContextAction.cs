@@ -3,7 +3,7 @@
 //   Copyright (C) 2009 Jakob Christensen
 // </copyright>
 // <summary>
-//   Handles Smart Generation, see &lt;c&gt;Actions.xml&lt;/c&gt;
+//   Handles Smart Generation, see <c>Actions.xml</c>
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -31,9 +31,7 @@ namespace AgentJohnson.SmartGenerate
   using JetBrains.Util;
   using JetBrains.Util.Special;
 
-  /// <summary>
-  /// Handles Smart Generation, see <c>Actions.xml</c>
-  /// </summary>
+  /// <summary>Handles Smart Generation, see <c>Actions.xml</c></summary>
   public class SmartGenerateContextAction : IActionHandler
   {
     #region Constants and Fields
@@ -54,9 +52,7 @@ namespace AgentJohnson.SmartGenerate
 
     #region IActionHandler
 
-    /// <summary>
-    /// Executes action. Called after Update, that set <see cref="ActionPresentation"/>. Enabled to <c>true</c>.
-    /// </summary>
+    /// <summary>Executes action. Called after Update, that set <see cref="ActionPresentation"/>. Enabled to <c>true</c>.</summary>
     /// <param name="context">The data context.</param>
     /// <param name="nextExecute">Delegate to call.</param>
     public void Execute(IDataContext context, DelegateExecute nextExecute)
@@ -70,10 +66,8 @@ namespace AgentJohnson.SmartGenerate
       this.Execute(context);
     }
 
-    /// <summary>
-    /// Updates action visual presentation. If presentation.Enabled is set to <c>false</c>, Execute
-    /// will not be called.
-    /// </summary>
+    /// <summary>Updates action visual presentation. If presentation.Enabled is set to <c>false</c>, Execute
+    /// will not be called.</summary>
     /// <param name="context">The data context.</param>
     /// <param name="presentation">presentation to update</param>
     /// <param name="nextUpdate">delegate to call</param>
@@ -94,23 +88,15 @@ namespace AgentJohnson.SmartGenerate
 
     #region Methods
 
-    /// <summary>
-    /// Resets the index.
-    /// </summary>
+    /// <summary>Resets the index.</summary>
     protected virtual void ResetIndex()
     {
       scopeIndex = 0;
     }
 
-    /// <summary>
-    /// Ats the lead in whitespace.
-    /// </summary>
-    /// <param name="context">
-    /// The context.
-    /// </param>
-    /// <returns>
-    /// Returns the boolean.
-    /// </returns>
+    /// <summary>Ats the lead in whitespace.</summary>
+    /// <param name="context">The context.</param>
+    /// <returns>Returns the boolean.</returns>
     private static bool AtLeadInWhitespace(IDataContext context)
     {
       var textControl = context.GetData(JetBrains.IDE.DataConstants.TEXT_CONTROL);
@@ -142,21 +128,11 @@ namespace AgentJohnson.SmartGenerate
       return true;
     }
 
-    /// <summary>
-    /// Gets the element as the caret position.
-    /// </summary>
-    /// <param name="solution">
-    /// The solution.
-    /// </param>
-    /// <param name="textControl">
-    /// The text Control.
-    /// </param>
-    /// <param name="element">
-    /// The element.
-    /// </param>
-    /// <returns>
-    /// <c>true</c>, if successful.
-    /// </returns>
+    /// <summary>Gets the element as the caret position.</summary>
+    /// <param name="solution">The solution.</param>
+    /// <param name="textControl">The text Control.</param>
+    /// <param name="element">The element.</param>
+    /// <returns><c>true</c>, if successful.</returns>
     private static bool GetElementAtCaret(ISolution solution, ITextControl textControl, out IElement element)
     {
       element = null;
@@ -186,6 +162,7 @@ namespace AgentJohnson.SmartGenerate
       return true;
     }
 
+    /// <summary>The on handler.</summary>
     private static void OnHandler()
     {
       Shell.Instance.Invocator.ReentrancyGuard.ExecuteOrQueue("SmartGenerate2", delegate
@@ -199,54 +176,7 @@ namespace AgentJohnson.SmartGenerate
       });
     }
 
-    /// <summary>
-    /// Shows the popup menu.
-    /// </summary>
-    /// <param name="context">
-    /// The context.
-    /// </param>
-    /// <param name="items">
-    /// The items.
-    /// </param>
-    private void ShowPopupMenu(IDataContext context, List<SimpleMenuItem> items)
-    {
-      var menu = new JetPopupMenu();
-
-      var popupWindowContext = context.GetData(DataConstants.POPUP_WINDOW_CONTEXT);
-      if (popupWindowContext != null)
-      {
-        menu.Layouter = popupWindowContext.CreateLayouter();
-      }
-
-      menu.Caption.Value = WindowlessControl.Create("Smart Generate [Agent Johnson]");
-      menu.SetItems(items.ToArray());
-      menu.KeyboardAcceleration.SetValue(KeyboardAccelerationFlags.Mnemonics);
-
-      var right = ImageLoader.GetImage("AgentJohnson.Resources.LeftArrow.png", Assembly.GetExecutingAssembly());
-      var left = ImageLoader.GetImage("AgentJohnson.Resources.RightArrow.png", Assembly.GetExecutingAssembly());
-
-      menu.ToolbarButtons.Add(
-        new ToolbarItemInfo(
-          new PresentableItem(right),
-          "Previous in scope",
-          Keys.Left,
-          false,
-          OnHandler));
-
-      menu.ToolbarButtons.Add(
-        new ToolbarItemInfo(
-          new PresentableItem(left),
-          "Next in scope",
-          Keys.None,
-          false,
-          OnHandler));
-
-      menu.Show();
-    }
-
-    /// <summary>
-    /// Adds the menu item.
-    /// </summary>
+    /// <summary>Adds the menu item.</summary>
     /// <param name="items">The list of items.</param>
     /// <param name="item">The current item.</param>
     private void AddItem(List<SimpleMenuItem> items, ISmartGenerateAction item)
@@ -266,8 +196,8 @@ namespace AgentJohnson.SmartGenerate
       {
         simpleMenuItem = new SimpleMenuItem
         {
-          Text = text,
-          Style = MenuItemStyle.Enabled,
+          Text = text, 
+          Style = MenuItemStyle.Enabled, 
           Tag = item
         };
 
@@ -283,15 +213,9 @@ namespace AgentJohnson.SmartGenerate
       items.Add(simpleMenuItem);
     }
 
-    /// <summary>
-    /// Handles the OnClicked event of the CreateLiveTemplates control.
-    /// </summary>
-    /// <param name="sender">
-    /// The source of the event.
-    /// </param>
-    /// <param name="e">
-    /// The <see cref="System.EventArgs"/> instance containing the event data.
-    /// </param>
+    /// <summary>Handles the OnClicked event of the CreateLiveTemplates control.</summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
     private void CreateLiveTemplates_OnClicked(object sender, EventArgs e)
     {
       var simpleMenuItem = sender as SimpleMenuItem;
@@ -312,8 +236,8 @@ namespace AgentJohnson.SmartGenerate
       {
         var item = new SimpleMenuItem
         {
-          Style = MenuItemStyle.Enabled,
-          Text = template.MenuText ?? string.Empty,
+          Style = MenuItemStyle.Enabled, 
+          Text = template.MenuText ?? string.Empty, 
           Tag = template
         };
 
@@ -337,9 +261,7 @@ namespace AgentJohnson.SmartGenerate
       menu.Show();
     }
 
-    /// <summary>
-    /// Executes action. Called after Update, that set <c>ActionPresentation</c>.Enabled to <c>true</c>.
-    /// </summary>
+    /// <summary>Executes action. Called after Update, that set <c>ActionPresentation</c>.Enabled to <c>true</c>.</summary>
     /// <param name="context">The context.</param>
     private void Execute(IDataContext context)
     {
@@ -382,11 +304,11 @@ namespace AgentJohnson.SmartGenerate
           handler.GetMenuItems(
             new SmartGenerateParameters
             {
-              Solution = solution,
-              TextControl = textControl,
-              Context = this.dataContext,
-              Element = element,
-              Scope = scope,
+              Solution = solution, 
+              TextControl = textControl, 
+              Context = this.dataContext, 
+              Element = element, 
+              Scope = scope, 
               ScopeIndex = scopeIndex
             });
 
@@ -410,11 +332,11 @@ namespace AgentJohnson.SmartGenerate
         LiveTemplateManager.Instance.GetLiveTemplates(
           new SmartGenerateParameters
           {
-            TextControl = textControl,
-            Solution = solution,
-            Context = this.dataContext,
-            Element = element,
-            Scope = scope,
+            TextControl = textControl, 
+            Solution = solution, 
+            Context = this.dataContext, 
+            Element = element, 
+            Scope = scope, 
             ScopeIndex = scopeIndex
           });
 
@@ -427,8 +349,8 @@ namespace AgentJohnson.SmartGenerate
 
         var item = new SimpleMenuItem
         {
-          Text = "Create live template",
-          Style = MenuItemStyle.Enabled,
+          Text = "Create live template", 
+          Style = MenuItemStyle.Enabled, 
           Tag = liveTemplates
         };
 
@@ -437,18 +359,12 @@ namespace AgentJohnson.SmartGenerate
         items.Add(item);
       }
 
-      ShowPopupMenu(this.dataContext, items);
+      this.ShowPopupMenu(this.dataContext, items);
     }
 
-    /// <summary>
-    /// Handles the Clicked event of the item control.
-    /// </summary>
-    /// <param name="sender">
-    /// The source of the event.
-    /// </param>
-    /// <param name="e">
-    /// The <see cref="System.EventArgs"/> instance containing the event data.
-    /// </param>
+    /// <summary>Handles the Clicked event of the item control.</summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
     private void Generate(object sender, EventArgs e)
     {
       var simpleMenuItem = sender as SimpleMenuItem;
@@ -508,7 +424,7 @@ namespace AgentJohnson.SmartGenerate
       }
 
       Shell.Instance.Invocator.ReentrancyGuard.ExecuteOrQueue(
-        "Create Live Template",
+        "Create Live Template", 
         delegate
         {
           using (ReadLockCookie.Create())
@@ -525,28 +441,61 @@ namespace AgentJohnson.SmartGenerate
         });
     }
 
+    /// <summary>Shows the popup menu.</summary>
+    /// <param name="context">The context.</param>
+    /// <param name="items">The items.</param>
+    private void ShowPopupMenu(IDataContext context, List<SimpleMenuItem> items)
+    {
+      var menu = new JetPopupMenu();
+
+      var popupWindowContext = context.GetData(JetBrains.UI.DataConstants.POPUP_WINDOW_CONTEXT);
+      if (popupWindowContext != null)
+      {
+        menu.Layouter = popupWindowContext.CreateLayouter();
+      }
+
+      menu.Caption.Value = WindowlessControl.Create("Smart Generate [Agent Johnson]");
+      menu.SetItems(items.ToArray());
+      menu.KeyboardAcceleration.SetValue(KeyboardAccelerationFlags.Mnemonics);
+
+      var right = ImageLoader.GetImage("AgentJohnson.Resources.LeftArrow.png", Assembly.GetExecutingAssembly());
+      var left = ImageLoader.GetImage("AgentJohnson.Resources.RightArrow.png", Assembly.GetExecutingAssembly());
+
+      menu.ToolbarButtons.Add(
+        new ToolbarItemInfo(
+          new PresentableItem(right), 
+          "Previous in scope", 
+          Keys.Left, 
+          false, 
+          OnHandler));
+
+      menu.ToolbarButtons.Add(
+        new ToolbarItemInfo(
+          new PresentableItem(left), 
+          "Next in scope", 
+          Keys.None, 
+          false, 
+          OnHandler));
+
+      menu.Show();
+    }
+
     #endregion
   }
 
-  /// <summary>
-  /// Defines the smart generate action1 class.
-  /// </summary>
+  /// <summary>Defines the smart generate action1 class.</summary>
   [ActionHandler("SmartGenerate")]
   public class SmartGenerateAction1 : SmartGenerateContextAction
   {
   }
 
-  /// <summary>
-  /// Defines the smart generate action2 class.
-  /// </summary>
+  /// <summary>Defines the smart generate action2 class.</summary>
   [ActionHandler("SmartGenerate2")]
   public class SmartGenerateAction2 : SmartGenerateContextAction
   {
     #region Methods
 
-    /// <summary>
-    /// Resets the index.
-    /// </summary>
+    /// <summary>Resets the index.</summary>
     protected override void ResetIndex()
     {
     }

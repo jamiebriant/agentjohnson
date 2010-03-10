@@ -14,9 +14,7 @@ namespace AgentJohnson.SmartGenerate
   using JetBrains.ComponentModel;
   using JetBrains.Util;
 
-  /// <summary>
-  /// Defines the smart generate settings class.
-  /// </summary>
+  /// <summary>Defines the smart generate settings class.</summary>
   [ShellComponentInterface(ProgramConfigurations.VS_ADDIN)]
   [ShellComponentImplementation]
   public class SmartGenerateSettings : IXmlExternalizableShellComponent
@@ -30,37 +28,9 @@ namespace AgentJohnson.SmartGenerate
 
     #endregion
 
-    #region Properties
+    #region Implemented Interfaces
 
-    /// <summary>
-    /// Gets the instance.
-    /// </summary>
-    /// <value>The instance.</value>
-    public static SmartGenerateSettings Instance
-    {
-      get
-      {
-        return Shell.Instance.GetComponent<SmartGenerateSettings>();
-      }
-    }
-
-    /// <summary>
-    /// Gets or sets the allow null attribute.
-    /// </summary>
-    /// <value>The allow null attribute.</value>
-    [global::JetBrains.Util.XmlExternalizable("")]
-    public string DisabledActions
-    {
-      get
-      {
-        return this._disabledActions ?? string.Empty;
-      }
-
-      set
-      {
-        this._disabledActions = value;
-      }
-    }
+    #region IXmlExternalizableComponent
 
     /// <summary>
     /// Scope that defines which store the data goes into.
@@ -90,13 +60,47 @@ namespace AgentJohnson.SmartGenerate
 
     #endregion
 
+    #endregion
+
+    #region Properties
+
+    /// <summary>
+    /// Gets the instance.
+    /// </summary>
+    /// <value>The instance.</value>
+    public static SmartGenerateSettings Instance
+    {
+      get
+      {
+        return Shell.Instance.GetComponent<SmartGenerateSettings>();
+      }
+    }
+
+    /// <summary>
+    /// Gets or sets the allow null attribute.
+    /// </summary>
+    /// <value>The allow null attribute.</value>
+    [XmlExternalizable("")]
+    public string DisabledActions
+    {
+      get
+      {
+        return this._disabledActions ?? string.Empty;
+      }
+
+      set
+      {
+        this._disabledActions = value;
+      }
+    }
+
+    #endregion
+
     #region Implemented Interfaces
 
     #region IComponent
 
-    /// <summary>
-    /// Initializes this instance.
-    /// </summary>
+    /// <summary>Initializes this instance.</summary>
     public void Init()
     {
     }
@@ -105,9 +109,7 @@ namespace AgentJohnson.SmartGenerate
 
     #region IDisposable
 
-    /// <summary>
-    /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-    /// </summary>
+    /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
     public void Dispose()
     {
     }
@@ -116,11 +118,8 @@ namespace AgentJohnson.SmartGenerate
 
     #region IXmlExternalizable
 
-    /// <summary>
-    /// This method must not fail with null or unexpected Xml!!!
-    /// </summary>
-    /// <param name="element">
-    /// </param>
+    /// <summary>This method must not fail with null or unexpected Xml!!!</summary>
+    /// <param name="element"></param>
     public void ReadFromXml(XmlElement element)
     {
       if (element == null)
@@ -128,18 +127,14 @@ namespace AgentJohnson.SmartGenerate
         return;
       }
 
-      global::JetBrains.Util.XmlExternalizationUtil.ReadFromXml(element, this);
+      XmlExternalizationUtil.ReadFromXml(element, this);
     }
 
-    /// <summary>
-    /// Writes to XML.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
+    /// <summary>Writes to XML.</summary>
+    /// <param name="element">The element.</param>
     public void WriteToXml(XmlElement element)
     {
-      global::JetBrains.Util.XmlExternalizationUtil.WriteToXml(element, this);
+      XmlExternalizationUtil.WriteToXml(element, this);
     }
 
     #endregion

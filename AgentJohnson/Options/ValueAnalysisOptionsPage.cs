@@ -11,15 +11,13 @@ namespace AgentJohnson.Options
 {
   using System;
   using System.Windows.Forms;
-  using ValueAnalysis;
+  using AgentJohnson.ValueAnalysis;
   using EnvDTE;
   using JetBrains.UI.Options;
   using JetBrains.VsIntegration.Application;
 
-  /// <summary>
-  /// The value analysis options page.
-  /// </summary>
-  [OptionsPage(PageName, "Assertions and Value Analysis", "AgentJohnson.Resources.Assertions.gif",
+  /// <summary>The value analysis options page.</summary>
+  [OptionsPage(PageName, "Assertions and Value Analysis", "AgentJohnson.Resources.Assertions.gif", 
     ParentId = ImportExportPage.NAME)]
   public partial class ValueAnalysisOptionsPage : UserControl, IOptionsPage
   {
@@ -67,19 +65,9 @@ namespace AgentJohnson.Options
 
     #endregion
 
-    #region Properties
+    #region Implemented Interfaces
 
-    /// <summary>
-    /// Gets the instance.
-    /// </summary>
-    /// <value>The instance.</value>
-    public static ValueAnalysisOptionsPage Instance
-    {
-      get
-      {
-        return instance;
-      }
-    }
+    #region IOptionsPage
 
     /// <summary>
     /// Gets the control to be shown as page.
@@ -109,11 +97,27 @@ namespace AgentJohnson.Options
 
     #endregion
 
-    #region Public Methods
+    #endregion
+
+    #region Properties
 
     /// <summary>
-    /// Commits this instance.
+    /// Gets the instance.
     /// </summary>
+    /// <value>The instance.</value>
+    public static ValueAnalysisOptionsPage Instance
+    {
+      get
+      {
+        return instance;
+      }
+    }
+
+    #endregion
+
+    #region Public Methods
+
+    /// <summary>Commits this instance.</summary>
     public void Commit()
     {
       var typeConfigurations = ValueAnalysisSettings.Instance.Rules;
@@ -129,9 +133,7 @@ namespace AgentJohnson.Options
       ValueAnalysisSettings.Instance.ExecuteGhostDoc = this.ExecuteGhostDoc.Checked;
     }
 
-    /// <summary>
-    /// Displays this instance.
-    /// </summary>
+    /// <summary>Displays this instance.</summary>
     public void Display()
     {
       var rules = ValueAnalysisSettings.Instance.Rules;
@@ -158,14 +160,10 @@ namespace AgentJohnson.Options
 
     #region IOptionsPage
 
-    /// <summary>
-    /// Invoked when OK button in the options dialog is pressed
+    /// <summary>Invoked when OK button in the options dialog is pressed
     /// If the page returns <c>false</c>, the the options dialog won't be closed, and focus
-    /// will be put into this page
-    /// </summary>
-    /// <returns>
-    /// <c>True</c>, if OK.
-    /// </returns>
+    /// will be put into this page</summary>
+    /// <returns><c>True</c>, if OK.</returns>
     public bool OnOk()
     {
       this.Commit();
@@ -173,12 +171,8 @@ namespace AgentJohnson.Options
       return true;
     }
 
-    /// <summary>
-    /// Check if the settings on the page are consistent, and page could be closed
-    /// </summary>
-    /// <returns>
-    /// <c>true</c> if page data is consistent
-    /// </returns>
+    /// <summary>Check if the settings on the page are consistent, and page could be closed</summary>
+    /// <returns><c>true</c> if page data is consistent</returns>
     public bool ValidatePage()
     {
       return true;
@@ -190,12 +184,8 @@ namespace AgentJohnson.Options
 
     #region Methods
 
-    /// <summary>
-    /// Raises the <see cref="E:System.Windows.Forms.UserControl.Load"/> event.
-    /// </summary>
-    /// <param name="e">
-    /// An <see cref="T:System.EventArgs"/> that contains the event data. 
-    /// </param>
+    /// <summary>Raises the <see cref="E:System.Windows.Forms.UserControl.Load"/> event.</summary>
+    /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data. </param>
     protected override void OnLoad(EventArgs e)
     {
       base.OnLoad(e);
@@ -203,15 +193,9 @@ namespace AgentJohnson.Options
       this.Display();
     }
 
-    /// <summary>
-    /// Handles the Button1_ click event.
-    /// </summary>
-    /// <param name="sender">
-    /// The sender.
-    /// </param>
-    /// <param name="e">
-    /// The <see cref="System.EventArgs"/> instance containing the event data.
-    /// </param>
+    /// <summary>Handles the Button1_ click event.</summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
     private void Add_Click(object sender, EventArgs e)
     {
       var page = new ValueAnalysisDetailsPage();
@@ -230,15 +214,9 @@ namespace AgentJohnson.Options
       this.Types.SetSelected(index, true);
     }
 
-    /// <summary>
-    /// Handles the Edit_ click event.
-    /// </summary>
-    /// <param name="sender">
-    /// The sender.
-    /// </param>
-    /// <param name="e">
-    /// The <see cref="System.EventArgs"/> instance containing the event data.
-    /// </param>
+    /// <summary>Handles the Edit_ click event.</summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
     private void Edit_Click(object sender, EventArgs e)
     {
       var selectedIndex = this.Types.SelectedIndex;
@@ -261,15 +239,9 @@ namespace AgentJohnson.Options
       this.Types.Items[selectedIndex] = rule;
     }
 
-    /// <summary>
-    /// Handles the Button2_ click event.
-    /// </summary>
-    /// <param name="sender">
-    /// The sender.
-    /// </param>
-    /// <param name="e">
-    /// The <see cref="System.EventArgs"/> instance containing the event data.
-    /// </param>
+    /// <summary>Handles the Button2_ click event.</summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
     private void Remove_Click(object sender, EventArgs e)
     {
       var selectedIndex = this.Types.SelectedIndex;

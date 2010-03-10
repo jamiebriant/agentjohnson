@@ -13,9 +13,7 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.Tree;
 
-  /// <summary>
-  /// The types.
-  /// </summary>
+  /// <summary>The types.</summary>
   [LiveTemplate("Type", "Generate type")]
   public class Types : ILiveTemplate
   {
@@ -23,15 +21,9 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
 
     #region ILiveTemplate
 
-    /// <summary>
-    /// Gets the items.
-    /// </summary>
-    /// <param name="parameters">
-    /// The parameters.
-    /// </param>
-    /// <returns>
-    /// The items.
-    /// </returns>
+    /// <summary>Gets the items.</summary>
+    /// <param name="parameters">The parameters.</param>
+    /// <returns>The items.</returns>
     public IEnumerable<LiveTemplateItem> GetItems(SmartGenerateParameters parameters)
     {
       var element = parameters.Element;
@@ -56,8 +48,8 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
 
       var liveTemplateItem = new LiveTemplateItem
       {
-        MenuText = "Type",
-        Description = "Type",
+        MenuText = "Type", 
+        Description = "Type", 
         Shortcut = "Type"
       };
 

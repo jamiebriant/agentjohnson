@@ -11,9 +11,7 @@ namespace AgentJohnson
 {
   using JetBrains.ReSharper.Psi.CSharp.Tree;
 
-  /// <summary>
-  /// Declaration analyzers should implement this.
-  /// </summary>
+  /// <summary>Declaration analyzers should implement this.</summary>
   public interface IStatementAnalyzer
   {
     #region Public Methods
@@ -21,11 +19,8 @@ namespace AgentJohnson
     /// <summary>
     /// The analyze.
     /// </summary>
-    /// <param name="statement">
-    /// The statement.
-    /// </param>
-    /// <returns>
-    /// </returns>
+    /// <param name="statement">The statement.</param>
+    /// <returns>Returns the suggestion base.</returns>
     SuggestionBase[] Analyze(IStatement statement);
 
     #endregion

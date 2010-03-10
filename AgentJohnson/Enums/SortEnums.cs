@@ -7,8 +7,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using JetBrains.Util;
-
 namespace AgentJohnson.Enums
 {
   using System;
@@ -18,15 +16,13 @@ namespace AgentJohnson.Enums
   using System.Text.RegularExpressions;
   using JetBrains.Application;
   using JetBrains.ReSharper.Feature.Services.Bulbs;
-  using JetBrains.ReSharper.Intentions;
   using JetBrains.ReSharper.Intentions.CSharp.DataProviders;
   using JetBrains.ReSharper.Psi;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.Tree;
+  using JetBrains.Util;
 
-  /// <summary>
-  /// Represents the Context Action.
-  /// </summary>
+  /// <summary>Represents the Context Action.</summary>
   [ContextAction(Description = "Formats the current 'enum', sorts it by value.", Name = "Format 'enum'", Priority = -1, Group = "C#")]
   public class SortEnumContextAction : ContextActionBase
   {
@@ -41,12 +37,8 @@ namespace AgentJohnson.Enums
 
     #region Constructors and Destructors
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="SortEnumContextAction"/> class.
-    /// </summary>
-    /// <param name="provider">
-    /// The provider.
-    /// </param>
+    /// <summary>Initializes a new instance of the <see cref="SortEnumContextAction"/> class.</summary>
+    /// <param name="provider">The provider.</param>
     public SortEnumContextAction(ICSharpContextActionDataProvider provider)
       : base(provider)
     {
@@ -54,14 +46,25 @@ namespace AgentJohnson.Enums
 
     #endregion
 
+    #region Public Methods
+
+    /// <summary>Called to check if ContextAction is available.
+    /// ReadLock is taken
+    /// Will not be called if <c>PsiManager</c>, ProjectFile of Solution == <c>null</c></summary>
+    /// <param name="element">The element.</param>
+    /// <returns><c>true</c>, if the context action is available.</returns>
+    public override bool IsAvailable(IElement element)
+    {
+      var enumerate = this.Provider.GetSelectedElement<IEnumDeclaration>(true, true);
+      return enumerate != null;
+    }
+
+    #endregion
+
     #region Methods
 
-    /// <summary>
-    /// Executes the internal.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
+    /// <summary>Executes the internal.</summary>
+    /// <param name="element">The element.</param>
     protected override void Execute(IElement element)
     {
       var enumerate = this.Provider.GetSelectedElement<IEnumDeclaration>(true, true);
@@ -70,9 +73,9 @@ namespace AgentJohnson.Enums
         return;
       }
 
-      using (var cookie = EnsureWritable())
+      using (var cookie = this.EnsureWritable())
       {
-        if (cookie.EnsureWritableResult != global::JetBrains.Util.EnsureWritableResult.SUCCESS)
+        if (cookie.EnsureWritableResult != EnsureWritableResult.SUCCESS)
         {
           return;
         }
@@ -89,43 +92,16 @@ namespace AgentJohnson.Enums
       PsiManager.GetInstance(this.Provider.Solution).StartTransaction();
     }
 
-    /// <summary>
-    /// Gets the text.
-    /// </summary>
-    /// <value>
-    /// The context action text.
-    /// </value>
-    /// <returns>
-    /// The get text.
-    /// </returns>
+    /// <summary>Gets the text.</summary>
+    /// <value>The context action text.</value>
+    /// <returns>The get text.</returns>
     protected override string GetText()
     {
       return string.Format("Format 'enum' [Agent Johnson]");
     }
 
-    /// <summary>
-    /// Called to check if ContextAction is available.
-    /// ReadLock is taken
-    /// Will not be called if <c>PsiManager</c>, ProjectFile of Solution == <c>null</c>
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
-    /// <returns>
-    /// <c>true</c>, if the context action is available.
-    /// </returns>
-    public override bool IsAvailable(IUserDataHolder element)
-    {
-      var enumerate = this.Provider.GetSelectedElement<IEnumDeclaration>(true, true);
-      return enumerate != null;
-    }
-
-    /// <summary>
-    /// Sorts the enum.
-    /// </summary>
-    /// <param name="enumerate">
-    /// The enumerate.
-    /// </param>
+    /// <summary>Sorts the enum.</summary>
+    /// <param name="enumerate">The enumerate.</param>
     private void SortEnum(IEnumDeclaration enumerate)
     {
       if (enumerate == null)
@@ -226,9 +202,7 @@ namespace AgentJohnson.Enums
 
     #endregion
 
-    /// <summary>
-    /// The dual enum value.
-    /// </summary>
+    /// <summary>The dual enum value.</summary>
     private class DualEnumValue : IComparable<DualEnumValue>, IComparable
     {
       #region Constants and Fields
@@ -257,12 +231,8 @@ namespace AgentJohnson.Enums
 
       #region Constructors and Destructors
 
-      /// <summary>
-      /// Initializes a new instance of the <see cref="DualEnumValue"/> class.
-      /// </summary>
-      /// <param name="baseType">
-      /// The base type.
-      /// </param>
+      /// <summary>Initializes a new instance of the <see cref="DualEnumValue"/> class.</summary>
+      /// <param name="baseType">The base type.</param>
       public DualEnumValue(string baseType)
       {
         this.baseType = baseType;
@@ -353,7 +323,9 @@ namespace AgentJohnson.Enums
       {
         var result = new DualEnumValue(a.baseType)
         {
-          signedStyle = a.signedStyle, signed = a.signed, unsigned = a.unsigned
+          signedStyle = a.signedStyle, 
+          signed = a.signed, 
+          unsigned = a.unsigned
         };
 
         if (a.signedStyle)
@@ -404,9 +376,7 @@ namespace AgentJohnson.Enums
 
       #region Public Methods
 
-      /// <summary>
-      /// Sets the specified value.
-      /// </summary>
+      /// <summary>Sets the specified value.</summary>
       /// <param name="value">The value.</param>
       public void Set(string value)
       {
@@ -421,7 +391,7 @@ namespace AgentJohnson.Enums
 
             // hex number
             if (!value.StartsWith("0x") ||
-                !long.TryParse(value.Replace("0x", string.Empty), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out this.signed))
+              !long.TryParse(value.Replace("0x", string.Empty), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out this.signed))
             {
               // normal number
               if (!long.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out this.signed))
@@ -439,7 +409,7 @@ namespace AgentJohnson.Enums
           {
             // hex number
             if (!value.StartsWith("0x") ||
-                !ulong.TryParse(value.Replace("0x", string.Empty), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out this.unsigned))
+              !ulong.TryParse(value.Replace("0x", string.Empty), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out this.unsigned))
             {
               // normal number
               if (!ulong.TryParse(value, NumberStyles.Integer, CultureInfo.InvariantCulture, out this.unsigned))
@@ -453,12 +423,8 @@ namespace AgentJohnson.Enums
         }
       }
 
-      /// <summary>
-      /// Returns a <see cref="System.String"/> that represents this instance.
-      /// </summary>
-      /// <returns>
-      /// A <see cref="System.String"/> that represents this instance.
-      /// </returns>
+      /// <summary>Returns a <see cref="System.String"/> that represents this instance.</summary>
+      /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
       public override string ToString()
       {
         return this.signedStyle ? this.signed.ToString() : this.unsigned.ToString();
@@ -470,9 +436,7 @@ namespace AgentJohnson.Enums
 
       #region IComparable
 
-      /// <summary>
-      /// Compares to.
-      /// </summary>
+      /// <summary>Compares to.</summary>
       /// <param name="other">The other.</param>
       /// <returns>Returns the to.</returns>
       public int CompareTo(object other)
@@ -489,12 +453,9 @@ namespace AgentJohnson.Enums
 
       #region IComparable<DualEnumValue>
 
-      /// <summary>
-      /// Compares the current object with another object of the same type.
-      /// </summary>
+      /// <summary>Compares the current object with another object of the same type.</summary>
       /// <param name="other">An object to compare with this object.</param>
-      /// <returns>
-      /// A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has the following meanings:
+      /// <returns>A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has the following meanings:
       /// Value
       /// Meaning
       /// Less than zero
@@ -502,8 +463,7 @@ namespace AgentJohnson.Enums
       /// Zero
       /// This object is equal to <paramref name="other"/>.
       /// Greater than zero
-      /// This object is greater than <paramref name="other"/>.
-      /// </returns>
+      /// This object is greater than <paramref name="other"/>.</returns>
       public int CompareTo(DualEnumValue other)
       {
         if (this.signedStyle)

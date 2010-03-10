@@ -7,22 +7,20 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using JetBrains.DocumentModel;
-
 namespace AgentJohnson.ValueAnalysis
 {
+  using AgentJohnson.Psi.CodeStyle;
   using JetBrains.Application;
+  using JetBrains.DocumentModel;
   using JetBrains.ProjectModel;
   using JetBrains.ReSharper.Feature.Services.Bulbs;
   using JetBrains.ReSharper.Psi;
   using JetBrains.ReSharper.Psi.CSharp;
-  using JetBrains.TextControl;
   using JetBrains.ReSharper.Psi.Tree;
-  using AgentJohnson.Psi.CodeStyle;
+  using JetBrains.TextControl;
+  using JetBrains.Util;
 
-  /// <summary>
-  /// Defines the return bulb item class.
-  /// </summary>
+  /// <summary>Defines the return bulb item class.</summary>
   public class ReturnBulbItem : IBulbItem
   {
     #region Constants and Fields
@@ -36,12 +34,8 @@ namespace AgentJohnson.ValueAnalysis
 
     #region Constructors and Destructors
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ReturnBulbItem"/> class.
-    /// </summary>
-    /// <param name="warning">
-    /// The suggestion.
-    /// </param>
+    /// <summary>Initializes a new instance of the <see cref="ReturnBulbItem"/> class.</summary>
+    /// <param name="warning">The suggestion.</param>
     public ReturnBulbItem(ReturnWarning warning)
     {
       this.warning = warning;
@@ -49,7 +43,9 @@ namespace AgentJohnson.ValueAnalysis
 
     #endregion
 
-    #region Properties
+    #region Implemented Interfaces
+
+    #region IBulbItem
 
     /// <summary>
     /// Gets the text.
@@ -65,19 +61,15 @@ namespace AgentJohnson.ValueAnalysis
 
     #endregion
 
+    #endregion
+
     #region Implemented Interfaces
 
     #region IBulbItem
 
-    /// <summary>
-    /// Executes the specified solution.
-    /// </summary>
-    /// <param name="solution">
-    /// The solution.
-    /// </param>
-    /// <param name="textControl">
-    /// The text control.
-    /// </param>
+    /// <summary>Executes the specified solution.</summary>
+    /// <param name="solution">The solution.</param>
+    /// <param name="textControl">The text control.</param>
     public void Execute(ISolution solution, ITextControl textControl)
     {
       var psiManager = PsiManager.GetInstance(solution);
@@ -88,14 +80,14 @@ namespace AgentJohnson.ValueAnalysis
 
       using (var cookie = DocumentManager.GetInstance(solution).EnsureWritable(textControl.Document))
       {
-        if (cookie.EnsureWritableResult != JetBrains.Util.EnsureWritableResult.SUCCESS)
+        if (cookie.EnsureWritableResult != EnsureWritableResult.SUCCESS)
         {
           return;
         }
 
         using (CommandCookie.Create(string.Format("Context Action {0}", this.Text)))
         {
-          psiManager.DoTransaction(delegate { this.Execute(solution); });
+          psiManager.DoTransaction(() => this.Execute(solution));
         }
       }
     }
@@ -106,9 +98,7 @@ namespace AgentJohnson.ValueAnalysis
 
     #region Methods
 
-    /// <summary>
-    /// Executes this instance.
-    /// </summary>
+    /// <summary>Executes this instance.</summary>
     /// <param name="solution">The solution.</param>
     private void Execute(ISolution solution)
     {
@@ -138,11 +128,15 @@ namespace AgentJohnson.ValueAnalysis
       var factory = CSharpElementFactory.GetInstance(returnStatement.GetPsiModule());
 
       var statement = factory.CreateStatement(code);
+      if (statement == null)
+      {
+        return;
+      }
 
       var result = returnStatement.ReplaceBy(statement);
 
       var range = result.GetDocumentRange();
-      CodeFormatter codeFormatter = new CodeFormatter();
+      var codeFormatter = new CodeFormatter();
       codeFormatter.Format(solution, range);
     }
 

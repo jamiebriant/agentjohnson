@@ -3,16 +3,15 @@
 //   Copyright (C) 2009 Jakob Christensen
 // </copyright>
 // <summary>
-//   Defines the implement &lt;c&gt;ISerializable&lt;/c&gt; action handler class.
+//   Defines the implement <c>ISerializable</c> action handler class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using JetBrains.DocumentModel;
 
 namespace AgentJohnson.Refactorings
 {
   using JetBrains.ActionManagement;
   using JetBrains.Application;
+  using JetBrains.DocumentModel;
   using JetBrains.IDE;
   using JetBrains.ProjectModel;
   using JetBrains.ReSharper.Psi;
@@ -22,23 +21,15 @@ namespace AgentJohnson.Refactorings
   using JetBrains.ReSharper.Psi.Util;
   using JetBrains.Util;
 
-  /// <summary>
-  /// Defines the implement <c>ISerializable</c> action handler class.
-  /// </summary>
+  /// <summary>Defines the implement <c>ISerializable</c> action handler class.</summary>
   [ActionHandler("AgentJohnson.ImplementISerializable")]
   public class ImplementISerializableActionHandler : ActionHandlerBase
   {
     #region Methods
 
-    /// <summary>
-    /// Executes action. Called after Update, that set <c>ActionPresentation.Enabled</c> to true.
-    /// </summary>
-    /// <param name="solution">
-    /// The solution.
-    /// </param>
-    /// <param name="context">
-    /// The context.
-    /// </param>
+    /// <summary>Executes action. Called after Update, that set <c>ActionPresentation.Enabled</c> to true.</summary>
+    /// <param name="solution">The solution.</param>
+    /// <param name="context">The context.</param>
     protected override void Execute(ISolution solution, IDataContext context)
     {
       if (!context.CheckAllNotNull(DataConstants.SOLUTION))
@@ -78,15 +69,9 @@ namespace AgentJohnson.Refactorings
       }
     }
 
-    /// <summary>
-    /// Updates the specified context.
-    /// </summary>
-    /// <param name="context">
-    /// The context.
-    /// </param>
-    /// <returns>
-    /// <c>true</c>, if update is available.
-    /// </returns>
+    /// <summary>Updates the specified context.</summary>
+    /// <param name="context">The context.</param>
+    /// <returns><c>true</c>, if update is available.</returns>
     protected override bool Update(IDataContext context)
     {
       if (!context.CheckAllNotNull(DataConstants.SOLUTION))
@@ -121,18 +106,10 @@ namespace AgentJohnson.Refactorings
       return true;
     }
 
-    /// <summary>
-    /// Adds the attribute.
-    /// </summary>
-    /// <param name="solution">
-    /// The solution.
-    /// </param>
-    /// <param name="classDeclaration">
-    /// The class declaration.
-    /// </param>
-    /// <param name="factory">
-    /// The factory.
-    /// </param>
+    /// <summary>Adds the attribute.</summary>
+    /// <param name="solution">The solution.</param>
+    /// <param name="classDeclaration">The class declaration.</param>
+    /// <param name="factory">The factory.</param>
     private static void AddAttribute(ISolution solution, IClassDeclaration classDeclaration, CSharpElementFactory factory)
     {
       var typeName = new CLRTypeName("System.SerializableAttribute");
@@ -151,15 +128,9 @@ namespace AgentJohnson.Refactorings
       classDeclaration.AddAttributeAfter(attribute, null);
     }
 
-    /// <summary>
-    /// Adds the dispose object method.
-    /// </summary>
-    /// <param name="classDeclaration">
-    /// The class declaration.
-    /// </param>
-    /// <param name="factory">
-    /// The factory.
-    /// </param>
+    /// <summary>Adds the dispose object method.</summary>
+    /// <param name="classDeclaration">The class declaration.</param>
+    /// <param name="factory">The factory.</param>
     private static void AddConstructor(IClassDeclaration classDeclaration, CSharpElementFactory factory)
     {
       var cls = classDeclaration.DeclaredElement as IClass;
@@ -184,25 +155,17 @@ namespace AgentJohnson.Refactorings
       }
 
       AddMember(
-        classDeclaration,
-        factory,
+        classDeclaration, 
+        factory, 
         @"protected Constructor(SerializationInfo info, StreamingContext context) {" + code + @"
         }
       ");
     }
 
-    /// <summary>
-    /// Adds the constructor code.
-    /// </summary>
-    /// <param name="cls">
-    /// The class declaration.
-    /// </param>
-    /// <param name="isSuperClass">
-    /// if set to <c>true</c> [is super class].
-    /// </param>
-    /// <returns>
-    /// Returns the constructor code.
-    /// </returns>
+    /// <summary>Adds the constructor code.</summary>
+    /// <param name="cls">The class declaration.</param>
+    /// <param name="isSuperClass">if set to <c>true</c> [is super class].</param>
+    /// <returns>Returns the constructor code.</returns>
     private static string AddConstructorCode(IClass cls, bool isSuperClass)
     {
       var code = string.Empty;
@@ -270,15 +233,9 @@ namespace AgentJohnson.Refactorings
       return code;
     }
 
-    /// <summary>
-    /// Adds the dispose object method.
-    /// </summary>
-    /// <param name="classDeclaration">
-    /// The class declaration.
-    /// </param>
-    /// <param name="factory">
-    /// The factory.
-    /// </param>
+    /// <summary>Adds the dispose object method.</summary>
+    /// <param name="classDeclaration">The class declaration.</param>
+    /// <param name="factory">The factory.</param>
     private static void AddGetObjectDataMethod(IClassDeclaration classDeclaration, CSharpElementFactory factory)
     {
       var cls = classDeclaration.DeclaredElement as IClass;
@@ -303,26 +260,18 @@ namespace AgentJohnson.Refactorings
       }
 
       AddMember(
-        classDeclaration,
-        factory,
+        classDeclaration, 
+        factory, 
         @"
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context) {" + code + @"
         }
       ");
     }
 
-    /// <summary>
-    /// Adds the get object data method code.
-    /// </summary>
-    /// <param name="classDeclaration">
-    /// The class declaration.
-    /// </param>
-    /// <param name="isSuperClass">
-    /// if set to <c>true</c> [is super class].
-    /// </param>
-    /// <returns>
-    /// Returns the get object data method code.
-    /// </returns>
+    /// <summary>Adds the get object data method code.</summary>
+    /// <param name="classDeclaration">The class declaration.</param>
+    /// <param name="isSuperClass">if set to <c>true</c> [is super class].</param>
+    /// <returns>Returns the get object data method code.</returns>
     private static string AddGetObjectDataMethodCode(IClass classDeclaration, bool isSuperClass)
     {
       var code = string.Empty;
@@ -370,15 +319,9 @@ namespace AgentJohnson.Refactorings
       return code;
     }
 
-    /// <summary>
-    /// Adds the interface.
-    /// </summary>
-    /// <param name="solution">
-    /// The solution.
-    /// </param>
-    /// <param name="classDeclaration">
-    /// The class declaration.
-    /// </param>
+    /// <summary>Adds the interface.</summary>
+    /// <param name="solution">The solution.</param>
+    /// <param name="classDeclaration">The class declaration.</param>
     private static void AddInterface(ISolution solution, IClassDeclaration classDeclaration)
     {
       var scope = DeclarationsScopeFactory.SolutionScope(solution, true);
@@ -395,18 +338,10 @@ namespace AgentJohnson.Refactorings
       classDeclaration.AddSuperInterface(declaredType, false);
     }
 
-    /// <summary>
-    /// Adds the member.
-    /// </summary>
-    /// <param name="classDeclaration">
-    /// The class declaration.
-    /// </param>
-    /// <param name="factory">
-    /// The factory.
-    /// </param>
-    /// <param name="code">
-    /// The member code.
-    /// </param>
+    /// <summary>Adds the member.</summary>
+    /// <param name="classDeclaration">The class declaration.</param>
+    /// <param name="factory">The factory.</param>
+    /// <param name="code">The member code.</param>
     private static void AddMember(IClassDeclaration classDeclaration, CSharpElementFactory factory, string code)
     {
       var memberDeclaration = factory.CreateTypeMemberDeclaration(code) as IClassMemberDeclaration;
@@ -414,15 +349,9 @@ namespace AgentJohnson.Refactorings
       classDeclaration.AddClassMemberDeclaration(memberDeclaration);
     }
 
-    /// <summary>
-    /// Executes the specified class declaration.
-    /// </summary>
-    /// <param name="solution">
-    /// The solution.
-    /// </param>
-    /// <param name="classDeclaration">
-    /// The class declaration.
-    /// </param>
+    /// <summary>Executes the specified class declaration.</summary>
+    /// <param name="solution">The solution.</param>
+    /// <param name="classDeclaration">The class declaration.</param>
     private static void Execute(ISolution solution, IClassDeclaration classDeclaration)
     {
       var factory = CSharpElementFactory.GetInstance(classDeclaration.GetPsiModule());

@@ -11,20 +11,14 @@ namespace AgentJohnson.SmartGenerate.Generators
 {
   using JetBrains.ReSharper.Psi.CSharp.Tree;
 
-  /// <summary>
-  /// The after property assignment.
-  /// </summary>
+  /// <summary>The after property assignment.</summary>
   [SmartGenerate("Assign property", "Assigns another property on the object.", Priority = 0)]
   public class AfterPropertyAssignment : SmartGenerateHandlerBase
   {
     #region Methods
 
-    /// <summary>
-    /// Gets the items.
-    /// </summary>
-    /// <param name="smartGenerateParameters">
-    /// The get menu items parameters.
-    /// </param>
+    /// <summary>Gets the items.</summary>
+    /// <param name="smartGenerateParameters">The get menu items parameters.</param>
     protected override void GetItems(SmartGenerateParameters smartGenerateParameters)
     {
       var element = smartGenerateParameters.Element;

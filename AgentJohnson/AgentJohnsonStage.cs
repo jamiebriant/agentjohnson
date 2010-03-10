@@ -6,16 +6,15 @@
 //   Agent Johnson stage.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace AgentJohnson
 {
-    using JetBrains.Annotations;
-    using JetBrains.ProjectModel;
-    using JetBrains.ReSharper.Daemon;
-    using JetBrains.ReSharper.Daemon.CSharp.Stages;
+  using JetBrains.Annotations;
+  using JetBrains.ProjectModel;
+  using JetBrains.ReSharper.Daemon;
+  using JetBrains.ReSharper.Daemon.CSharp.Stages;
 
-  /// <summary>
-  /// Agent Johnson stage.
-  /// </summary>
+  /// <summary>Agent Johnson stage.</summary>
   [DaemonStage(StagesBefore = new[]
   {
     typeof(TypeMemberErrorStage)
@@ -27,18 +26,10 @@ namespace AgentJohnson
   {
     #region Public Methods
 
-    /// <summary>
-    /// Creates the process.
-    /// </summary>
-    /// <param name="process">
-    /// The process.
-    /// </param>
-    /// <param name="processKind">
-    /// Kind of the process.
-    /// </param>
-    /// <returns>
-    /// Returns the IDaemon stage process.
-    /// </returns>
+    /// <summary>Creates the process.</summary>
+    /// <param name="process">The process.</param>
+    /// <param name="processKind">Kind of the process.</param>
+    /// <returns>Returns the IDaemon stage process.</returns>
     [CanBeNull]
     public override IDaemonStageProcess CreateProcess([NotNull] IDaemonProcess process, [CanBeNull] DaemonProcessKind processKind)
     {
@@ -50,15 +41,9 @@ namespace AgentJohnson
       return new DaemonStageProcess(process);
     }
 
-    /// <summary>
-    /// Needs the error stripe.
-    /// </summary>
-    /// <param name="projectFile">
-    /// The project file.
-    /// </param>
-    /// <returns>
-    /// Returns the error stripe request.
-    /// </returns>
+    /// <summary>Needs the error stripe.</summary>
+    /// <param name="projectFile">The project file.</param>
+    /// <returns>Returns the error stripe request.</returns>
     public override ErrorStripeRequest NeedsErrorStripe([NotNull] IProjectFile projectFile)
     {
       if (!IsSupported(projectFile))

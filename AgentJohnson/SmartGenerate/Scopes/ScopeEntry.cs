@@ -13,9 +13,7 @@ namespace AgentJohnson.SmartGenerate.Scopes
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.Tree;
 
-  /// <summary>
-  /// Defines the scope entry class.
-  /// </summary>
+  /// <summary>Defines the scope entry class.</summary>
   public class ScopeEntry
   {
     #region Properties

@@ -1,41 +1,108 @@
-using System.Collections.Generic;
-using System.Text;
-using System.Xml;
-using JetBrains.Application;
-using JetBrains.ComponentModel;
-using JetBrains.Util;
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IntroduceStringConstantSettings.cs" company="Jakob Christensen">
+//   Copyright (C) 2009 Jakob Christensen
+// </copyright>
+// <summary>
+//   Represents the Favorite Files Settings.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
-namespace AgentJohnson.Strings {
-  /// <summary>
-  /// Represents the Favorite Files Settings.
-  /// </summary>
+namespace AgentJohnson.Strings
+{
+  using System.Collections.Generic;
+  using System.Text;
+  using System.Xml;
+  using JetBrains.Application;
+  using JetBrains.ComponentModel;
+  using JetBrains.Util;
+
+  /// <summary>Represents the Favorite Files Settings.</summary>
   [ShellComponentInterface(ProgramConfigurations.VS_ADDIN)]
   [ShellComponentImplementation]
-  public class IntroduceStringConstantSettings : IXmlExternalizableShellComponent {
-    #region Fields
+  public class IntroduceStringConstantSettings : IXmlExternalizableShellComponent
+  {
+    #region Constants and Fields
 
-    List<string> _classNames;
-    bool _generateXmlComment;
-    int _replaceSpacesMode;
+    /// <summary>The _class names.</summary>
+    private List<string> _classNames;
+
+    /// <summary>The _generate xml comment.</summary>
+    private bool _generateXmlComment;
+
+    /// <summary>The _replace spaces mode.</summary>
+    private int _replaceSpacesMode;
 
     #endregion
 
-    #region Public properties
+    #region Implemented Interfaces
+
+    #region IXmlExternalizableComponent
+
+    ///<summary>
+    ///
+    ///            Scope that defines which store the data goes into.
+    ///            Must not be 
+    ///<c>0</c>.
+    ///            
+    ///</summary>
+    ///
+    public XmlExternalizationScope Scope
+    {
+      get
+      {
+        return XmlExternalizationScope.WorkspaceSettings;
+      }
+    }
+
+    /// <summary>
+    /// Gets the name of the tag.
+    /// </summary>
+    /// <value>The name of the tag.</value>
+    string IXmlExternalizableComponent.TagName
+    {
+      get
+      {
+        return "AgentJohnson.IntroduceStringConstant";
+      }
+    }
+
+    #endregion
+
+    #endregion
+
+    #region Properties
+
+    /// <summary>
+    /// Gets the instance.
+    /// </summary>
+    /// <value>The instance.</value>
+    public static IntroduceStringConstantSettings Instance
+    {
+      get
+      {
+        return Shell.Instance.GetComponent<IntroduceStringConstantSettings>();
+      }
+    }
 
     /// <summary>
     /// Gets or sets the class names.
     /// </summary>
     /// <value>The class names.</value>
-    public List<string> ClassNames {
-      get {
-        if(_classNames == null) {
-          InitClasses();
+    public List<string> ClassNames
+    {
+      get
+      {
+        if (this._classNames == null)
+        {
+          this.InitClasses();
         }
 
-        return _classNames;
+        return this._classNames;
       }
-      set {
-        _classNames = value;
+
+      set
+      {
+        this._classNames = value;
       }
     }
 
@@ -44,21 +111,16 @@ namespace AgentJohnson.Strings {
     /// </summary>
     /// <value><c>true</c> if [generate XML comment]; otherwise, <c>false</c>.</value>
     [XmlExternalizable(true)]
-    public bool GenerateXmlComment {
-      get {
-        return _generateXmlComment;
+    public bool GenerateXmlComment
+    {
+      get
+      {
+        return this._generateXmlComment;
       }
-      set {
-        _generateXmlComment = value;
-      }
-    }
-    /// <summary>
-    /// Gets the instance.
-    /// </summary>
-    /// <value>The instance.</value>
-    public static IntroduceStringConstantSettings Instance {
-      get {
-        return Shell.Instance.GetComponent<IntroduceStringConstantSettings>();
+
+      set
+      {
+        this._generateXmlComment = value;
       }
     }
 
@@ -67,12 +129,16 @@ namespace AgentJohnson.Strings {
     /// </summary>
     /// <value>The replace spaces mode.</value>
     [XmlExternalizable(0)]
-    public int ReplaceSpacesMode {
-      get {
-        return _replaceSpacesMode;
+    public int ReplaceSpacesMode
+    {
+      get
+      {
+        return this._replaceSpacesMode;
       }
-      set {
-        _replaceSpacesMode = value;
+
+      set
+      {
+        this._replaceSpacesMode = value;
       }
     }
 
@@ -82,14 +148,18 @@ namespace AgentJohnson.Strings {
     /// <remarks>This is for serialization only.</remarks>
     /// <value>The class names.</value>
     [XmlExternalizable("")]
-    public string SerializableClassNames {
-      get {
-        StringBuilder result = new StringBuilder();
+    public string SerializableClassNames
+    {
+      get
+      {
+        var result = new StringBuilder();
 
-        bool first = true;
+        var first = true;
 
-        foreach(string className in ClassNames) {
-          if(!first) {
+        foreach (var className in this.ClassNames)
+        {
+          if (!first)
+          {
             result.Append("|");
           }
 
@@ -100,18 +170,23 @@ namespace AgentJohnson.Strings {
 
         return result.ToString();
       }
-      set {
-        _classNames = new List<string>();
 
-        if (string.IsNullOrEmpty(value)) {
+      set
+      {
+        this._classNames = new List<string>();
+
+        if (string.IsNullOrEmpty(value))
+        {
           return;
         }
 
-        string[] classes = value.Split('|');
+        var classes = value.Split('|');
 
-        foreach(string className in classes) {
-          if(!string.IsNullOrEmpty(className)) {
-            _classNames.Add(className);
+        foreach (var className in classes)
+        {
+          if (!string.IsNullOrEmpty(className))
+          {
+            this._classNames.Add(className);
           }
         }
       }
@@ -119,117 +194,47 @@ namespace AgentJohnson.Strings {
 
     #endregion
 
-    #region IShellComponent implementation
+    #region Public Methods
 
-    /// <summary>
-    /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-    /// </summary>
-    public void Dispose() {
-    }
-
-    /// <summary>
-    /// Inits this instance.
-    /// </summary>
-    public void Init() {
-    }
-
-    #endregion
-
-    #region IXmlExternalizableShellComponent implementation
-
-    #region Private methods
-
-    /// <summary>
-    /// This method must not fail with null or unexpected Xml!!!
-    /// </summary>
-    /// <param name="element"></param>
-    void IXmlExternalizable.ReadFromXml(XmlElement element) {
-      if(element == null) {
-        InitClasses();
-        return;
-      }
-
-      XmlExternalizationUtil.ReadFromXml(element, this);
-
-
-    }
-
-    /// <summary>
-    /// Writes to XML.
-    /// </summary>
-    /// <param name="element">The element.</param>
-    /// <returns></returns>
-    void IXmlExternalizable.WriteToXml(XmlElement element) {
-      XmlExternalizationUtil.WriteToXml(element, this);
-    }
-
-    #endregion
-
-    /// <summary>
-    /// Gets the name of the tag.
-    /// </summary>
-    /// <value>The name of the tag.</value>
-    string IXmlExternalizableComponent.TagName {
-      get {
-        return "AgentJohnson.IntroduceStringConstant";
-      }
-    }
-
-    ///<summary>
-    ///
-    ///            Scope that defines which store the data goes into.
-    ///            Must not be 
-    ///<c>0</c>.
-    ///            
-    ///</summary>
-    ///
-    public XmlExternalizationScope Scope {
-      get {
-        return XmlExternalizationScope.WorkspaceSettings;
-      }
-    }
-
-    #endregion
-
-    #region Public methods
-
-    /// <summary>
-    /// Reads the settings.
-    /// </summary>
+    /// <summary>Reads the settings.</summary>
     /// <param name="doc">The doc.</param>
-    public void ReadSettings(XmlDocument doc) {
-      XmlNode node = doc.SelectSingleNode("/settings/introducestringconstant");
-      if(node == null) {
+    public void ReadSettings(XmlDocument doc)
+    {
+      var node = doc.SelectSingleNode("/settings/introducestringconstant");
+      if (node == null)
+      {
         return;
       }
 
-      GenerateXmlComment = GetAttributeString(node, "generatexmlcomment") == "true";
-      ReplaceSpacesMode = int.Parse(GetAttributeString(node, "replacespacesmode"));
+      this.GenerateXmlComment = GetAttributeString(node, "generatexmlcomment") == "true";
+      this.ReplaceSpacesMode = int.Parse(GetAttributeString(node, "replacespacesmode"));
 
-      _classNames.Clear();
+      this._classNames.Clear();
 
-      XmlNodeList classes = node.SelectNodes("class");
-      if(classes == null) {
+      var classes = node.SelectNodes("class");
+      if (classes == null)
+      {
         return;
       }
 
-      foreach(XmlNode xmlNode in classes) {
-        _classNames.Add(xmlNode.InnerText);
+      foreach (XmlNode xmlNode in classes)
+      {
+        this._classNames.Add(xmlNode.InnerText);
       }
     }
 
-    /// <summary>
-    /// Writes the settings.
-    /// </summary>
+    /// <summary>Writes the settings.</summary>
     /// <param name="writer">The writer.</param>
-    public void WriteSettings(XmlTextWriter writer) {
+    public void WriteSettings(XmlTextWriter writer)
+    {
       writer.WriteStartElement("introducestringconstant");
 
-      writer.WriteAttributeString("generatexmlcomment", GenerateXmlComment ? "true" : "false");
+      writer.WriteAttributeString("generatexmlcomment", this.GenerateXmlComment ? "true" : "false");
 
-      writer.WriteAttributeString("replacespacesmode", ReplaceSpacesMode.ToString());
+      writer.WriteAttributeString("replacespacesmode", this.ReplaceSpacesMode.ToString());
 
-      foreach(string className in ClassNames) {
+      foreach (var className in this.ClassNames)
+      {
         writer.WriteElementString("class", className);
       }
 
@@ -238,25 +243,69 @@ namespace AgentJohnson.Strings {
 
     #endregion
 
-    #region Private methods
+    #region Implemented Interfaces
 
-    /// <summary>
-    /// Gets the attribute.
-    /// </summary>
+    #region IComponent
+
+    /// <summary>Inits this instance.</summary>
+    public void Init()
+    {
+    }
+
+    #endregion
+
+    #region IDisposable
+
+    /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+    public void Dispose()
+    {
+    }
+
+    #endregion
+
+    #region IXmlExternalizable
+
+    /// <summary>This method must not fail with null or unexpected Xml!!!</summary>
+    /// <param name="element"></param>
+    void IXmlExternalizable.ReadFromXml(XmlElement element)
+    {
+      if (element == null)
+      {
+        this.InitClasses();
+        return;
+      }
+
+      XmlExternalizationUtil.ReadFromXml(element, this);
+    }
+
+    /// <summary>Writes to XML.</summary>
+    /// <param name="element">The element.</param>
+    void IXmlExternalizable.WriteToXml(XmlElement element)
+    {
+      XmlExternalizationUtil.WriteToXml(element, this);
+    }
+
+    #endregion
+
+    #endregion
+
+    #region Methods
+
+    /// <summary>Gets the attribute.</summary>
     /// <param name="node">The node.</param>
     /// <param name="name">The name.</param>
     /// <returns>The attribute.</returns>
-    static string GetAttributeString(XmlNode node, string name) {
-      XmlAttribute attribute = node.Attributes[name];
+    private static string GetAttributeString(XmlNode node, string name)
+    {
+      var attribute = node.Attributes[name];
 
       return attribute == null ? string.Empty : (attribute.Value ?? string.Empty);
     }
 
-    /// <summary>
-    /// Inits the files.
-    /// </summary>
-    void InitClasses() {
-      _classNames = new List<string>();
+    /// <summary>Inits the files.</summary>
+    private void InitClasses()
+    {
+      this._classNames = new List<string>();
     }
 
     #endregion

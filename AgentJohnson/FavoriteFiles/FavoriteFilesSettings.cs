@@ -1,30 +1,79 @@
-using System.Collections.Generic;
-using System.Text;
-using System.Xml;
-using JetBrains.Application;
-using JetBrains.ComponentModel;
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="FavoriteFilesSettings.cs" company="Jakob Christensen">
+//   Copyright (C) 2009 Jakob Christensen
+// </copyright>
+// <summary>
+//   Represents the Favorite Files Settings.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
-namespace AgentJohnson.FavoriteFiles {
-  /// <summary>
-  /// Represents the Favorite Files Settings.
-  /// </summary>
+namespace AgentJohnson.FavoriteFiles
+{
+  using System.Collections.Generic;
+  using System.Text;
+  using System.Xml;
+  using JetBrains.Application;
+  using JetBrains.ComponentModel;
+  using JetBrains.Util;
+
+  /// <summary>Represents the Favorite Files Settings.</summary>
   [ShellComponentInterface(ProgramConfigurations.VS_ADDIN)]
   [ShellComponentImplementation]
-  public class FavoriteFilesSettings : IXmlExternalizableShellComponent {
-    #region Fields
+  public class FavoriteFilesSettings : IXmlExternalizableShellComponent
+  {
+    #region Constants and Fields
 
-    List<FavoriteFilePath> favoriteFiles;
+    /// <summary>The favorite files.</summary>
+    private List<FavoriteFilePath> favoriteFiles;
 
     #endregion
 
-    #region Public properties
+    #region Implemented Interfaces
+
+    #region IXmlExternalizableComponent
+
+    ///<summary>
+    ///
+    ///            Scope that defines which store the data goes into.
+    ///            Must not be 
+    ///<c>0</c>.
+    ///            
+    ///</summary>
+    ///
+    public XmlExternalizationScope Scope
+    {
+      get
+      {
+        return XmlExternalizationScope.UserSettings;
+      }
+    }
+
+    /// <summary>
+    /// Gets the name of the tag.
+    /// </summary>
+    /// <value>The name of the tag.</value>
+    public string TagName
+    {
+      get
+      {
+        return "ReSharper.PowerToys.FavoriteFiles";
+      }
+    }
+
+    #endregion
+
+    #endregion
+
+    #region Properties
 
     /// <summary>
     /// Gets the instance.
     /// </summary>
     /// <value>The instance.</value>
-    public static FavoriteFilesSettings Instance {
-      get {
+    public static FavoriteFilesSettings Instance
+    {
+      get
+      {
         return Shell.Instance.GetComponent<FavoriteFilesSettings>();
       }
     }
@@ -33,32 +82,42 @@ namespace AgentJohnson.FavoriteFiles {
     /// Gets or sets the favorite files.
     /// </summary>
     /// <value>The favorite files.</value>
-    public List<FavoriteFilePath> FavoriteFiles {
-      get {
-        if(this.favoriteFiles == null){
-          InitFavoriteFiles();
+    public List<FavoriteFilePath> FavoriteFiles
+    {
+      get
+      {
+        if (this.favoriteFiles == null)
+        {
+          this.InitFavoriteFiles();
         }
 
         return this.favoriteFiles;
       }
-      set {
+
+      set
+      {
         this.favoriteFiles = value;
       }
     }
+
     /// <summary>
     /// Gets or sets the files in a serializable format.
     /// </summary>                             
     /// <remarks>This is for serialization only.</remarks>
     /// <value>The files.</value>
-    [global::JetBrains.Util.XmlExternalizable(true)]
-    public string SerializableFavoriteFiles {
-      get {
-        StringBuilder result = new StringBuilder();
+    [XmlExternalizable(true)]
+    public string SerializableFavoriteFiles
+    {
+      get
+      {
+        var result = new StringBuilder();
 
-        bool first = true;
+        var first = true;
 
-        foreach(FavoriteFilePath path in FavoriteFiles){
-          if(!first){
+        foreach (var path in this.FavoriteFiles)
+        {
+          if (!first)
+          {
             result.Append("|");
           }
 
@@ -69,21 +128,26 @@ namespace AgentJohnson.FavoriteFiles {
 
         return result.ToString();
       }
-      set {
-        if (value == null) {
+
+      set
+      {
+        if (value == null)
+        {
           return;
         }
 
         this.favoriteFiles = new List<FavoriteFilePath>();
 
-        string[] files = value.Split('|');
+        var files = value.Split('|');
 
-        foreach(string favoriteFilePath in files){
-          if(string.IsNullOrEmpty(favoriteFilePath)){
+        foreach (var favoriteFilePath in files)
+        {
+          if (string.IsNullOrEmpty(favoriteFilePath))
+          {
             continue;
           }
 
-          FavoriteFilePath path = new FavoriteFilePath(favoriteFilePath);
+          var path = new FavoriteFilePath(favoriteFilePath);
 
           this.favoriteFiles.Add(path);
         }
@@ -92,78 +156,57 @@ namespace AgentJohnson.FavoriteFiles {
 
     #endregion
 
-    #region IShellComponent implementation
+    #region Implemented Interfaces
 
-    /// <summary>
-    /// Inits this instance.
-    /// </summary>
-    public void Init() {
-    }
+    #region IComponent
 
-    /// <summary>
-    /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-    /// </summary>
-    public void Dispose() {
+    /// <summary>Inits this instance.</summary>
+    public void Init()
+    {
     }
 
     #endregion
 
-    #region IXmlExternalizableShellComponent implementation
+    #region IDisposable
 
-    /// <summary>
-    /// Gets the name of the tag.
-    /// </summary>
-    /// <value>The name of the tag.</value>
-    public string TagName {
-      get {
-        return "ReSharper.PowerToys.FavoriteFiles";
-      }
+    /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+    public void Dispose()
+    {
     }
 
-    ///<summary>
-    ///
-    ///            Scope that defines which store the data goes into.
-    ///            Must not be 
-    ///<c>0</c>.
-    ///            
-    ///</summary>
-    ///
-    public XmlExternalizationScope Scope {
-      get {
-        return XmlExternalizationScope.UserSettings;
-      }
-    }
+    #endregion
 
-    /// <summary>
-    /// This method must not fail with null or unexpected Xml!!!
-    /// </summary>
+    #region IXmlExternalizable
+
+    /// <summary>This method must not fail with null or unexpected Xml!!!</summary>
     /// <param name="element"></param>
-    public void ReadFromXml(XmlElement element) {
-      if (element == null){
-        InitFavoriteFiles();
+    public void ReadFromXml(XmlElement element)
+    {
+      if (element == null)
+      {
+        this.InitFavoriteFiles();
         return;
       }
 
-      global::JetBrains.Util.XmlExternalizationUtil.ReadFromXml(element, this);
+      XmlExternalizationUtil.ReadFromXml(element, this);
     }
 
-    /// <summary>
-    /// Writes to XML.
-    /// </summary>
+    /// <summary>Writes to XML.</summary>
     /// <param name="element">The element.</param>
-    /// <returns></returns>
-    public void WriteToXml(XmlElement element) {
-      global::JetBrains.Util.XmlExternalizationUtil.WriteToXml(element, this);
+    public void WriteToXml(XmlElement element)
+    {
+      XmlExternalizationUtil.WriteToXml(element, this);
     }
 
     #endregion
 
-    #region Private methods
+    #endregion
 
-    /// <summary>
-    /// Inits the files.
-    /// </summary>
-    void InitFavoriteFiles() {
+    #region Methods
+
+    /// <summary>Inits the files.</summary>
+    private void InitFavoriteFiles()
+    {
       this.favoriteFiles = new List<FavoriteFilePath>();
     }
 

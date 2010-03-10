@@ -10,12 +10,10 @@
 namespace AgentJohnson.SmartGenerate.LiveTemplates
 {
   using System.Collections.Generic;
-  using JetBrains.ReSharper.Psi;
   using JetBrains.ReSharper.Psi.Tree;
+  using JetBrains.Util;
 
-  /// <summary>
-  /// The string expression.
-  /// </summary>
+  /// <summary>The string expression.</summary>
   [LiveTemplate("Surround expression", "Surrounds the expression.", Priority = -20)]
   public class StringExpression : ILiveTemplate
   {
@@ -23,15 +21,9 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
 
     #region ILiveTemplate
 
-    /// <summary>
-    /// Gets the name of the template.
-    /// </summary>
-    /// <param name="parameters">
-    /// The parameters.
-    /// </param>
-    /// <returns>
-    /// The items.
-    /// </returns>
+    /// <summary>Gets the name of the template.</summary>
+    /// <param name="parameters">The parameters.</param>
+    /// <returns>The items.</returns>
     IEnumerable<LiveTemplateItem> ILiveTemplate.GetItems(SmartGenerateParameters parameters)
     {
       var element = parameters.Element;
@@ -50,15 +42,15 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
         var typeName = type.GetPresentableName(element.Language);
 
         var treeTextRange = expression.GetTreeTextRange();
-        var textRange = new global::JetBrains.Util.TextRange(treeTextRange.StartOffset.Offset, treeTextRange.EndOffset.Offset);
+        var textRange = new TextRange(treeTextRange.StartOffset.Offset, treeTextRange.EndOffset.Offset);
 
         if (typeName == "string" && !hasString)
         {
           result.Add(new LiveTemplateItem
           {
-            MenuText = "Surround string expression",
-            Description = "Surround string expression",
-            Shortcut = "Surround string expression",
+            MenuText = "Surround string expression", 
+            Description = "Surround string expression", 
+            Shortcut = "Surround string expression", 
             Range = textRange
           });
 
@@ -69,9 +61,9 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
         {
           result.Add(new LiveTemplateItem
           {
-            MenuText = "Surround integer expression",
-            Description = "Surround integer expression",
-            Shortcut = "Surround integer expression",
+            MenuText = "Surround integer expression", 
+            Description = "Surround integer expression", 
+            Shortcut = "Surround integer expression", 
             Range = textRange
           });
 
@@ -82,9 +74,9 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
         {
           result.Add(new LiveTemplateItem
           {
-            MenuText = "Surround boolean expression",
-            Description = "Surround boolean expression",
-            Shortcut = "Surround boolean expression",
+            MenuText = "Surround boolean expression", 
+            Description = "Surround boolean expression", 
+            Shortcut = "Surround boolean expression", 
             Range = textRange
           });
 

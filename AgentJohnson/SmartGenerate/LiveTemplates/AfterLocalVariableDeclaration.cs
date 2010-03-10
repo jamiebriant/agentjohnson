@@ -13,24 +13,16 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
   using JetBrains.ReSharper.Psi;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
 
-  /// <summary>
-  /// The after local variable declaration.
-  /// </summary>
+  /// <summary>The after local variable declaration.</summary>
   public class AfterLocalVariableDeclaration : ILiveTemplate
   {
     #region Implemented Interfaces
 
     #region ILiveTemplate
 
-    /// <summary>
-    /// Gets the name of the template.
-    /// </summary>
-    /// <param name="parameters">
-    /// The parameters.
-    /// </param>
-    /// <returns>
-    /// The items.
-    /// </returns>
+    /// <summary>Gets the name of the template.</summary>
+    /// <param name="parameters">The parameters.</param>
+    /// <returns>The items.</returns>
     public IEnumerable<LiveTemplateItem> GetItems(SmartGenerateParameters parameters)
     {
       var element = parameters.Element;
@@ -61,8 +53,8 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
 
       var liveTemplateItem = new LiveTemplateItem
       {
-        MenuText = string.Format("After local variable declaration of type '{0}'", presentableName),
-        Description = string.Format("After local variable of type '{0}'", presentableName),
+        MenuText = string.Format("After local variable declaration of type '{0}'", presentableName), 
+        Description = string.Format("After local variable of type '{0}'", presentableName), 
         Shortcut = string.Format("After local variable of type {0}", longPresentableName)
       };
 

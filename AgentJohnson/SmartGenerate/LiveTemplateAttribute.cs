@@ -11,9 +11,7 @@ namespace AgentJohnson.SmartGenerate
 {
   using System;
 
-  /// <summary>
-  /// The live template attribute.
-  /// </summary>
+  /// <summary>The live template attribute.</summary>
   [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
   public sealed class LiveTemplateAttribute : Attribute
   {
@@ -38,15 +36,9 @@ namespace AgentJohnson.SmartGenerate
 
     #region Constructors and Destructors
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="LiveTemplateAttribute"/> class.
-    /// </summary>
-    /// <param name="name">
-    /// The name.
-    /// </param>
-    /// <param name="description">
-    /// The description.
-    /// </param>
+    /// <summary>Initializes a new instance of the <see cref="LiveTemplateAttribute"/> class.</summary>
+    /// <param name="name">The name.</param>
+    /// <param name="description">The description.</param>
     public LiveTemplateAttribute(string name, string description)
     {
       this._description = description;

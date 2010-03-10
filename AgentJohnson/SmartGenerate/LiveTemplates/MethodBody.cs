@@ -12,9 +12,7 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
   using System.Collections.Generic;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
 
-  /// <summary>
-  /// The method body.
-  /// </summary>
+  /// <summary>The method body.</summary>
   [LiveTemplate("Body in method that returns a type", "Generates a body in method that returns a type")]
   public class MethodBody : ILiveTemplate
   {
@@ -22,15 +20,9 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
 
     #region ILiveTemplate
 
-    /// <summary>
-    /// Gets the items.
-    /// </summary>
-    /// <param name="parameters">
-    /// The parameters.
-    /// </param>
-    /// <returns>
-    /// The items.
-    /// </returns>
+    /// <summary>Gets the items.</summary>
+    /// <param name="parameters">The parameters.</param>
+    /// <returns>The items.</returns>
     public IEnumerable<LiveTemplateItem> GetItems(SmartGenerateParameters parameters)
     {
       var element = parameters.Element;
@@ -68,8 +60,8 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
 
       var liveTemplateItem = new LiveTemplateItem
       {
-        MenuText = string.Format("Body in method that returns '{0}'", returnTypeName),
-        Description = string.Format("Body in method that returns '{0}'", returnTypeName),
+        MenuText = string.Format("Body in method that returns '{0}'", returnTypeName), 
+        Description = string.Format("Body in method that returns '{0}'", returnTypeName), 
         Shortcut = string.Format("Body in method that returns '{0}'", returnTypeName)
       };
 

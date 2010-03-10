@@ -14,10 +14,9 @@ namespace AgentJohnson.ValueAnalysis
   using System.Xml;
   using JetBrains.Application;
   using JetBrains.ComponentModel;
+  using JetBrains.Util;
 
-  /// <summary>
-  /// The value analysis settings.
-  /// </summary>
+  /// <summary>The value analysis settings.</summary>
   [ShellComponentInterface(ProgramConfigurations.VS_ADDIN)]
   [ShellComponentImplementation]
   public class ValueAnalysisSettings : IXmlExternalizableShellComponent
@@ -27,17 +26,50 @@ namespace AgentJohnson.ValueAnalysis
     /// <summary>
     /// The _allow null attribute.
     /// </summary>
-    private string _allowNullAttribute;
-
-    /// <summary>
-    /// The _rules.
-    /// </summary>
-    private List<Rule> _rules = new List<Rule>();
+    private string allowNullAttribute;
 
     /// <summary>
     /// The execute ghost doc.
     /// </summary>
     private bool executeGhostDoc;
+
+    /// <summary>
+    /// The _rules.
+    /// </summary>
+    private List<Rule> rules = new List<Rule>();
+
+    #endregion
+
+    #region Implemented Interfaces
+
+    #region IXmlExternalizableComponent
+
+    /// <summary>
+    /// Gets the scope that defines which store the data goes into.
+    /// Must not be <c>0</c>.
+    /// </summary>
+    /// <value>The scope.</value>
+    public XmlExternalizationScope Scope
+    {
+      get
+      {
+        return XmlExternalizationScope.UserSettings;
+      }
+    }
+
+    /// <summary>
+    /// Gets the name of the tag.
+    /// </summary>
+    /// <value>The name of the tag.</value>
+    public string TagName
+    {
+      get
+      {
+        return "AgentJohnson";
+      }
+    }
+
+    #endregion
 
     #endregion
 
@@ -59,17 +91,17 @@ namespace AgentJohnson.ValueAnalysis
     /// Gets or sets the allow null attribute.
     /// </summary>
     /// <value>The allow null attribute.</value>
-    [global::JetBrains.Util.XmlExternalizable("")]
+    [XmlExternalizable("")]
     public string AllowNullAttribute
     {
       get
       {
-        return this._allowNullAttribute ?? string.Empty;
+        return this.allowNullAttribute ?? string.Empty;
       }
 
       set
       {
-        this._allowNullAttribute = value;
+        this.allowNullAttribute = value;
       }
     }
 
@@ -77,7 +109,7 @@ namespace AgentJohnson.ValueAnalysis
     /// Gets or sets a value indicating whether GhostDoc should be executed.
     /// </summary>
     /// <value><c>true</c> if GhostDoc should be executed; otherwise, <c>false</c>.</value>
-    [global::JetBrains.Util.XmlExternalizable(false)]
+    [XmlExternalizable(false)]
     public bool ExecuteGhostDoc
     {
       get
@@ -92,33 +124,14 @@ namespace AgentJohnson.ValueAnalysis
     }
 
     /// <summary>
-    /// Gets or sets the rules.
+    /// Gets the rules.
     /// </summary>
     /// <value>The rules.</value>
     public List<Rule> Rules
     {
       get
       {
-        return this._rules;
-      }
-
-      set
-      {
-        this._rules = value;
-      }
-    }
-
-    /// <summary>
-    /// Scope that defines which store the data goes into.
-    /// Must not be
-    /// <c>0</c>.
-    /// </summary>
-    /// <value></value>
-    public XmlExternalizationScope Scope
-    {
-      get
-      {
-        return XmlExternalizationScope.UserSettings;
+        return this.rules;
       }
     }
 
@@ -127,7 +140,7 @@ namespace AgentJohnson.ValueAnalysis
     /// </summary>
     /// <remarks>This is for serialization only.</remarks>
     /// <value>The type assertions.</value>
-    [global::JetBrains.Util.XmlExternalizable("")]
+    [XmlExternalizable("")]
     public string SerializableTypeConfigurations
     {
       get
@@ -143,7 +156,7 @@ namespace AgentJohnson.ValueAnalysis
 
       set
       {
-        this._rules = new List<Rule>();
+        this.rules = new List<Rule>();
 
         if (string.IsNullOrEmpty(value))
         {
@@ -164,31 +177,15 @@ namespace AgentJohnson.ValueAnalysis
       }
     }
 
-    /// <summary>
-    /// Gets the name of the tag.
-    /// </summary>
-    /// <value>The name of the tag.</value>
-    public string TagName
-    {
-      get
-      {
-        return "AgentJohnson";
-      }
-    }
-
     #endregion
 
     #region Public Methods
 
-    /// <summary>
-    /// Reads the settings.
-    /// </summary>
-    /// <param name="doc">
-    /// The document.
-    /// </param>
+    /// <summary>Reads the settings.</summary>
+    /// <param name="doc">The document.</param>
     public void ReadSettings(XmlDocument doc)
     {
-      this._rules.Clear();
+      this.rules.Clear();
       this.AllowNullAttribute = string.Empty;
 
       var nodes = doc.SelectNodes("/settings/valueanalysis/types/type");
@@ -208,12 +205,8 @@ namespace AgentJohnson.ValueAnalysis
       }
     }
 
-    /// <summary>
-    /// Writes the specified writer.
-    /// </summary>
-    /// <param name="writer">
-    /// The writer.
-    /// </param>
+    /// <summary>Writes the specified writer.</summary>
+    /// <param name="writer">The writer.</param>
     public void WriteSettings(XmlTextWriter writer)
     {
       writer.WriteStartElement("valueanalysis");
@@ -232,9 +225,7 @@ namespace AgentJohnson.ValueAnalysis
 
     #region IComponent
 
-    /// <summary>
-    /// Initializes this instance.
-    /// </summary>
+    /// <summary>Initializes this instance.</summary>
     public void Init()
     {
     }
@@ -243,9 +234,7 @@ namespace AgentJohnson.ValueAnalysis
 
     #region IDisposable
 
-    /// <summary>
-    /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-    /// </summary>
+    /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
     public void Dispose()
     {
     }
@@ -254,11 +243,8 @@ namespace AgentJohnson.ValueAnalysis
 
     #region IXmlExternalizable
 
-    /// <summary>
-    /// This method must not fail with null or unexpected Xml!!!
-    /// </summary>
-    /// <param name="element">
-    /// </param>
+    /// <summary>This method must not fail with null or unexpected Xml!!!</summary>
+    /// <param name="element">The element.</param>
     public void ReadFromXml(XmlElement element)
     {
       if (element == null)
@@ -266,18 +252,14 @@ namespace AgentJohnson.ValueAnalysis
         return;
       }
 
-      global::JetBrains.Util.XmlExternalizationUtil.ReadFromXml(element, this);
+      XmlExternalizationUtil.ReadFromXml(element, this);
     }
 
-    /// <summary>
-    /// Writes to XML.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
+    /// <summary>Writes to XML.</summary>
+    /// <param name="element">The element.</param>
     public void WriteToXml(XmlElement element)
     {
-      global::JetBrains.Util.XmlExternalizationUtil.WriteToXml(element, this);
+      XmlExternalizationUtil.WriteToXml(element, this);
     }
 
     #endregion
@@ -286,18 +268,10 @@ namespace AgentJohnson.ValueAnalysis
 
     #region Methods
 
-    /// <summary>
-    /// Gets the attribute.
-    /// </summary>
-    /// <param name="node">
-    /// The node.
-    /// </param>
-    /// <param name="name">
-    /// The name.
-    /// </param>
-    /// <returns>
-    /// The attribute.
-    /// </returns>
+    /// <summary>Gets the attribute.</summary>
+    /// <param name="node">The node.</param>
+    /// <param name="name">The name.</param>
+    /// <returns>The attribute.</returns>
     private static string GetAttributeString(XmlNode node, string name)
     {
       var attribute = node.Attributes[name];
@@ -305,18 +279,10 @@ namespace AgentJohnson.ValueAnalysis
       return attribute == null ? string.Empty : (attribute.Value ?? string.Empty);
     }
 
-    /// <summary>
-    /// Gets the element.
-    /// </summary>
-    /// <param name="node">
-    /// The node.
-    /// </param>
-    /// <param name="name">
-    /// The name.
-    /// </param>
-    /// <returns>
-    /// The element.
-    /// </returns>
+    /// <summary>Gets the element.</summary>
+    /// <param name="node">The node.</param>
+    /// <param name="name">The name.</param>
+    /// <returns>The element.</returns>
     private static string GetElementString(XmlNode node, string name)
     {
       var element = node.SelectSingleNode(name);
@@ -324,19 +290,20 @@ namespace AgentJohnson.ValueAnalysis
       return element == null ? string.Empty : element.InnerText;
     }
 
-    /// <summary>
-    /// Reads the specified nodes.
-    /// </summary>
-    /// <param name="nodes">
-    /// The nodes.
-    /// </param>
+    /// <summary>Reads the specified nodes.</summary>
+    /// <param name="nodes">The nodes.</param>
     private void Read(XmlNodeList nodes)
     {
       foreach (XmlNode type in nodes)
       {
         var rule = new Rule
         {
-          TypeName = GetAttributeString(type, "type"), NotNull = GetAttributeString(type, "notnull") == "true", CanBeNull = GetAttributeString(type, "canbenull") == "true", PublicParameterAssertion = GetElementString(type, "publicparameterassertion"), NonPublicParameterAssertion = GetElementString(type, "nonpublicparameterassertion"), ReturnAssertion = GetElementString(type, "returnassertion")
+          TypeName = GetAttributeString(type, "type"), 
+          NotNull = GetAttributeString(type, "notnull") == "true", 
+          CanBeNull = GetAttributeString(type, "canbenull") == "true", 
+          PublicParameterAssertion = GetElementString(type, "publicparameterassertion"), 
+          NonPublicParameterAssertion = GetElementString(type, "nonpublicparameterassertion"), 
+          ReturnAssertion = GetElementString(type, "returnassertion")
         };
 
         var valueAssertions = type.SelectNodes("valueassertions/valueassertion");
@@ -348,16 +315,12 @@ namespace AgentJohnson.ValueAnalysis
           }
         }
 
-        this._rules.Add(rule);
+        this.rules.Add(rule);
       }
     }
 
-    /// <summary>
-    /// Writes the settings.
-    /// </summary>
-    /// <param name="writer">
-    /// The writer.
-    /// </param>
+    /// <summary>Writes the settings.</summary>
+    /// <param name="writer">The writer.</param>
     private void Write(XmlTextWriter writer)
     {
       writer.WriteStartElement("types");

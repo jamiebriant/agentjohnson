@@ -10,10 +10,10 @@
 namespace AgentJohnson.ValueAnalysis
 {
   using System.Collections.Generic;
+  using AgentJohnson.Psi.CodeStyle;
   using JetBrains.Application;
   using JetBrains.CommonControls;
   using JetBrains.ReSharper.Feature.Services.Bulbs;
-  using JetBrains.ReSharper.Intentions;
   using JetBrains.ReSharper.Intentions.CSharp.DataProviders;
   using JetBrains.ReSharper.Psi;
   using JetBrains.ReSharper.Psi.CSharp;
@@ -22,93 +22,39 @@ namespace AgentJohnson.ValueAnalysis
   using JetBrains.ReSharper.Psi.Util;
   using JetBrains.UI.PopupMenu;
   using JetBrains.Util;
-  using Psi.CodeStyle;
 
-  /// <summary>
-  /// Represents the Context Action.
-  /// </summary>
+  /// <summary>Represents the Context Action.</summary>
   [ContextAction(Description = "Adds an assertion statement after the current statement.", Name = "Assert assignment", Priority = 0, Group = "C#")]
   public class AssertAssignmentContextAction : ContextActionBase
   {
-    #region Constants and Fields
-
-    /// <summary>
-    /// The name.
-    /// </summary>
-    private string name;
-
-    #endregion
-
     #region Constructors and Destructors
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="AssertAssignmentContextAction"/> class.
-    /// </summary>
-    /// <param name="provider">
-    /// The provider.
-    /// </param>
+    /// <summary>Initializes a new instance of the <see cref="AssertAssignmentContextAction"/> class.</summary>
+    /// <param name="provider">The provider.</param>
     public AssertAssignmentContextAction(ICSharpContextActionDataProvider provider) : base(provider)
     {
     }
 
     #endregion
 
-    #region Methods
+    #region Properties
 
     /// <summary>
-    /// Executes the internal.
+    /// Gets or sets the name.
     /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
-    protected override void Execute(IElement element)
-    {
-      if (!this.IsAvailable(element))
-      {
-        return;
-      }
+    /// <value>The name.</value>
+    private string Name { get; set; }
 
-      var assignmentExpression = this.Provider.GetSelectedElement<IAssignmentExpression>(true, true);
-      if (assignmentExpression != null)
-      {
-        InsertAssertionCode(assignmentExpression);
-        return;
-      }
+    #endregion
 
-      var localVariableDeclaration = this.Provider.GetSelectedElement<ILocalVariableDeclaration>(true, true);
-      if (localVariableDeclaration != null)
-      {
-        InsertAssertionCode(localVariableDeclaration);
-        return;
-      }
-    }
+    #region Public Methods
 
-    /// <summary>
-    /// Gets the text.
-    /// </summary>
-    /// <returns>
-    /// The context action text.
-    /// </returns>
-    /// <value>
-    /// The context action text.
-    /// </value>
-    protected override string GetText()
-    {
-      return string.Format("Assert assignment to '{0}' [Agent Johnson]", this.name);
-    }
-
-    /// <summary>
-    /// Called to check if ContextAction is available.
+    /// <summary>Called to check if ContextAction is available.
     /// ReadLock is taken
-    /// Will not be called if <c>PsiManager</c>, ProjectFile of Solution == null
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
-    /// <returns>
-    /// <c>true</c> if this instance is available; otherwise, <c>false</c>.
-    /// </returns>
-    public override bool IsAvailable(IUserDataHolder element)
+    /// Will not be called if <c>PsiManager</c>, ProjectFile of Solution == null</summary>
+    /// <param name="element">The element.</param>
+    /// <returns><c>true</c> if this instance is available; otherwise, <c>false</c>.</returns>
+    public override bool IsAvailable(IElement element)
     {
       var localVariableDeclaration = this.Provider.GetSelectedElement<ILocalVariableDeclaration>(true, true);
       var assignmentExpression = this.Provider.GetSelectedElement<IAssignmentExpression>(true, true);
@@ -151,7 +97,7 @@ namespace AgentJohnson.ValueAnalysis
           return false;
         }
 
-        this.name = reference.GetName();
+        this.Name = reference.GetName();
 
         range = new TextRange(destination.GetTreeStartOffset().Offset, source.GetTreeStartOffset().Offset);
       }
@@ -184,7 +130,7 @@ namespace AgentJohnson.ValueAnalysis
           return false;
         }
 
-        this.name = localVariable.ShortName;
+        this.Name = localVariable.ShortName;
 
         range = new TextRange(identifier.GetTreeStartOffset().Offset, initial.GetTreeStartOffset().Offset);
       }
@@ -213,15 +159,72 @@ namespace AgentJohnson.ValueAnalysis
       return rule.ValueAssertions.Count > 0;
     }
 
-    /// <summary>
-    /// Inserts the assert.
-    /// </summary>
-    /// <param name="assertion">
-    /// The assertion.
-    /// </param>
-    /// <param name="element">
-    /// The element.
-    /// </param>
+    #endregion
+
+    #region Methods
+
+    /// <summary>Executes the internal.</summary>
+    /// <param name="element">The element.</param>
+    protected override void Execute(IElement element)
+    {
+      if (!this.IsAvailable(element))
+      {
+        return;
+      }
+
+      var assignmentExpression = this.Provider.GetSelectedElement<IAssignmentExpression>(true, true);
+      if (assignmentExpression != null)
+      {
+        this.InsertAssertionCode(assignmentExpression);
+        return;
+      }
+
+      var localVariableDeclaration = this.Provider.GetSelectedElement<ILocalVariableDeclaration>(true, true);
+      if (localVariableDeclaration != null)
+      {
+        this.InsertAssertionCode(localVariableDeclaration);
+      }
+    }
+
+    /// <summary>Gets the text.</summary>
+    /// <returns>The context action text.</returns>
+    /// <value>The context action text.</value>
+    protected override string GetText()
+    {
+      return string.Format("Assert assignment to '{0}' [Agent Johnson]", this.Name);
+    }
+
+    /// <summary>Menu_s the item clicked.</summary>
+    /// <param name="assertion">The assertion.</param>
+    /// <param name="element">The element.</param>
+    private void InsertAssertion(string assertion, IElement element)
+    {
+      var psiManager = PsiManager.GetInstance(this.Solution);
+      if (psiManager == null)
+      {
+        return;
+      }
+
+      using (ReadLockCookie.Create())
+      {
+        using (var cookie = this.EnsureWritable())
+        {
+          if (cookie.EnsureWritableResult != EnsureWritableResult.SUCCESS)
+          {
+            return;
+          }
+
+          using (CommandCookie.Create(string.Format("Context Action {0}", this.GetText())))
+          {
+            psiManager.DoTransaction(() => this.InsertAssertionCode(assertion, element));
+          }
+        }
+      }
+    }
+
+    /// <summary>Inserts the assert.</summary>
+    /// <param name="assertion">The assertion.</param>
+    /// <param name="element">The element.</param>
     private void InsertAssertionCode(string assertion, IElement element)
     {
       IStatement anchor = null;
@@ -293,6 +296,10 @@ namespace AgentJohnson.ValueAnalysis
       var code = string.Format(assertion, name);
 
       var statement = factory.CreateStatement(code);
+      if (statement == null)
+      {
+        return;
+      }
 
       var result = body.AddStatementAfter(statement, anchor);
 
@@ -301,48 +308,8 @@ namespace AgentJohnson.ValueAnalysis
       codeFormatter.Format(this.Solution, range);
     }
 
-    /// <summary>
-    /// Menu_s the item clicked.
-    /// </summary>
-    /// <param name="assertion">
-    /// The assertion.
-    /// </param>
-    /// <param name="element">
-    /// The element.
-    /// </param>
-    private void InsertAssertion(string assertion, IElement element)
-    {
-      var psiManager = PsiManager.GetInstance(Solution);
-      if (psiManager == null)
-      {
-        return;
-      }
-
-      using (ReadLockCookie.Create())
-      {
-          using (var cookie = EnsureWritable())
-        {
-          if (cookie.EnsureWritableResult != EnsureWritableResult.SUCCESS)
-          {
-            return;
-          }
-
-          using (CommandCookie.Create(string.Format("Context Action {0}", this.GetText())))
-          {
-            psiManager.DoTransaction(() => InsertAssertionCode(assertion, element));
-          }
-        }
-      }
-    }
-
-
-
-      /// <summary>
-    /// Inserts the assertion code.
-    /// </summary>
-    /// <param name="localVariableDeclaration">
-    /// The local variable declaration.
-    /// </param>
+    /// <summary>Inserts the assertion code.</summary>
+    /// <param name="localVariableDeclaration">The local variable declaration.</param>
     private void InsertAssertionCode(ILocalVariableDeclaration localVariableDeclaration)
     {
       var localVariable = localVariableDeclaration.DeclaredElement as ILocalVariable;
@@ -354,12 +321,8 @@ namespace AgentJohnson.ValueAnalysis
       this.InsertAssertionCode(localVariable.Type, localVariableDeclaration, localVariable.ShortName);
     }
 
-    /// <summary>
-    /// Inserts the assertion code.
-    /// </summary>
-    /// <param name="assignmentExpression">
-    /// The assignment expression.
-    /// </param>
+    /// <summary>Inserts the assertion code.</summary>
+    /// <param name="assignmentExpression">The assignment expression.</param>
     private void InsertAssertionCode(IAssignmentExpression assignmentExpression)
     {
       var destination = assignmentExpression.Dest;
@@ -388,9 +351,7 @@ namespace AgentJohnson.ValueAnalysis
       this.InsertAssertionCode(type, assignmentExpression, referenceExpression.Reference.GetName());
     }
 
-    /// <summary>
-    /// Inserts the assertion code.
-    /// </summary>
+    /// <summary>Inserts the assertion code.</summary>
     /// <param name="type">The type.</param>
     /// <param name="element">The element.</param>
     /// <param name="name">The name.</param>
@@ -406,7 +367,7 @@ namespace AgentJohnson.ValueAnalysis
       {
         var valueAssertion = rule.ValueAssertions[0];
 
-        InsertAssertionCode(valueAssertion, element);
+        this.InsertAssertionCode(valueAssertion, element);
 
         return;
       }
@@ -414,9 +375,7 @@ namespace AgentJohnson.ValueAnalysis
       this.ShowPopupMenu(element, rule, name);
     }
 
-    /// <summary>
-    /// Shows the popup menu.
-    /// </summary>
+    /// <summary>Shows the popup menu.</summary>
     /// <param name="element">The element.</param>
     /// <param name="rule">The rule.</param>
     /// <param name="name">The name.</param>
@@ -430,7 +389,7 @@ namespace AgentJohnson.ValueAnalysis
       {
         var item = new SimpleMenuItem
         {
-          Text = string.Format(valueAssertion, name),
+          Text = string.Format(valueAssertion, name), 
           Style = MenuItemStyle.Enabled
         };
 

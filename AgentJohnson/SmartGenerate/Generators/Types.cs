@@ -12,20 +12,14 @@ namespace AgentJohnson.SmartGenerate.Generators
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.Tree;
 
-  /// <summary>
-  /// The types.
-  /// </summary>
+  /// <summary>The types.</summary>
   [SmartGenerate("Generate types", "Generates a class, enum, interface or struct.", Priority = 0)]
   public class Types : SmartGenerateHandlerBase
   {
     #region Methods
 
-    /// <summary>
-    /// Gets the items.
-    /// </summary>
-    /// <param name="smartGenerateParameters">
-    /// The get menu items parameters.
-    /// </param>
+    /// <summary>Gets the items.</summary>
+    /// <param name="smartGenerateParameters">The get menu items parameters.</param>
     protected override void GetItems(SmartGenerateParameters smartGenerateParameters)
     {
       var element = smartGenerateParameters.Element;

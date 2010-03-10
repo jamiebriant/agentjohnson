@@ -11,25 +11,15 @@ namespace AgentJohnson.SmartGenerate
 {
   using System.Collections.Generic;
 
-  /// <summary>
-  /// The i smart generate handler.
-  /// </summary>
+  /// <summary>The i smart generate handler.</summary>
   public interface ISmartGenerateHandler
   {
     #region Public Methods
 
-    /// <summary>
-    /// Gets the items.
-    /// </summary>
-    /// <param name="parameters">
-    /// The parameters.
-    /// </param>
-    /// <returns>
-    /// The menu items.
-    /// </returns>
-    /// <value>
-    /// The items.
-    /// </value>
+    /// <summary>Gets the items.</summary>
+    /// <param name="parameters">The parameters.</param>
+    /// <returns>The menu items.</returns>
+    /// <value>The items.</value>
     IEnumerable<ISmartGenerateAction> GetMenuItems(SmartGenerateParameters parameters);
 
     #endregion

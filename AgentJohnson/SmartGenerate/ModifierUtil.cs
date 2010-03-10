@@ -13,25 +13,15 @@ namespace AgentJohnson.SmartGenerate
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.Tree;
 
-  /// <summary>
-  /// Defines the modifier utility class.
-  /// </summary>
+  /// <summary>Defines the modifier utility class.</summary>
   public static class ModifierUtil
   {
     #region Public Methods
 
-    /// <summary>
-    /// Gets the modifier.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
-    /// <param name="classDeclaration">
-    /// The class declaration.
-    /// </param>
-    /// <returns>
-    /// The get modifier.
-    /// </returns>
+    /// <summary>Gets the modifier.</summary>
+    /// <param name="element">The element.</param>
+    /// <param name="classDeclaration">The class declaration.</param>
+    /// <returns>The get modifier.</returns>
     public static string GetModifier(IElement element, IClassLikeDeclaration classDeclaration)
     {
       ITypeMemberDeclaration classMember = null;

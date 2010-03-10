@@ -7,74 +7,37 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using JetBrains.Util;
-
 namespace AgentJohnson.Statements
 {
-    using JetBrains.ReSharper.Feature.Services.Bulbs;
-    using JetBrains.ReSharper.Intentions;
+  using JetBrains.ReSharper.Feature.Services.Bulbs;
   using JetBrains.ReSharper.Intentions.CSharp.DataProviders;
   using JetBrains.ReSharper.Psi.CSharp;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
-  using JetBrains.ReSharper.Psi.Tree;
   using JetBrains.ReSharper.Psi.CSharp.Util;
+  using JetBrains.ReSharper.Psi.Tree;
 
-  /// <summary>
-  /// Defines the negate if condition class.
-  /// </summary>
+  /// <summary>Defines the negate if condition class.</summary>
   [ContextAction(Description = "Negates the condition of an 'if' statement.", Name = "Negate 'if' condition", Priority = -1, Group = "C#")]
   public class NegateIfCondition : ContextActionBase
   {
     #region Constructors and Destructors
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="NegateIfCondition"/> class.
-    /// </summary>
-    /// <param name="provider">
-    /// The provider.
-    /// </param>
+    /// <summary>Initializes a new instance of the <see cref="NegateIfCondition"/> class.</summary>
+    /// <param name="provider">The provider.</param>
     public NegateIfCondition(ICSharpContextActionDataProvider provider) : base(provider)
     {
     }
 
     #endregion
 
-    #region Methods
+    #region Public Methods
 
-    /// <summary>
-    /// Executes this instance.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
-    protected override void Execute(IElement element)
+    /// <summary>Determines whether this instance is available.</summary>
+    /// <param name="element">The element.</param>
+    /// <returns><c>true</c> if this instance is available; otherwise, <c>false</c>.</returns>
+    public override bool IsAvailable(IElement element)
     {
-      Negate(element);
-    }
-
-    /// <summary>
-    /// Gets the text.
-    /// </summary>
-    /// <returns>
-    /// The text in the context menu.
-    /// </returns>
-    protected override string GetText()
-    {
-      return "Negate 'if' condition [Agent Johnson]";
-    }
-
-    /// <summary>
-    /// Determines whether this instance is available.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
-    /// <returns>
-    /// <c>true</c> if this instance is available; otherwise, <c>false</c>.
-    /// </returns>
-    public override bool IsAvailable(IUserDataHolder element)
-    {
-        var ifStatement = this.Provider.GetSelectedElement<IIfStatement>(false, true);
+      var ifStatement = this.Provider.GetSelectedElement<IIfStatement>(false, true);
       if (ifStatement == null)
       {
         return false;
@@ -86,7 +49,7 @@ namespace AgentJohnson.Statements
         return false;
       }
 
-      if (!condition.Contains(ifStatement))
+      if (!condition.Contains(element))
       {
         return false;
       }
@@ -94,12 +57,26 @@ namespace AgentJohnson.Statements
       return true;
     }
 
-    /// <summary>
-    /// Reverses the specified element.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
+    #endregion
+
+    #region Methods
+
+    /// <summary>Executes this instance.</summary>
+    /// <param name="element">The element.</param>
+    protected override void Execute(IElement element)
+    {
+      Negate(element);
+    }
+
+    /// <summary>Gets the text.</summary>
+    /// <returns>The text in the context menu.</returns>
+    protected override string GetText()
+    {
+      return "Negate 'if' condition [Agent Johnson]";
+    }
+
+    /// <summary>Reverses the specified element.</summary>
+    /// <param name="element">The element.</param>
     private static void Negate(IElement element)
     {
       var ifStatement = element.GetContainingElement<IIfStatement>(true);
@@ -158,15 +135,9 @@ namespace AgentJohnson.Statements
       NegateExpression(factory, ifStatement.Condition);
     }
 
-    /// <summary>
-    /// Negates the equality expression.
-    /// </summary>
-    /// <param name="factory">
-    /// The factory.
-    /// </param>
-    /// <param name="equalityExpression">
-    /// The equality expression.
-    /// </param>
+    /// <summary>Negates the equality expression.</summary>
+    /// <param name="factory">The factory.</param>
+    /// <param name="equalityExpression">The equality expression.</param>
     private static void NegateEqualityExpression(CSharpElementFactory factory, IEqualityExpression equalityExpression)
     {
       var operatorSign = equalityExpression.OperatorSign.GetText();
@@ -174,54 +145,48 @@ namespace AgentJohnson.Statements
       operatorSign = operatorSign == "==" ? "!=" : "==";
 
       var expression = factory.CreateExpression(string.Format("{0} {1} {2}", equalityExpression.LeftOperand.GetText(), operatorSign, equalityExpression.RightOperand.GetText()));
+      if (expression == null)
+      {
+        return;
+      }
 
       equalityExpression.ReplaceBy(expression);
     }
 
-    /// <summary>
-    /// Negates the expression.
-    /// </summary>
-    /// <param name="factory">
-    /// The factory.
-    /// </param>
-    /// <param name="condition">
-    /// The condition.
-    /// </param>
+    /// <summary>Negates the expression.</summary>
+    /// <param name="factory">The factory.</param>
+    /// <param name="condition">The condition.</param>
     private static void NegateExpression(CSharpElementFactory factory, ICSharpExpression condition)
     {
       var expression = factory.CreateExpression("!(" + condition.GetText() + ")");
+      if (expression == null)
+      {
+        return;
+      }
 
       condition.ReplaceBy(expression);
     }
 
-    /// <summary>
-    /// Negates the invocation expression.
-    /// </summary>
-    /// <param name="factory">
-    /// The factory.
-    /// </param>
-    /// <param name="invocationExpression">
-    /// The invocation expression.
-    /// </param>
+    /// <summary>Negates the invocation expression.</summary>
+    /// <param name="factory">The factory.</param>
+    /// <param name="invocationExpression">The invocation expression.</param>
     private static void NegateInvocationExpression(CSharpElementFactory factory, IInvocationExpression invocationExpression)
     {
       var expression = factory.CreateExpression("!" + invocationExpression.GetText());
+      if (expression == null)
+      {
+        return;
+      }
 
       invocationExpression.ReplaceBy(expression);
     }
 
-    /// <summary>
-    /// Negates the literal expression.
-    /// </summary>
-    /// <param name="factory">
-    /// The factory.
-    /// </param>
-    /// <param name="literalExpression">
-    /// The literal expression.
-    /// </param>
+    /// <summary>Negates the literal expression.</summary>
+    /// <param name="factory">The factory.</param>
+    /// <param name="literalExpression">The literal expression.</param>
     private static void NegateLiteralExpression(CSharpElementFactory factory, ILiteralExpression literalExpression)
     {
-      ICSharpExpression csharpExpression = literalExpression as ICSharpExpression;
+      var csharpExpression = literalExpression as ICSharpExpression;
       if (csharpExpression == null)
       {
         return;
@@ -247,15 +212,9 @@ namespace AgentJohnson.Statements
       ExpressionUtil.ReplaceExpression(csharpExpression, expression);
     }
 
-    /// <summary>
-    /// Negates the relational expression.
-    /// </summary>
-    /// <param name="factory">
-    /// The factory.
-    /// </param>
-    /// <param name="relationalExpression">
-    /// The relational expression.
-    /// </param>
+    /// <summary>Negates the relational expression.</summary>
+    /// <param name="factory">The factory.</param>
+    /// <param name="relationalExpression">The relational expression.</param>
     private static void NegateRelationalExpression(CSharpElementFactory factory, IRelationalExpression relationalExpression)
     {
       var operatorSign = relationalExpression.OperatorSign.GetText();
@@ -277,19 +236,17 @@ namespace AgentJohnson.Statements
       }
 
       var expression = factory.CreateExpression(string.Format("{0} {1} {2}", relationalExpression.LeftOperand.GetText(), operatorSign, relationalExpression.RightOperand.GetText()));
+      if (expression == null)
+      {
+        return;
+      }
 
       relationalExpression.ReplaceBy(expression);
     }
 
-    /// <summary>
-    /// Negates the unary expression.
-    /// </summary>
-    /// <param name="factory">
-    /// The factory.
-    /// </param>
-    /// <param name="unaryOperatorExpression">
-    /// The unary operator expression.
-    /// </param>
+    /// <summary>Negates the unary expression.</summary>
+    /// <param name="factory">The factory.</param>
+    /// <param name="unaryOperatorExpression">The unary operator expression.</param>
     private static void NegateUnaryExpression(CSharpElementFactory factory, IUnaryOperatorExpression unaryOperatorExpression)
     {
       if (unaryOperatorExpression.OperatorSign.GetText() != "!")
@@ -305,6 +262,10 @@ namespace AgentJohnson.Statements
       }
 
       var expression = factory.CreateExpression(text);
+      if (expression == null)
+      {
+        return;
+      }
 
       unaryOperatorExpression.ReplaceBy(expression);
     }

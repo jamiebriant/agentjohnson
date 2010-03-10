@@ -13,9 +13,7 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.Tree;
 
-  /// <summary>
-  /// The interface members.
-  /// </summary>
+  /// <summary>The interface members.</summary>
   [LiveTemplate("Interface member", "Generate interface member")]
   public class InterfaceMembers : ILiveTemplate
   {
@@ -23,15 +21,9 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
 
     #region ILiveTemplate
 
-    /// <summary>
-    /// Gets the items.
-    /// </summary>
-    /// <param name="parameters">
-    /// The parameters.
-    /// </param>
-    /// <returns>
-    /// The items.
-    /// </returns>
+    /// <summary>Gets the items.</summary>
+    /// <param name="parameters">The parameters.</param>
+    /// <returns>The items.</returns>
     public IEnumerable<LiveTemplateItem> GetItems(SmartGenerateParameters parameters)
     {
       var element = parameters.Element;
@@ -50,8 +42,8 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
 
       var liveTemplateItem = new LiveTemplateItem
       {
-        MenuText = "Interface member",
-        Description = "Interface member",
+        MenuText = "Interface member", 
+        Description = "Interface member", 
         Shortcut = "Interface member"
       };
 

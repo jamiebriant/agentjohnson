@@ -20,11 +20,11 @@ namespace AgentJohnson.FavoriteFiles
   using JetBrains.IDE;
   using JetBrains.ProjectModel;
   using JetBrains.UI.PopupMenu;
+  using JetBrains.UI.RichText;
+  using JetBrains.Util;
   using JetBrains.VsIntegration.Application;
 
-  /// <summary>
-  /// Handles Find Text action, see Actions.xml
-  /// </summary>
+  /// <summary>Handles Find Text action, see Actions.xml</summary>
   [ActionHandler("FavoriteFiles")]
   public class FavoriteFilesAction : IActionHandler
   {
@@ -46,15 +46,9 @@ namespace AgentJohnson.FavoriteFiles
 
     #region IActionHandler
 
-    /// <summary>
-    /// Executes action. Called after Update, that set <see cref="ActionPresentation"/>.Enabled to true.
-    /// </summary>
-    /// <param name="context">
-    /// <c>DataContext</c>
-    /// </param>
-    /// <param name="nextExecute">
-    /// delegate to call
-    /// </param>
+    /// <summary>Executes action. Called after Update, that set <see cref="ActionPresentation"/>.Enabled to true.</summary>
+    /// <param name="context"><c>DataContext</c></param>
+    /// <param name="nextExecute">delegate to call</param>
     public void Execute(IDataContext context, DelegateExecute nextExecute)
     {
       var solution = context.GetData(DataConstants.SOLUTION);
@@ -63,25 +57,15 @@ namespace AgentJohnson.FavoriteFiles
         return;
       }
 
-      Execute(solution, context);
+      this.Execute(solution, context);
     }
 
-    /// <summary>
-    /// Updates action visual presentation. If presentation.Enabled is set to false, Execute
-    /// will not be called.
-    /// </summary>
-    /// <param name="context">
-    /// <c>DataContext</c>
-    /// </param>
-    /// <param name="presentation">
-    /// presentation to update
-    /// </param>
-    /// <param name="nextUpdate">
-    /// delegate to call
-    /// </param>
-    /// <returns>
-    /// The update.
-    /// </returns>
+    /// <summary>Updates action visual presentation. If presentation.Enabled is set to false, Execute
+    /// will not be called.</summary>
+    /// <param name="context"><c>DataContext</c></param>
+    /// <param name="presentation">presentation to update</param>
+    /// <param name="nextUpdate">delegate to call</param>
+    /// <returns>The update.</returns>
     public bool Update(IDataContext context, ActionPresentation presentation, DelegateUpdate nextUpdate)
     {
       return context.CheckAllNotNull(DataConstants.SOLUTION);
@@ -93,18 +77,10 @@ namespace AgentJohnson.FavoriteFiles
 
     #region Methods
 
-    /// <summary>
-    /// Describes the favorite file.
-    /// </summary>
-    /// <param name="favoriteFilePath">
-    /// The favorite file path.
-    /// </param>
-    /// <param name="index">
-    /// The index.
-    /// </param>
-    /// <returns>
-    /// The favorite file.
-    /// </returns>
+    /// <summary>Describes the favorite file.</summary>
+    /// <param name="favoriteFilePath">The favorite file path.</param>
+    /// <param name="index">The index.</param>
+    /// <returns>The favorite file.</returns>
     private static SimpleMenuItem DescribeFavoriteFile(FavoriteFilePath favoriteFilePath, int index)
     {
       var result = new SimpleMenuItem();
@@ -125,7 +101,7 @@ namespace AgentJohnson.FavoriteFiles
       }
 
       result.Style = MenuItemStyle.Enabled;
-      result.ShortcutText = new global::JetBrains.UI.RichText.RichText("(" + favoriteFilePath + ")", global::JetBrains.UI.RichText.TextStyle.FromForeColor(Color.LightGray));
+      result.ShortcutText = new RichText("(" + favoriteFilePath + ")", TextStyle.FromForeColor(Color.LightGray));
 
       if (index < 0 || index > 8)
       {
@@ -137,18 +113,10 @@ namespace AgentJohnson.FavoriteFiles
       return result;
     }
 
-    /// <summary>
-    /// Gets the current file.
-    /// </summary>
-    /// <param name="solution">
-    /// The solution.
-    /// </param>
-    /// <param name="dataContext">
-    /// The data context.
-    /// </param>
-    /// <returns>
-    /// The current file.
-    /// </returns>
+    /// <summary>Gets the current file.</summary>
+    /// <param name="solution">The solution.</param>
+    /// <param name="dataContext">The data context.</param>
+    /// <returns>The current file.</returns>
     private static FavoriteFilePath GetCurrentFile(ISolution solution, IDataContext dataContext)
     {
       var document = dataContext.GetData(DataConstants.DOCUMENT);
@@ -186,9 +154,7 @@ namespace AgentJohnson.FavoriteFiles
       return result;
     }
 
-    /// <summary>
-    /// Organizes this instance.
-    /// </summary>
+    /// <summary>Organizes this instance.</summary>
     private static void Organize()
     {
       using (var organizeDialog = new OrganizeDialog())
@@ -197,9 +163,7 @@ namespace AgentJohnson.FavoriteFiles
       }
     }
 
-    /// <summary>
-    /// Adds the current file.
-    /// </summary>
+    /// <summary>Adds the current file.</summary>
     private void AddCurrentFile()
     {
       if (this.currentFile == null)
@@ -222,17 +186,13 @@ namespace AgentJohnson.FavoriteFiles
       favoriteFiles.Add(this.currentFile);
     }
 
-    /// <summary>
-    /// Describes the add menu item.
-    /// </summary>
-    /// <returns>
-    /// The add menu item.
-    /// </returns>
+    /// <summary>Describes the add menu item.</summary>
+    /// <returns>The add menu item.</returns>
     private SimpleMenuItem DescribeAddMenuItem()
     {
       var result = new SimpleMenuItem
       {
-        Text = new global::JetBrains.UI.RichText.RichText("Add Current File")
+        Text = new RichText("Add Current File")
       };
 
       result.Clicked += delegate { this.AddCurrentFile(); };
@@ -245,17 +205,13 @@ namespace AgentJohnson.FavoriteFiles
       return result;
     }
 
-    /// <summary>
-    /// Describes the more menu item.
-    /// </summary>
-    /// <returns>
-    /// The more menu item.
-    /// </returns>
+    /// <summary>Describes the more menu item.</summary>
+    /// <returns>The more menu item.</returns>
     private SimpleMenuItem DescribeOrganizeMenuItem()
     {
       var result = new SimpleMenuItem
       {
-        Text = new global::JetBrains.UI.RichText.RichText("Organize...")
+        Text = new RichText("Organize...")
       };
 
       result.Clicked += delegate { Organize(); };
@@ -268,15 +224,9 @@ namespace AgentJohnson.FavoriteFiles
       return result;
     }
 
-    /// <summary>
-    /// Executes action. Called after Update, that set <c>ActionPresentation</c>.Enabled to true.
-    /// </summary>
-    /// <param name="solution">
-    /// The solution.
-    /// </param>
-    /// <param name="context">
-    /// The context.
-    /// </param>
+    /// <summary>Executes action. Called after Update, that set <c>ActionPresentation</c>.Enabled to true.</summary>
+    /// <param name="solution">The solution.</param>
+    /// <param name="context">The context.</param>
     private void Execute(ISolution solution, IDataContext context)
     {
       this.solution = solution;
@@ -338,12 +288,8 @@ namespace AgentJohnson.FavoriteFiles
       menu.Show();
     }
 
-    /// <summary>
-    /// Handles the ItemClicked event of the menu control.
-    /// </summary>
-    /// <param name="path">
-    /// The path.
-    /// </param>
+    /// <summary>Handles the ItemClicked event of the menu control.</summary>
+    /// <param name="path">The path.</param>
     private void MenuItemClicked(FavoriteFilePath path)
     {
       if (path.Path == "__add")
@@ -360,15 +306,11 @@ namespace AgentJohnson.FavoriteFiles
       }
     }
 
-    /// <summary>
-    /// Opens the favorite file.
-    /// </summary>
-    /// <param name="favoriteFilePath">
-    /// The favorite file path.
-    /// </param>
+    /// <summary>Opens the favorite file.</summary>
+    /// <param name="favoriteFilePath">The favorite file path.</param>
     private void OpenFavoriteFile(FavoriteFilePath favoriteFilePath)
     {
-      var path = new global::JetBrains.Util.FileSystemPath(favoriteFilePath.Path);
+      var path = new FileSystemPath(favoriteFilePath.Path);
 
       if (string.IsNullOrEmpty(favoriteFilePath.ProjectName))
       {
@@ -392,7 +334,7 @@ namespace AgentJohnson.FavoriteFiles
       }
 
       var location = this.solution.FindProjectItemsByLocation(path);
-      if (location == null || global::JetBrains.Util.CollectionUtil.Length(location) == 0)
+      if (location == null || CollectionUtil.Length(location) == 0)
       {
         return;
       }

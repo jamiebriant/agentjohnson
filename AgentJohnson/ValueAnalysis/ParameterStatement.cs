@@ -12,9 +12,7 @@ namespace AgentJohnson.ValueAnalysis
   using JetBrains.ReSharper.Psi;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
 
-  /// <summary>
-  /// The parameter statement.
-  /// </summary>
+  /// <summary>The parameter statement.</summary>
   internal class ParameterStatement
   {
     #region Constants and Fields
@@ -22,27 +20,27 @@ namespace AgentJohnson.ValueAnalysis
     /// <summary>
     /// The _attribute instance.
     /// </summary>
-    private IAttributeInstance _attributeInstance;
+    private IAttributeInstance attributeInstance;
 
     /// <summary>
     /// The _needs statement.
     /// </summary>
-    private bool _needsStatement = true;
+    private bool needsStatement = true;
 
     /// <summary>
     /// The _nullable.
     /// </summary>
-    private bool _nullable;
+    private bool nullable;
 
     /// <summary>
     /// The _parameter.
     /// </summary>
-    private IParameter _parameter;
+    private IParameter parameter;
 
     /// <summary>
     /// The _statement.
     /// </summary>
-    private IStatement _statement;
+    private IStatement statement;
 
     #endregion
 
@@ -56,12 +54,12 @@ namespace AgentJohnson.ValueAnalysis
     {
       get
       {
-        return this._attributeInstance;
+        return this.attributeInstance;
       }
 
       set
       {
-        this._attributeInstance = value;
+        this.attributeInstance = value;
       }
     }
 
@@ -73,12 +71,12 @@ namespace AgentJohnson.ValueAnalysis
     {
       get
       {
-        return this._needsStatement;
+        return this.needsStatement;
       }
 
       set
       {
-        this._needsStatement = value;
+        this.needsStatement = value;
       }
     }
 
@@ -90,12 +88,12 @@ namespace AgentJohnson.ValueAnalysis
     {
       get
       {
-        return this._nullable;
+        return this.nullable;
       }
 
       set
       {
-        this._nullable = value;
+        this.nullable = value;
       }
     }
 
@@ -107,12 +105,12 @@ namespace AgentJohnson.ValueAnalysis
     {
       get
       {
-        return this._parameter;
+        return this.parameter;
       }
 
       set
       {
-        this._parameter = value;
+        this.parameter = value;
       }
     }
 
@@ -124,12 +122,12 @@ namespace AgentJohnson.ValueAnalysis
     {
       get
       {
-        return this._statement;
+        return this.statement;
       }
 
       set
       {
-        this._statement = value;
+        this.statement = value;
       }
     }
 

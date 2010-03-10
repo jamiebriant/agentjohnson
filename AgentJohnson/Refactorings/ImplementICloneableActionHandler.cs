@@ -3,7 +3,7 @@
 //   Copyright (C) 2009 Jakob Christensen
 // </copyright>
 // <summary>
-//   Defines the implement &lt;c&gt;ICloneable&lt;/c&gt; action handler class.
+//   Defines the implement <c>ICloneable</c> action handler class.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -20,23 +20,15 @@ namespace AgentJohnson.Refactorings
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.Util;
 
-  /// <summary>
-  /// Defines the implement <c>ICloneable</c> action handler class.
-  /// </summary>
+  /// <summary>Defines the implement <c>ICloneable</c> action handler class.</summary>
   [ActionHandler("AgentJohnson.ImplementICloneable")]
   public class ImplementICloneableActionHandler : ActionHandlerBase
   {
     #region Methods
 
-    /// <summary>
-    /// Executes action. Called after Update, that set <c>ActionPresentation.Enabled</c> to true.
-    /// </summary>
-    /// <param name="solution">
-    /// The solution.
-    /// </param>
-    /// <param name="context">
-    /// The context.
-    /// </param>
+    /// <summary>Executes action. Called after Update, that set <c>ActionPresentation.Enabled</c> to true.</summary>
+    /// <param name="solution">The solution.</param>
+    /// <param name="context">The context.</param>
     protected override void Execute(ISolution solution, IDataContext context)
     {
       if (!context.CheckAllNotNull(DataConstants.SOLUTION))
@@ -62,7 +54,7 @@ namespace AgentJohnson.Refactorings
         return;
       }
 
-      using (var cookie = EnsureWritable(solution, textControl.Document))
+      using (var cookie = this.EnsureWritable(solution, textControl.Document))
       {
         if (cookie.EnsureWritableResult != EnsureWritableResult.SUCCESS)
         {
@@ -76,15 +68,9 @@ namespace AgentJohnson.Refactorings
       }
     }
 
-    /// <summary>
-    /// Updates the specified context.
-    /// </summary>
-    /// <param name="context">
-    /// The context.
-    /// </param>
-    /// <returns>
-    /// <c>true</c>, if updateable.
-    /// </returns>
+    /// <summary>Updates the specified context.</summary>
+    /// <param name="context">The context.</param>
+    /// <returns><c>true</c>, if updateable.</returns>
     protected override bool Update(IDataContext context)
     {
       if (!context.CheckAllNotNull(DataConstants.SOLUTION))
@@ -119,15 +105,9 @@ namespace AgentJohnson.Refactorings
       return true;
     }
 
-    /// <summary>
-    /// Adds the dispose object method.
-    /// </summary>
-    /// <param name="classDeclaration">
-    /// The class declaration.
-    /// </param>
-    /// <param name="factory">
-    /// The factory.
-    /// </param>
+    /// <summary>Adds the dispose object method.</summary>
+    /// <param name="classDeclaration">The class declaration.</param>
+    /// <param name="factory">The factory.</param>
     private static void AddCloneMethod(IClassDeclaration classDeclaration, CSharpElementFactory factory)
     {
       var cls = classDeclaration.DeclaredElement as IClass;
@@ -157,23 +137,15 @@ namespace AgentJohnson.Refactorings
 
       AddMember(classDeclaration, factory, @"
         public object Clone() {" +
-                                           code + @"
+        code + @"
         }
       ");
     }
 
-    /// <summary>
-    /// Adds the get object data method code.
-    /// </summary>
-    /// <param name="classDeclaration">
-    /// The class declaration.
-    /// </param>
-    /// <param name="isSuperClass">
-    /// if set to <c>true</c> [is super class].
-    /// </param>
-    /// <returns>
-    /// Returns the clone method code.
-    /// </returns>
+    /// <summary>Adds the get object data method code.</summary>
+    /// <param name="classDeclaration">The class declaration.</param>
+    /// <param name="isSuperClass">if set to <c>true</c> [is super class].</param>
+    /// <returns>Returns the clone method code.</returns>
     private static string AddCloneMethodCode(IClass classDeclaration, bool isSuperClass)
     {
       var code = new StringBuilder();
@@ -221,15 +193,9 @@ namespace AgentJohnson.Refactorings
       return code.ToString();
     }
 
-    /// <summary>
-    /// Adds the interface.
-    /// </summary>
-    /// <param name="solution">
-    /// The solution.
-    /// </param>
-    /// <param name="classDeclaration">
-    /// The class declaration.
-    /// </param>
+    /// <summary>Adds the interface.</summary>
+    /// <param name="solution">The solution.</param>
+    /// <param name="classDeclaration">The class declaration.</param>
     private static void AddInterface(ISolution solution, IClassDeclaration classDeclaration)
     {
       var scope = DeclarationsScopeFactory.SolutionScope(solution, true);
@@ -246,18 +212,10 @@ namespace AgentJohnson.Refactorings
       classDeclaration.AddSuperInterface(declaredType, false);
     }
 
-    /// <summary>
-    /// Adds the member.
-    /// </summary>
-    /// <param name="classDeclaration">
-    /// The class declaration.
-    /// </param>
-    /// <param name="factory">
-    /// The factory.
-    /// </param>
-    /// <param name="code">
-    /// The member code.
-    /// </param>
+    /// <summary>Adds the member.</summary>
+    /// <param name="classDeclaration">The class declaration.</param>
+    /// <param name="factory">The factory.</param>
+    /// <param name="code">The member code.</param>
     private static void AddMember(IClassDeclaration classDeclaration, CSharpElementFactory factory, string code)
     {
       var memberDeclaration = factory.CreateTypeMemberDeclaration(code) as IClassMemberDeclaration;
@@ -265,15 +223,9 @@ namespace AgentJohnson.Refactorings
       classDeclaration.AddClassMemberDeclaration(memberDeclaration);
     }
 
-    /// <summary>
-    /// Executes the specified class declaration.
-    /// </summary>
-    /// <param name="solution">
-    /// The solution.
-    /// </param>
-    /// <param name="classDeclaration">
-    /// The class declaration.
-    /// </param>
+    /// <summary>Executes the specified class declaration.</summary>
+    /// <param name="solution">The solution.</param>
+    /// <param name="classDeclaration">The class declaration.</param>
     private static void Execute(ISolution solution, IClassDeclaration classDeclaration)
     {
       var factory = CSharpElementFactory.GetInstance(classDeclaration.GetPsiModule());

@@ -13,9 +13,7 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
   using JetBrains.ReSharper.Psi;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
 
-  /// <summary>
-  /// The after invocation.
-  /// </summary>
+  /// <summary>The after invocation.</summary>
   [LiveTemplate("After invocation", "Executes a Live Template after the invocation of a method.")]
   public class AfterInvocation : ILiveTemplate
   {
@@ -23,15 +21,9 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
 
     #region ILiveTemplate
 
-    /// <summary>
-    /// Gets the name of the template.
-    /// </summary>
-    /// <param name="parameters">
-    /// The parameters.
-    /// </param>
-    /// <returns>
-    /// The items.
-    /// </returns>
+    /// <summary>Gets the name of the template.</summary>
+    /// <param name="parameters">The parameters.</param>
+    /// <returns>The items.</returns>
     public IEnumerable<LiveTemplateItem> GetItems(SmartGenerateParameters parameters)
     {
       var previousStatement = parameters.PreviousStatement;
@@ -92,8 +84,8 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
 
       var liveTemplateItem = new LiveTemplateItem
       {
-        MenuText = string.Format("After call to '{0}'", text),
-        Description = string.Format("After call to '{0}'", text),
+        MenuText = string.Format("After call to '{0}'", text), 
+        Description = string.Format("After call to '{0}'", text), 
         Shortcut = string.Format("After call to {0}", shortcut)
       };
 

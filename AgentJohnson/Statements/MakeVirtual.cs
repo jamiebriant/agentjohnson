@@ -7,47 +7,60 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-
-
 namespace AgentJohnson.Statements
 {
-    using JetBrains.ReSharper.Feature.Services.Bulbs;
-    using JetBrains.ReSharper.Feature.Services.CSharp.Generate.MemberBody;
-  using JetBrains.ReSharper.Intentions;
+  using JetBrains.ReSharper.Feature.Services.Bulbs;
+  using JetBrains.ReSharper.Feature.Services.CSharp.Generate.MemberBody;
   using JetBrains.ReSharper.Intentions.CSharp.DataProviders;
   using JetBrains.ReSharper.Psi.CSharp;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.Tree;
-    using JetBrains.Util;
 
-  /// <summary>
-  /// Defines the make abstract class.
-  /// </summary>
+  /// <summary>Defines the make abstract class.</summary>
   [ContextAction(Description = "Converts an abstract class to a normal class with virtual members.", Name = "Make abstract class virtual", Priority = -1, Group = "C#")]
   public class MakeVirtual : ContextActionBase
   {
     #region Constructors and Destructors
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="MakeVirtual"/> class.
-    /// </summary>
-    /// <param name="provider">
-    /// The provider.
-    /// </param>
+    /// <summary>Initializes a new instance of the <see cref="MakeVirtual"/> class.</summary>
+    /// <param name="provider">The provider.</param>
     public MakeVirtual(ICSharpContextActionDataProvider provider) : base(provider)
     {
     }
 
     #endregion
 
+    #region Public Methods
+
+    /// <summary>Determines whether this instance is available.</summary>
+    /// <param name="element">The element.</param>
+    /// <returns><c>true</c> if this instance is available; otherwise, <c>false</c>.</returns>
+    public override bool IsAvailable(IElement element)
+    {
+      var text = element.GetText();
+
+      if (text != "abstract")
+      {
+        return false;
+      }
+
+      var parent = element.ToTreeNode().Parent;
+      if (parent == null)
+      {
+        return false;
+      }
+
+      var classNode = parent.Parent;
+
+      return classNode is IClassDeclaration;
+    }
+
+    #endregion
+
     #region Methods
 
-    /// <summary>
-    /// Executes this instance.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
+    /// <summary>Executes this instance.</summary>
+    /// <param name="element">The element.</param>
     protected override void Execute(IElement element)
     {
       var factory = CSharpElementFactory.GetInstance(element.GetPsiModule());
@@ -122,39 +135,11 @@ namespace AgentJohnson.Statements
       }
     }
 
-    /// <summary>
-    /// Gets the text.
-    /// </summary>
-    /// <returns>
-    /// The text in the context menu.
-    /// </returns>
+    /// <summary>Gets the text.</summary>
+    /// <returns>The text in the context menu.</returns>
     protected override string GetText()
     {
       return "Make virtual [Agent Johnson]";
-    }
-
-    /// <summary>
-    /// Determines whether this instance is available.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
-    /// <returns>
-    /// <c>true</c> if this instance is available; otherwise, <c>false</c>.
-    /// </returns>
-    public override bool IsAvailable(IUserDataHolder element)
-    {
-        var classDeclaration = Provider.GetSelectedElement<IClassDeclaration>(false, true);
-        if(classDeclaration == null)
-        {
-            return false;
-        }
-        if(!classDeclaration.IsAbstract)
-        {
-            return false;
-        }
-
-        return true;
     }
 
     #endregion

@@ -11,20 +11,14 @@ namespace AgentJohnson.SmartGenerate.Generators
 {
   using JetBrains.ReSharper.Psi.Tree;
 
-  /// <summary>
-  /// The string expression.
-  /// </summary>
+  /// <summary>The string expression.</summary>
   [SmartGenerate("Surround with 'string.IsNullOrEmpty'", "Surrounds the string expression with 'string.IsNullOrEmpty'.", Priority = -20)]
   public class StringExpression : SmartGenerateHandlerBase
   {
     #region Methods
 
-    /// <summary>
-    /// Gets the items.
-    /// </summary>
-    /// <param name="smartGenerateParameters">
-    /// The get menu items parameters.
-    /// </param>
+    /// <summary>Gets the items.</summary>
+    /// <param name="smartGenerateParameters">The get menu items parameters.</param>
     protected override void GetItems(SmartGenerateParameters smartGenerateParameters)
     {
       var element = smartGenerateParameters.Element;

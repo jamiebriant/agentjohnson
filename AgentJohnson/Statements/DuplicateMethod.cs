@@ -6,10 +6,11 @@
 //   The invert return value action handler.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace AgentJohnson.Statements
 {
-  using JetBrains.Annotations;
   using JetBrains.ActionManagement;
+  using JetBrains.Annotations;
   using JetBrains.Application;
   using JetBrains.IDE;
   using JetBrains.ProjectModel;
@@ -18,24 +19,17 @@ namespace AgentJohnson.Statements
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.Tree;
   using JetBrains.TextControl.Coords;
+  using JetBrains.Util;
 
-  /// <summary>
-  /// The invert return value action handler.
-  /// </summary>
-    [ActionHandler("AgentJohnson.DuplicateMethod")]
-    public class DuplicateMethodActionHandler : ActionHandlerBase
+  /// <summary>The invert return value action handler.</summary>
+  [ActionHandler("AgentJohnson.DuplicateMethod")]
+  public class DuplicateMethodActionHandler : ActionHandlerBase
   {
     #region Methods
 
-    /// <summary>
-    /// Executes action. Called after Update, that set <c>ActionPresentation.Enabled</c> to <c>true</c>.
-    /// </summary>
-    /// <param name="solution">
-    /// The solution.
-    /// </param>
-    /// <param name="context">
-    /// The context.
-    /// </param>
+    /// <summary>Executes action. Called after Update, that set <c>ActionPresentation.Enabled</c> to <c>true</c>.</summary>
+    /// <param name="solution">The solution.</param>
+    /// <param name="context">The context.</param>
     protected override void Execute([NotNull] ISolution solution, [NotNull] IDataContext context)
     {
       if (!context.CheckAllNotNull(DataConstants.SOLUTION))
@@ -57,12 +51,12 @@ namespace AgentJohnson.Statements
         return;
       }
 
-      var selection = JetBrains.Util.TextRange.InvalidRange;
+      var selection = TextRange.InvalidRange;
 
 
-      using (var cookie = EnsureWritable(solution, textControl.Document))
+      using (var cookie = this.EnsureWritable(solution, textControl.Document))
       {
-        if (cookie.EnsureWritableResult != JetBrains.Util.EnsureWritableResult.SUCCESS)
+        if (cookie.EnsureWritableResult != EnsureWritableResult.SUCCESS)
         {
           return;
         }
@@ -73,21 +67,15 @@ namespace AgentJohnson.Statements
         }
       }
 
-      if (selection != JetBrains.Util.TextRange.InvalidRange)
+      if (selection != TextRange.InvalidRange)
       {
         textControl.Selection.SetRange(TextControlPosRange.FromDocRange(textControl, selection.StartOffset, selection.EndOffset));
       }
     }
 
-    /// <summary>
-    /// Updates the specified context.
-    /// </summary>
-    /// <param name="context">
-    /// The context.
-    /// </param>
-    /// <returns>
-    /// The update.
-    /// </returns>
+    /// <summary>Updates the specified context.</summary>
+    /// <param name="context">The context.</param>
+    /// <returns>The update.</returns>
     protected override bool Update([NotNull] IDataContext context)
     {
       if (!context.CheckAllNotNull(DataConstants.SOLUTION))
@@ -114,28 +102,22 @@ namespace AgentJohnson.Statements
       return function != null;
     }
 
-    /// <summary>
-    /// Executes the specified element.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
-    /// <returns>
-    /// Returns the text range.
-    /// </returns>
+    /// <summary>Executes the specified element.</summary>
+    /// <param name="element">The element.</param>
+    /// <returns>Returns the text range.</returns>
     [NotNull]
-    private static JetBrains.Util.TextRange Execute([NotNull] IElement element)
+    private static TextRange Execute([NotNull] IElement element)
     {
       var typeMemberDeclaration = element.ToTreeNode().Parent as ICSharpTypeMemberDeclaration;
       if (typeMemberDeclaration == null)
       {
-        return JetBrains.Util.TextRange.InvalidRange;
+        return TextRange.InvalidRange;
       }
 
       var classDeclaration = typeMemberDeclaration.GetContainingTypeDeclaration() as IClassDeclaration;
       if (classDeclaration == null)
       {
-        return JetBrains.Util.TextRange.InvalidRange;
+        return TextRange.InvalidRange;
       }
 
       var text = typeMemberDeclaration.GetText();
@@ -143,29 +125,29 @@ namespace AgentJohnson.Statements
       var factory = CSharpElementFactory.GetInstance(element.GetPsiModule());
       if (factory == null)
       {
-        return JetBrains.Util.TextRange.InvalidRange;
+        return TextRange.InvalidRange;
       }
 
       var declaration = factory.CreateTypeMemberDeclaration(text) as IClassMemberDeclaration;
       if (declaration == null)
       {
-        return JetBrains.Util.TextRange.InvalidRange;
+        return TextRange.InvalidRange;
       }
 
       var anchor = typeMemberDeclaration as IClassMemberDeclaration;
       if (anchor == null)
       {
-        return JetBrains.Util.TextRange.InvalidRange;
+        return TextRange.InvalidRange;
       }
 
       var after = classDeclaration.AddClassMemberDeclarationAfter(declaration, anchor);
       if (after != null)
       {
         var treeTextRange = after.GetNameRange();
-        return new JetBrains.Util.TextRange(treeTextRange.StartOffset.Offset, treeTextRange.EndOffset.Offset);
+        return new TextRange(treeTextRange.StartOffset.Offset, treeTextRange.EndOffset.Offset);
       }
 
-      return JetBrains.Util.TextRange.InvalidRange;
+      return TextRange.InvalidRange;
     }
 
     #endregion

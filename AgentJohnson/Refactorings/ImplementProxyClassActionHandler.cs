@@ -22,23 +22,15 @@ namespace AgentJohnson.Refactorings
   using JetBrains.ReSharper.Psi.Naming.Settings;
   using JetBrains.Util;
 
-  /// <summary>
-  /// Defines the implement proxy class action handler class.
-  /// </summary>
+  /// <summary>Defines the implement proxy class action handler class.</summary>
   [ActionHandler("AgentJohnson.ImplementProxyClass")]
   public class ImplementProxyClassActionHandler : ActionHandlerBase
   {
     #region Methods
 
-    /// <summary>
-    /// Executes action. Called after Update, that set <c>ActionPresentation</c>.Enabled to true.
-    /// </summary>
-    /// <param name="solution">
-    /// The solution.
-    /// </param>
-    /// <param name="context">
-    /// The context.
-    /// </param>
+    /// <summary>Executes action. Called after Update, that set <c>ActionPresentation</c>.Enabled to true.</summary>
+    /// <param name="solution">The solution.</param>
+    /// <param name="context">The context.</param>
     protected override void Execute(ISolution solution, IDataContext context)
     {
       if (!context.CheckAllNotNull(DataConstants.SOLUTION))
@@ -64,9 +56,9 @@ namespace AgentJohnson.Refactorings
         return;
       }
 
-      using (var cookie = EnsureWritable(solution, textControl.Document))
+      using (var cookie = this.EnsureWritable(solution, textControl.Document))
       {
-        if (cookie.EnsureWritableResult != global::JetBrains.Util.EnsureWritableResult.SUCCESS)
+        if (cookie.EnsureWritableResult != EnsureWritableResult.SUCCESS)
         {
           return;
         }
@@ -78,15 +70,9 @@ namespace AgentJohnson.Refactorings
       }
     }
 
-    /// <summary>
-    /// Updates the specified context.
-    /// </summary>
-    /// <param name="context">
-    /// The context.
-    /// </param>
-    /// <returns>
-    /// Determines if the update succeeded.
-    /// </returns>
+    /// <summary>Updates the specified context.</summary>
+    /// <param name="context">The context.</param>
+    /// <returns>Determines if the update succeeded.</returns>
     protected override bool Update(IDataContext context)
     {
       if (!context.CheckAllNotNull(DataConstants.SOLUTION))
@@ -109,21 +95,11 @@ namespace AgentJohnson.Refactorings
       return true;
     }
 
-    /// <summary>
-    /// Adds the get object data method code.
-    /// </summary>
-    /// <param name="code">
-    /// The code string.
-    /// </param>
-    /// <param name="cls">
-    /// The class declaration.
-    /// </param>
-    /// <param name="variableName">
-    /// Name of the variable.
-    /// </param>
-    /// <param name="className">
-    /// Name of the class.
-    /// </param>
+    /// <summary>Adds the get object data method code.</summary>
+    /// <param name="code">The code string.</param>
+    /// <param name="cls">The class declaration.</param>
+    /// <param name="variableName">Name of the variable.</param>
+    /// <param name="className">Name of the class.</param>
     private static void AddMembers(StringBuilder code, IClass cls, string variableName, string className)
     {
       var superClass = cls.GetSuperClass();
@@ -139,21 +115,11 @@ namespace AgentJohnson.Refactorings
       AddMethods(cls, code, variableName, className);
     }
 
-    /// <summary>
-    /// Adds the methods.
-    /// </summary>
-    /// <param name="cls">
-    /// The class.
-    /// </param>
-    /// <param name="code">
-    /// The code string.
-    /// </param>
-    /// <param name="variableName">
-    /// Name of the variable.
-    /// </param>
-    /// <param name="className">
-    /// Name of the class.
-    /// </param>
+    /// <summary>Adds the methods.</summary>
+    /// <param name="cls">The class.</param>
+    /// <param name="code">The code string.</param>
+    /// <param name="variableName">Name of the variable.</param>
+    /// <param name="className">Name of the class.</param>
     private static void AddMethods(IClass cls, StringBuilder code, string variableName, string className)
     {
       var methods = cls.Methods;
@@ -239,21 +205,11 @@ namespace AgentJohnson.Refactorings
       }
     }
 
-    /// <summary>
-    /// Adds the properties.
-    /// </summary>
-    /// <param name="cls">
-    /// The class.
-    /// </param>
-    /// <param name="code">
-    /// The code string.
-    /// </param>
-    /// <param name="variableName">
-    /// Name of the variable.
-    /// </param>
-    /// <param name="className">
-    /// Name of the class.
-    /// </param>
+    /// <summary>Adds the properties.</summary>
+    /// <param name="cls">The class.</param>
+    /// <param name="code">The code string.</param>
+    /// <param name="variableName">Name of the variable.</param>
+    /// <param name="className">Name of the class.</param>
     private static void AddProperties(IClass cls, StringBuilder code, string variableName, string className)
     {
       var properties = cls.Properties;
@@ -310,15 +266,9 @@ namespace AgentJohnson.Refactorings
       }
     }
 
-    /// <summary>
-    /// Adds the interface.
-    /// </summary>
-    /// <param name="classDeclaration">
-    /// The class declaration.
-    /// </param>
-    /// <param name="factory">
-    /// The factory.
-    /// </param>
+    /// <summary>Adds the interface.</summary>
+    /// <param name="classDeclaration">The class declaration.</param>
+    /// <param name="factory">The factory.</param>
     private static void AddProxyClass(IClassDeclaration classDeclaration, CSharpElementFactory factory)
     {
       var className = classDeclaration.DeclaredName;
@@ -358,12 +308,8 @@ namespace AgentJohnson.Refactorings
       namespaceDeclaration.AddTypeDeclarationAfter(memberDeclaration, classDeclaration);
     }
 
-    /// <summary>
-    /// Executes the specified class declaration.
-    /// </summary>
-    /// <param name="classDeclaration">
-    /// The class declaration.
-    /// </param>
+    /// <summary>Executes the specified class declaration.</summary>
+    /// <param name="classDeclaration">The class declaration.</param>
     private static void Execute(IClassDeclaration classDeclaration)
     {
       var factory = CSharpElementFactory.GetInstance(classDeclaration.GetPsiModule());
@@ -375,15 +321,9 @@ namespace AgentJohnson.Refactorings
       AddProxyClass(classDeclaration, factory);
     }
 
-    /// <summary>
-    /// Gets the name of the variable.
-    /// </summary>
-    /// <param name="classDeclaration">
-    /// The class declaration.
-    /// </param>
-    /// <returns>
-    /// The variable name.
-    /// </returns>
+    /// <summary>Gets the name of the variable.</summary>
+    /// <param name="classDeclaration">The class declaration.</param>
+    /// <returns>The variable name.</returns>
     private static string GetVariableName(IClassDeclaration classDeclaration)
     {
       var result = classDeclaration.DeclaredName;

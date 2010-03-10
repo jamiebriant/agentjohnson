@@ -17,14 +17,15 @@ namespace AgentJohnson.LiveMacros
   using JetBrains.ReSharper.Psi;
   using JetBrains.ReSharper.Psi.Services;
   using JetBrains.ReSharper.Psi.Tree;
+  using JetBrains.Util;
 
-  /// <summary>
-  /// Defines the suggest property class.
-  /// </summary>
+  /// <summary>Defines the suggest property class.</summary>
   [Macro("LiveMacros.PullParameters", ShortDescription = "Pull parameters", LongDescription = "Pulls the list of parameters from the containing method.")]
   public class PullParameters : IMacro
   {
-    #region Properties
+    #region Implemented Interfaces
+
+    #region IMacro
 
     /// <summary>
     /// Gets array of parameter descriptions
@@ -34,9 +35,11 @@ namespace AgentJohnson.LiveMacros
     {
       get
       {
-        return global::JetBrains.Util.EmptyArray<ParameterInfo>.Instance;
+        return EmptyArray<ParameterInfo>.Instance;
       }
     }
+
+    #endregion
 
     #endregion
 
@@ -44,36 +47,22 @@ namespace AgentJohnson.LiveMacros
 
     #region IMacro
 
-    /// <summary>
-    /// Evaluates "quick result" for this macro.
+    /// <summary>Evaluates "quick result" for this macro.
     /// Unlike the result returned by <see cref="M:JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.IMacro.GetLookupItems(JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots.IHotspotContext,System.Collections.Generic.IList{System.String})"/> method,
     /// quick result is re-evaluated on each typing and so its implementation should be very quick.
-    /// If the macro cannot provide any result that can be evaluated very quickly, it should return null.
-    /// </summary>
-    /// <param name="context">
-    /// </param>
-    /// <param name="arguments">
-    /// Values
-    /// </param>
-    /// <returns>
-    /// The evaluate quick result.
-    /// </returns>
+    /// If the macro cannot provide any result that can be evaluated very quickly, it should return null.</summary>
+    /// <param name="context"></param>
+    /// <param name="arguments">Values</param>
+    /// <returns>The evaluate quick result.</returns>
     public string EvaluateQuickResult(IHotspotContext context, IList<string> arguments)
     {
       return null;
     }
 
-    /// <summary>
-    /// The get lookup items.
-    /// </summary>
-    /// <param name="context">
-    /// The context.
-    /// </param>
-    /// <param name="arguments">
-    /// The arguments.
-    /// </param>
-    /// <returns>
-    /// </returns>
+    /// <summary>The get lookup items.</summary>
+    /// <param name="context">The context.</param>
+    /// <param name="arguments">The arguments.</param>
+    /// <returns></returns>
     public HotspotItems GetLookupItems(IHotspotContext context, IList<string> arguments)
     {
       var solution = context.SessionContext.Solution;
@@ -94,29 +83,17 @@ namespace AgentJohnson.LiveMacros
       return result;
     }
 
-    /// <summary>
-    /// The get placeholder.
-    /// </summary>
-    /// <returns>
-    /// The get placeholder.
-    /// </returns>
+    /// <summary>The get placeholder.</summary>
+    /// <returns>The get placeholder.</returns>
     public string GetPlaceholder()
     {
       return "a";
     }
 
-    /// <summary>
-    /// The handle expansion.
-    /// </summary>
-    /// <param name="context">
-    /// The context.
-    /// </param>
-    /// <param name="arguments">
-    /// The arguments.
-    /// </param>
-    /// <returns>
-    /// The handle expansion.
-    /// </returns>
+    /// <summary>The handle expansion.</summary>
+    /// <param name="context">The context.</param>
+    /// <param name="arguments">The arguments.</param>
+    /// <returns>The handle expansion.</returns>
     public bool HandleExpansion(IHotspotContext context, IList<string> arguments)
     {
       return true;
@@ -128,15 +105,9 @@ namespace AgentJohnson.LiveMacros
 
     #region Methods
 
-    /// <summary>
-    /// Gets the text.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
-    /// <returns>
-    /// Returns the string.
-    /// </returns>
+    /// <summary>Gets the text.</summary>
+    /// <param name="element">The element.</param>
+    /// <returns>Returns the string.</returns>
     private static string GetText(IElement element)
     {
       var typeMemberDeclaration = element.GetContainingElement<ITypeMemberDeclaration>(true);

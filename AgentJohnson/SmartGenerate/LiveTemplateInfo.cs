@@ -11,9 +11,7 @@ namespace AgentJohnson.SmartGenerate
 {
   using System;
 
-  /// <summary>
-  /// The live template info.
-  /// </summary>
+  /// <summary>The live template info.</summary>
   internal class LiveTemplateInfo
   {
     #region Properties
@@ -42,12 +40,8 @@ namespace AgentJohnson.SmartGenerate
 
     #region Public Methods
 
-    /// <summary>
-    /// Returns the fully qualified type name of this instance.
-    /// </summary>
-    /// <returns>
-    /// A <see cref="T:System.String"/> containing a fully qualified type name.
-    /// </returns>
+    /// <summary>Returns the fully qualified type name of this instance.</summary>
+    /// <returns>A <see cref="T:System.String"/> containing a fully qualified type name.</returns>
     public override string ToString()
     {
       return this.Name;

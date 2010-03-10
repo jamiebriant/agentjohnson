@@ -7,8 +7,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-
-
 namespace AgentJohnson.Exceptions
 {
   using JetBrains.DocumentModel;
@@ -16,9 +14,7 @@ namespace AgentJohnson.Exceptions
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.Tree;
 
-  /// <summary>
-  /// The document thrown exception warning.
-  /// </summary>
+  /// <summary>The document thrown exception warning.</summary>
   [ConfigurableSeverityHighlighting(Name)]
   public class DocumentThrownExceptionWarning : SuggestionBase
   {
@@ -36,15 +32,8 @@ namespace AgentJohnson.Exceptions
 
     #region Constructors and Destructors
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="DocumentThrownExceptionWarning"/> class.
-    /// </summary>
-    /// <param name="solution">
-    /// The solution.
-    /// </param>
-    /// <param name="throwStatement">
-    /// The throw statement.
-    /// </param>
+    /// <summary>Initializes a new instance of the <see cref="DocumentThrownExceptionWarning"/> class.</summary>
+    /// <param name="throwStatement">The throw statement.</param>
     public DocumentThrownExceptionWarning(IThrowStatement throwStatement) : base(Name, throwStatement, GetRange(throwStatement), "Thrown exception should be documented [Agent Johnson]")
     {
       this.throwStatement = throwStatement;
@@ -86,11 +75,8 @@ namespace AgentJohnson.Exceptions
     /// <summary>
     /// Gets the range.
     /// </summary>
-    /// <param name="statement">
-    /// The statement.
-    /// </param>
-    /// <returns>
-    /// </returns>
+    /// <param name="statement">The statement.</param>
+    /// <returns>Returns the range.</returns>
     private static DocumentRange GetRange(IStatement statement)
     {
       return statement.GetDocumentRange();

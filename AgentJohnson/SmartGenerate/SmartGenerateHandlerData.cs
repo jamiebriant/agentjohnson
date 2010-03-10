@@ -9,9 +9,7 @@
 
 namespace AgentJohnson.SmartGenerate
 {
-  /// <summary>
-  /// Defines the smart generate handler data class.
-  /// </summary>
+  /// <summary>Defines the smart generate handler data class.</summary>
   internal class SmartGenerateHandlerData
   {
     #region Properties
@@ -44,12 +42,8 @@ namespace AgentJohnson.SmartGenerate
 
     #region Public Methods
 
-    /// <summary>
-    /// Returns the fully qualified type name of this instance.
-    /// </summary>
-    /// <returns>
-    /// A <see cref="T:System.String"/> containing a fully qualified type name.
-    /// </returns>
+    /// <summary>Returns the fully qualified type name of this instance.</summary>
+    /// <returns>A <see cref="T:System.String"/> containing a fully qualified type name.</returns>
     public override string ToString()
     {
       return this.Name;

@@ -16,9 +16,7 @@ namespace AgentJohnson.RecentChanges
   using JetBrains.ProjectModel;
   using JetBrains.ReSharper.Features.Environment.RecentFiles;
 
-  /// <summary>
-  /// Defines the recent changes class.
-  /// </summary>
+  /// <summary>Defines the recent changes class.</summary>
   public partial class RecentChanges : Form
   {
     #region Constants and Fields
@@ -54,12 +52,8 @@ namespace AgentJohnson.RecentChanges
 
     #region Public Methods
 
-    /// <summary>
-    /// Loads the specified solution.
-    /// </summary>
-    /// <param name="solution">
-    /// The solution.
-    /// </param>
+    /// <summary>Loads the specified solution.</summary>
+    /// <param name="solution">The solution.</param>
     public void LoadChanges(ISolution solution)
     {
       this.solution = solution;
@@ -101,9 +95,9 @@ namespace AgentJohnson.RecentChanges
 
         var l = new Selection
         {
-          Text = labelText,
-          SelectionStart = selectionStart,
-          SelectionLength = selectionLength,
+          Text = labelText, 
+          SelectionStart = selectionStart, 
+          SelectionLength = selectionLength, 
         };
 
         this.Listbox.Items.Add(l);
@@ -125,27 +119,13 @@ namespace AgentJohnson.RecentChanges
 
     #region Methods
 
-    /// <summary>
-    /// Reads the file.
-    /// </summary>
-    /// <param name="projectFile">
-    /// The project file.
-    /// </param>
-    /// <param name="caretOffset">
-    /// The caret offset.
-    /// </param>
-    /// <param name="line">
-    /// The current line.
-    /// </param>
-    /// <param name="position">
-    /// The position.
-    /// </param>
-    /// <param name="selectionStart">
-    /// The selection start.
-    /// </param>
-    /// <param name="selectionLength">
-    /// Length of the selection.
-    /// </param>
+    /// <summary>Reads the file.</summary>
+    /// <param name="projectFile">The project file.</param>
+    /// <param name="caretOffset">The caret offset.</param>
+    /// <param name="line">The current line.</param>
+    /// <param name="position">The position.</param>
+    /// <param name="selectionStart">The selection start.</param>
+    /// <param name="selectionLength">Length of the selection.</param>
     private static void ReadFile(IProjectFile projectFile, int caretOffset, out int line, out int position, out int selectionStart, out int selectionLength)
     {
       using (var stream = projectFile.CreateReadStream())
@@ -156,27 +136,13 @@ namespace AgentJohnson.RecentChanges
       }
     }
 
-    /// <summary>
-    /// Reads the text.
-    /// </summary>
-    /// <param name="reader">
-    /// The reader.
-    /// </param>
-    /// <param name="caretOffset">
-    /// The caret offset.
-    /// </param>
-    /// <param name="line">
-    /// The current line.
-    /// </param>
-    /// <param name="position">
-    /// The position.
-    /// </param>
-    /// <param name="selectionStart">
-    /// The selection start.
-    /// </param>
-    /// <param name="selectionLength">
-    /// Length of the selection.
-    /// </param>
+    /// <summary>Reads the text.</summary>
+    /// <param name="reader">The reader.</param>
+    /// <param name="caretOffset">The caret offset.</param>
+    /// <param name="line">The current line.</param>
+    /// <param name="position">The position.</param>
+    /// <param name="selectionStart">The selection start.</param>
+    /// <param name="selectionLength">Length of the selection.</param>
     private static void ReadText(TextReader reader, int caretOffset, out int line, out int position, out int selectionStart, out int selectionLength)
     {
       line = 1;
@@ -210,9 +176,7 @@ namespace AgentJohnson.RecentChanges
       position = caretOffset - (offset - s.Length) + 1;
     }
 
-    /// <summary>
-    /// Accepts this instance.
-    /// </summary>
+    /// <summary>Accepts this instance.</summary>
     private void Accept()
     {
       var text = this.Preview.SelectedText;
@@ -226,15 +190,9 @@ namespace AgentJohnson.RecentChanges
       this.Close();
     }
 
-    /// <summary>
-    /// Codes the on key down.
-    /// </summary>
-    /// <param name="sender">
-    /// The sender.
-    /// </param>
-    /// <param name="args">
-    /// The <see cref="System.Windows.Forms.KeyEventArgs"/> instance containing the event data.
-    /// </param>
+    /// <summary>Codes the on key down.</summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="args">The <see cref="System.Windows.Forms.KeyEventArgs"/> instance containing the event data.</param>
     private void CodeOnKeyDown(object sender, KeyEventArgs args)
     {
       if (args.KeyCode == Keys.Escape)
@@ -249,15 +207,9 @@ namespace AgentJohnson.RecentChanges
       }
     }
 
-    /// <summary>
-    /// Handles the SelectedIndexChanged event of the <c>Listbox</c> control.
-    /// </summary>
-    /// <param name="sender">
-    /// The source of the event.
-    /// </param>
-    /// <param name="e">
-    /// The <see cref="System.EventArgs"/> instance containing the event data.
-    /// </param>
+    /// <summary>Handles the SelectedIndexChanged event of the <c>Listbox</c> control.</summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
     private void Listbox_SelectedIndexChanged(object sender, EventArgs e)
     {
       var selectedIndex = this.Listbox.SelectedIndex;
@@ -309,9 +261,7 @@ namespace AgentJohnson.RecentChanges
 
     #endregion
 
-    /// <summary>
-    /// Defines the location class.
-    /// </summary>
+    /// <summary>Defines the location class.</summary>
     private class Selection
     {
       #region Properties
@@ -338,12 +288,8 @@ namespace AgentJohnson.RecentChanges
 
       #region Public Methods
 
-      /// <summary>
-      /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
-      /// </summary>
-      /// <returns>
-      /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
-      /// </returns>
+      /// <summary>Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.</summary>
+      /// <returns>A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.</returns>
       public override string ToString()
       {
         return this.Text;

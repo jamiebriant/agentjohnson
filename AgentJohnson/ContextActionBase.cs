@@ -7,12 +7,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using JetBrains.Annotations;
-using JetBrains.DocumentModel;
 namespace AgentJohnson
 {
   using System;
+  using JetBrains.Annotations;
   using JetBrains.Application;
+  using JetBrains.DocumentModel;
   using JetBrains.ProjectModel;
   using JetBrains.ReSharper.Feature.Services.Bulbs;
   using JetBrains.ReSharper.Intentions.CSharp.DataProviders;
@@ -21,26 +21,15 @@ namespace AgentJohnson
   using JetBrains.TextControl;
   using JetBrains.Util;
 
-  /// <summary>
-  /// Represents the base of a context action.
-  /// </summary>
-  public abstract class ContextActionBase: IBulbItem, IContextAction
+  /// <summary>Represents the base of a context action.</summary>
+  public abstract class ContextActionBase : IBulbItem, IContextAction
   {
     #region Constants and Fields
 
     /// <summary>
     /// The current provider.
     /// </summary>
-      private readonly IContextActionDataProvider provider;
-    /// <summary>
-    /// Gets the provider.
-    /// </summary>
-    /// <value>The provider.</value>
-    [NotNull]
-    public IContextActionDataProvider Provider
-      {
-          get { return provider; }
-      }
+    private readonly IContextActionDataProvider provider;
 
     /// <summary>
     /// Indicates if transactions should be started.
@@ -51,20 +40,18 @@ namespace AgentJohnson
 
     #region Constructors and Destructors
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ContextActionBase"/> class.
-    /// </summary>
-    /// <param name="provider">
-    /// The provider.
-    /// </param>
+    /// <summary>Initializes a new instance of the <see cref="ContextActionBase"/> class.</summary>
+    /// <param name="provider">The provider.</param>
     protected ContextActionBase([NotNull] ICSharpContextActionDataProvider provider)
     {
-        this.provider = provider;
+      this.provider = provider;
     }
 
     #endregion
 
-    #region Properties
+    #region Implemented Interfaces
+
+    #region IBulbAction
 
     /// <summary>
     /// Gets the items.
@@ -78,6 +65,41 @@ namespace AgentJohnson
         {
           this
         };
+      }
+    }
+
+    #endregion
+
+    #region IBulbItem
+
+    /// <summary>
+    /// Gets the text.
+    /// </summary>
+    /// <value>The bulb text.</value>
+    string IBulbItem.Text
+    {
+      get
+      {
+        return this.GetText();
+      }
+    }
+
+    #endregion
+
+    #endregion
+
+    #region Properties
+
+    /// <summary>
+    /// Gets the provider.
+    /// </summary>
+    /// <value>The provider.</value>
+    [NotNull]
+    public IContextActionDataProvider Provider
+    {
+      get
+      {
+        return this.provider;
       }
     }
 
@@ -122,27 +144,37 @@ namespace AgentJohnson
       }
     }
 
-    /// <summary>
-    /// Gets the text.
-    /// </summary>
-    /// <value>The bulb text.</value>
-    string IBulbItem.Text
-    {
-      get
-      {
-        return this.GetText();
-      }
-    }
+    #endregion
+
+    #region Public Methods
+
+    /// <summary>Determines whether this instance is available.</summary>
+    /// <param name="element">The element.</param>
+    /// <returns><c>true</c> if this instance is available; otherwise, <c>false</c>.</returns>
+    public abstract bool IsAvailable(IElement element);
 
     #endregion
 
     #region Implemented Interfaces
 
-    #region IBulbItem
+    #region IBulbAction
 
     /// <summary>
-    /// Executes the specified solution.
+    /// Check if this action is available at the constructed context.
+    /// Actions could store precalculated info in <paramref name="cache"/> to share it between different actions
     /// </summary>
+    /// <param name="cache">The cache.</param>
+    /// <returns>The is available.</returns>
+    public bool IsAvailable(IUserDataHolder cache)
+    {
+      return this.IsAvailableInternal();
+    }
+
+    #endregion
+
+    #region IBulbItem
+
+    /// <summary>Executes the specified solution.</summary>
     /// <param name="solution">The solution.</param>
     /// <param name="textControl">The text control.</param>
     void IBulbItem.Execute(ISolution solution, ITextControl textControl)
@@ -177,33 +209,26 @@ namespace AgentJohnson
     #endregion
 
     #region Methods
-    /// <summary>
-    /// Returns the Modification Cookie.
-    /// </summary>
+
+    /// <summary>Returns the Modification Cookie.</summary>
     /// <returns>The cookie.</returns>
     [NotNull]
     protected ModificationCookie EnsureWritable()
     {
-        if (Solution != null)
-        {
-            return DocumentManager.GetInstance(Solution).EnsureWritable(TextControl.Document);
-        }
-        return new ModificationCookie(EnsureWritableResult.FAILURE);
+      if (this.Solution != null)
+      {
+        return DocumentManager.GetInstance(this.Solution).EnsureWritable(this.TextControl.Document);
+      }
+
+      return new ModificationCookie(EnsureWritableResult.FAILURE);
     }
-    /// <summary>
-    /// Executes this instance.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
+
+    /// <summary>Executes this instance.</summary>
+    /// <param name="element">The element.</param>
     protected abstract void Execute(IElement element);
 
-    /// <summary>
-    /// Called to apply context action. No locks is taken before call
-    /// </summary>
-    /// <param name="param">
-    /// The parameters.
-    /// </param>
+    /// <summary>Called to apply context action. No locks is taken before call</summary>
+    /// <param name="param">The parameters.</param>
     protected void ExecuteInternal(params object[] param)
     {
       var element = param[0] as IElement;
@@ -220,33 +245,14 @@ namespace AgentJohnson
       this.PostExecute();
     }
 
-    /// <summary>
-    /// Gets the text.
-    /// </summary>
-    /// <returns>
-    /// The context action text.
-    /// </returns>
+    /// <summary>Gets the text.</summary>
+    /// <returns>The context action text.</returns>
     protected abstract string GetText();
 
-    /// <summary>
-    /// Determines whether this instance is available.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
-    /// <returns>
-    /// <c>true</c> if this instance is available; otherwise, <c>false</c>.
-    /// </returns>
-    public abstract bool IsAvailable(IUserDataHolder element);
-
-    /// <summary>
-    /// Called to check if ContextAction is available.
+    /// <summary>Called to check if ContextAction is available.
     /// ReadLock is taken
-    /// Will not be called if <c>PsiManager</c>, ProjectFile of Solution == <c>null</c>
-    /// </summary>
-    /// <returns>
-    /// The is available internal.
-    /// </returns>
+    /// Will not be called if <c>PsiManager</c>, ProjectFile of Solution == <c>null</c></summary>
+    /// <returns>The is available internal.</returns>
     protected bool IsAvailableInternal()
     {
       Shell.Instance.Locks.AssertReadAccessAllowed();
@@ -260,19 +266,13 @@ namespace AgentJohnson
       return this.IsAvailable(element);
     }
 
-    /// <summary>
-    /// Posts the execute.
-    /// </summary>
+    /// <summary>Posts the execute.</summary>
     protected virtual void PostExecute()
     {
     }
 
-    /// <summary>
-    /// Modifies the specified handler.
-    /// </summary>
-    /// <param name="handler">
-    /// The handler.
-    /// </param>
+    /// <summary>Modifies the specified handler.</summary>
+    /// <param name="handler">The handler.</param>
     private void Modify(Action handler)
     {
       var psiManager = PsiManager.GetInstance(this.Solution);
@@ -281,7 +281,7 @@ namespace AgentJohnson
         return;
       }
 
-      using (var cookie = EnsureWritable())
+      using (var cookie = this.EnsureWritable())
       {
         if (cookie.EnsureWritableResult != EnsureWritableResult.SUCCESS)
         {

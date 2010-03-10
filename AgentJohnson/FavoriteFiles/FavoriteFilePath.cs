@@ -9,9 +9,7 @@
 
 namespace AgentJohnson.FavoriteFiles
 {
-  /// <summary>
-  /// Represents a FavoriteFilePath.
-  /// </summary>
+  /// <summary>Represents a FavoriteFilePath.</summary>
   public class FavoriteFilePath
   {
     #region Constants and Fields
@@ -39,12 +37,8 @@ namespace AgentJohnson.FavoriteFiles
       this._projectName = string.Empty;
     }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="FavoriteFilePath"/> class.
-    /// </summary>
-    /// <param name="path">
-    /// The path.
-    /// </param>
+    /// <summary>Initializes a new instance of the <see cref="FavoriteFilePath"/> class.</summary>
+    /// <param name="path">The path.</param>
     public FavoriteFilePath(string path)
     {
       this._path = path;
@@ -112,12 +106,8 @@ namespace AgentJohnson.FavoriteFiles
 
     #region Public Methods
 
-    /// <summary>
-    /// Returns a <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.
-    /// </summary>
-    /// <returns>
-    /// A <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.
-    /// </returns>
+    /// <summary>Returns a <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.</summary>
+    /// <returns>A <see cref="T:System.String"></see> that represents the current <see cref="T:System.Object"></see>.</returns>
     /// <filterpriority>2</filterpriority>
     public override string ToString()
     {

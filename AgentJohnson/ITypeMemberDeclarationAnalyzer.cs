@@ -11,9 +11,7 @@ namespace AgentJohnson
 {
   using JetBrains.ReSharper.Psi.Tree;
 
-  /// <summary>
-  /// Function declaration analyzers should implement this.
-  /// </summary>
+  /// <summary>Function declaration analyzers should implement this.</summary>
   public interface ITypeMemberDeclarationAnalyzer
   {
     #region Public Methods
@@ -21,11 +19,8 @@ namespace AgentJohnson
     /// <summary>
     /// The analyze.
     /// </summary>
-    /// <param name="typeMemberDeclaration">
-    /// The type member declaration.
-    /// </param>
-    /// <returns>
-    /// </returns>
+    /// <param name="typeMemberDeclaration">The type member declaration.</param>
+    /// <returns>Returns the suggestion base.</returns>
     SuggestionBase[] Analyze(ITypeMemberDeclaration typeMemberDeclaration);
 
     #endregion

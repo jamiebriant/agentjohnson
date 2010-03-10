@@ -1,12 +1,19 @@
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="MethodBegin.cs" company="Jakob Christensen">
+//   Copyright (C) 2009 Jakob Christensen
+// </copyright>
+// <summary>
+//   The return.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
 namespace AgentJohnson.SmartGenerate.LiveTemplates
 {
   using System.Collections.Generic;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.Tree;
 
-  /// <summary>
-  /// The return.
-  /// </summary>
+  /// <summary>The return.</summary>
   [LiveTemplate("At the start of a method", "Executes a Live Template at the start of a method.")]
   public class MethodBegin : ILiveTemplate
   {
@@ -14,15 +21,9 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
 
     #region ILiveTemplate
 
-    /// <summary>
-    /// Gets the name of the template.
-    /// </summary>
-    /// <param name="smartGenerateParameters">
-    /// The smart generate parameters.
-    /// </param>
-    /// <returns>
-    /// The items.
-    /// </returns>
+    /// <summary>Gets the name of the template.</summary>
+    /// <param name="smartGenerateParameters">The smart generate parameters.</param>
+    /// <returns>The items.</returns>
     public IEnumerable<LiveTemplateItem> GetItems(SmartGenerateParameters smartGenerateParameters)
     {
       var element = smartGenerateParameters.Element;
@@ -43,21 +44,24 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
       if (block != methodDeclaration.Body)
       {
         return null;
-      }                                 
+      }
 
-      var statement = block.Statements[0];
-      var statementRange = statement.GetDocumentRange();
-      var statementStart = statementRange.TextRange.StartOffset;
-
-      if (element.GetTreeTextRange().StartOffset.Offset > statementStart)
+      if (block.Statements.Count > 0)
       {
-        return null;
+        var statement = block.Statements[0];
+        var statementRange = statement.GetDocumentRange();
+        var statementStart = statementRange.TextRange.StartOffset;
+
+        if (element.GetTreeTextRange().StartOffset.Offset > statementStart)
+        {
+          return null;
+        }
       }
 
       var liveTemplateItem = new LiveTemplateItem
       {
-        MenuText = "At the start of a method",
-        Description = "At the start of a method",
+        MenuText = "At the start of a method", 
+        Description = "At the start of a method", 
         Shortcut = "At the start of a method"
       };
 

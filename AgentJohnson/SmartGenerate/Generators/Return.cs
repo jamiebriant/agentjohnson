@@ -14,20 +14,14 @@ namespace AgentJohnson.SmartGenerate.Generators
   using JetBrains.ReSharper.Psi.Tree;
   using JetBrains.ReSharper.Psi.Util;
 
-  /// <summary>
-  /// The return.
-  /// </summary>
+  /// <summary>The return.</summary>
   [SmartGenerate("Generate 'return'", "Generates a 'return' statement.", Priority = 1000)]
   public class Return : SmartGenerateHandlerBase
   {
     #region Methods
 
-    /// <summary>
-    /// Gets the items.
-    /// </summary>
-    /// <param name="smartGenerateParameters">
-    /// The get menu items parameters.
-    /// </param>
+    /// <summary>Gets the items.</summary>
+    /// <param name="smartGenerateParameters">The get menu items parameters.</param>
     protected override void GetItems(SmartGenerateParameters smartGenerateParameters)
     {
       var element = smartGenerateParameters.Element;

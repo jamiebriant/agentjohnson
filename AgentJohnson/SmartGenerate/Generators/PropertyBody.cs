@@ -14,20 +14,14 @@ namespace AgentJohnson.SmartGenerate.Generators
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.Naming.Settings;
 
-  /// <summary>
-  /// The property body.
-  /// </summary>
+  /// <summary>The property body.</summary>
   [SmartGenerate("Generate property accessor body", "Generates the body of either a getter or a setter property accessor.", Priority = 0)]
   public class PropertyBody : SmartGenerateHandlerBase
   {
     #region Methods
 
-    /// <summary>
-    /// Gets the items.
-    /// </summary>
-    /// <param name="smartGenerateParameters">
-    /// The get menu items parameters.
-    /// </param>
+    /// <summary>Gets the items.</summary>
+    /// <param name="smartGenerateParameters">The get menu items parameters.</param>
     protected override void GetItems(SmartGenerateParameters smartGenerateParameters)
     {
       var element = smartGenerateParameters.Element;

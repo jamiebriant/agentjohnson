@@ -7,35 +7,27 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using JetBrains.Annotations;
-using JetBrains.DocumentModel;
-using JetBrains.Util;
-
 namespace AgentJohnson.Statements
 {
   using System.Text;
+  using JetBrains.Annotations;
+  using JetBrains.Application.CommandProcessing;
+  using JetBrains.DocumentModel;
   using JetBrains.ReSharper.Feature.Services.Bulbs;
-  using JetBrains.ReSharper.Intentions;
   using JetBrains.ReSharper.Intentions.CSharp.DataProviders;
   using JetBrains.ReSharper.Psi;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.Tree;
-    using JetBrains.TextControl;
+  using JetBrains.TextControl;
 
-  /// <summary>
-  /// Defines the pull parameters class.
-  /// </summary>
+  /// <summary>Defines the pull parameters class.</summary>
   [ContextAction(Description = "Pulls the containing methods parameters to this method call.", Name = "Pull parameters", Priority = -1, Group = "C#")]
   public class PullParameters : ContextActionBase
   {
     #region Constructors and Destructors
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="PullParameters"/> class.
-    /// </summary>
-    /// <param name="provider">
-    /// The provider.
-    /// </param>
+    /// <summary>Initializes a new instance of the <see cref="PullParameters"/> class.</summary>
+    /// <param name="provider">The provider.</param>
     public PullParameters([NotNull] ICSharpContextActionDataProvider provider) : base(provider)
     {
       this.StartTransaction = false;
@@ -43,21 +35,39 @@ namespace AgentJohnson.Statements
 
     #endregion
 
+    #region Public Methods
+
+    /// <summary>Determines whether this instance is available.</summary>
+    /// <param name="element">The element.</param>
+    /// <returns><c>true</c> if this instance is available; otherwise, <c>false</c>.</returns>
+    public override bool IsAvailable(IElement element)
+    {
+      if (IsExpressionStatement(element))
+      {
+        return true;
+      }
+
+      if (IsReferenceExpression(element))
+      {
+        return true;
+      }
+
+      return IsEmptyParentheses(element);
+    }
+
+    #endregion
+
     #region Methods
 
-    /// <summary>
-    /// Executes this instance.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
+    /// <summary>Executes this instance.</summary>
+    /// <param name="element">The element.</param>
     protected override void Execute([NotNull] IElement element)
     {
-        using (DocumentManager.GetInstance(Solution).EnsureWritable(TextControl.Document))
+      using (DocumentManager.GetInstance(this.Solution).EnsureWritable(this.TextControl.Document))
       {
         try
         {
-          JetBrains.Application.CommandProcessing.CommandProcessor.Instance.BeginCommand("PullParameters");
+          CommandProcessor.Instance.BeginCommand("PullParameters");
 
           if (IsExpressionStatement(element))
           {
@@ -75,62 +85,22 @@ namespace AgentJohnson.Statements
         }
         finally
         {
-          JetBrains.Application.CommandProcessing.CommandProcessor.Instance.EndCommand();
+          CommandProcessor.Instance.EndCommand();
         }
       }
     }
 
-    /// <summary>
-    /// Gets the text.
-    /// </summary>
-    /// <returns>
-    /// The text.
-    /// </returns>
+    /// <summary>Gets the text.</summary>
+    /// <returns>The text.</returns>
     [NotNull]
     protected override string GetText()
     {
       return "Pull parameters [Agent Johnson]";
     }
 
-    /// <summary>
-    /// Determines whether this instance is available.
-    /// </summary>
-    /// <param name="cache">
-    /// The element.
-    /// </param>
-    /// <returns>
-    /// <c>true</c> if this instance is available; otherwise, <c>false</c>.
-    /// </returns>
-    public override bool IsAvailable(IUserDataHolder cache)
-    {
-        var expression = Provider.GetSelectedElement<IExpression>(false, true);
-        if (expression == null)
-        {
-            return false;
-        }
-
-      if (IsExpressionStatement(expression))
-      {
-        return true;
-      }
-
-      if (IsReferenceExpression(expression))
-      {
-        return true;
-      }
-
-      return IsEmptyParentheses(expression);
-    }
-
-    /// <summary>
-    /// Gets the text.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
-    /// <returns>
-    /// The text.
-    /// </returns>
+    /// <summary>Gets the text.</summary>
+    /// <param name="element">The element.</param>
+    /// <returns>The text.</returns>
     [CanBeNull]
     private static string GetText([NotNull] IElement element)
     {
@@ -169,15 +139,9 @@ namespace AgentJohnson.Statements
       return parametersBuilder.ToString();
     }
 
-    /// <summary>
-    /// Handles the empty parentheses.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
-    /// <returns>
-    /// <c>true</c> if [is empty parentheses] [the specified element]; otherwise, <c>false</c>.
-    /// </returns>
+    /// <summary>Handles the empty parentheses.</summary>
+    /// <param name="element">The element.</param>
+    /// <returns><c>true</c> if [is empty parentheses] [the specified element]; otherwise, <c>false</c>.</returns>
     private static bool IsEmptyParentheses([NotNull] IElement element)
     {
       var text = element.GetText();
@@ -218,15 +182,12 @@ namespace AgentJohnson.Statements
       return true;
     }
 
-    /// <summary>
-    /// Handles the end of line.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
+    /// <summary>Handles the end of line.</summary>
+    /// <param name="element">The element.</param>
     /// <return>
     /// <c>true</c> if [is expression statement] [the specified element]; otherwise, <c>false</c>.
     /// </return>
+    /// <returns>The is expression statement.</returns>
     private static bool IsExpressionStatement([NotNull] IElement element)
     {
       var treeNode = element.ToTreeNode();
@@ -252,15 +213,9 @@ namespace AgentJohnson.Statements
       return true;
     }
 
-    /// <summary>
-    /// Determines whether [is reference expression] [the specified element].
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
-    /// <returns>
-    /// <c>true</c> if [is reference expression] [the specified element]; otherwise, <c>false</c>.
-    /// </returns>
+    /// <summary>Determines whether [is reference expression] [the specified element].</summary>
+    /// <param name="element">The element.</param>
+    /// <returns><c>true</c> if [is reference expression] [the specified element]; otherwise, <c>false</c>.</returns>
     private static bool IsReferenceExpression([NotNull] IElement element)
     {
       var treeNode = element.ToTreeNode();
@@ -273,36 +228,24 @@ namespace AgentJohnson.Statements
       return false;
     }
 
-    /// <summary>
-    /// Handles the empty parentheses.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
+    /// <summary>Handles the empty parentheses.</summary>
+    /// <param name="element">The element.</param>
     private void HandleEmptyParentheses([NotNull] IElement element)
     {
       var text = GetText(element);
       this.TextControl.Document.InsertText(this.TextControl.Caret.Offset(), text);
     }
 
-    /// <summary>
-    /// Handles the end of line.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
+    /// <summary>Handles the end of line.</summary>
+    /// <param name="element">The element.</param>
     private void HandleExpressionStatement([NotNull] IElement element)
     {
       var text = GetText(element);
       this.TextControl.Document.InsertText(this.TextControl.Caret.Offset(), "(" + text + ");");
     }
 
-    /// <summary>
-    /// Handles the reference expression.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
+    /// <summary>Handles the reference expression.</summary>
+    /// <param name="element">The element.</param>
     private void HandleReferenceExpression([NotNull] IElement element)
     {
       var text = GetText(element);

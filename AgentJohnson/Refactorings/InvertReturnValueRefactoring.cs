@@ -9,7 +9,7 @@
 
 namespace AgentJohnson.Refactorings
 {
-  using Strings;
+  using AgentJohnson.Strings;
   using JetBrains.Application;
   using JetBrains.DocumentModel;
   using JetBrains.ProjectModel;
@@ -18,10 +18,9 @@ namespace AgentJohnson.Refactorings
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.Tree;
   using JetBrains.TextControl;
+  using JetBrains.Util;
 
-  /// <summary>
-  /// Represents a Refactoring.
-  /// </summary>
+  /// <summary>Represents a Refactoring.</summary>
   public class InvertReturnValueRefactoring
   {
     #region Constants and Fields
@@ -40,16 +39,10 @@ namespace AgentJohnson.Refactorings
 
     #region Constructors and Destructors
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="InvertReturnValueRefactoring"/> class. 
-    /// Initializes a new instance of the <see cref="IntroduceStringConstantRefactoring"/> class.
-    /// </summary>
-    /// <param name="solution">
-    /// The solution.
-    /// </param>
-    /// <param name="textControl">
-    /// The text control.
-    /// </param>
+    /// <summary>Initializes a new instance of the <see cref="InvertReturnValueRefactoring"/> class. 
+    /// Initializes a new instance of the <see cref="IntroduceStringConstantRefactoring"/> class.</summary>
+    /// <param name="solution">The solution.</param>
+    /// <param name="textControl">The text control.</param>
     public InvertReturnValueRefactoring(ISolution solution, ITextControl textControl)
     {
       this.solution = solution;
@@ -88,15 +81,9 @@ namespace AgentJohnson.Refactorings
 
     #region Public Methods
 
-    /// <summary>
-    /// Determines whether the specified solution is available.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
-    /// <returns>
-    /// <c>true</c> if the specified solution is available; otherwise, <c>false</c>.
-    /// </returns>
+    /// <summary>Determines whether the specified solution is available.</summary>
+    /// <param name="element">The element.</param>
+    /// <returns><c>true</c> if the specified solution is available; otherwise, <c>false</c>.</returns>
     public static bool IsAvailable(IElement element)
     {
       Shell.Instance.Locks.AssertReadAccessAllowed();
@@ -120,9 +107,7 @@ namespace AgentJohnson.Refactorings
       return name == "bool";
     }
 
-    /// <summary>
-    /// Executes this instance.
-    /// </summary>
+    /// <summary>Executes this instance.</summary>
     public void Execute()
     {
       var element = this.GetElementAtCaret();
@@ -137,9 +122,9 @@ namespace AgentJohnson.Refactorings
         return;
       }
 
-      using (var cookie = DocumentManager.GetInstance(solution).EnsureWritable(textControl.Document))
+      using (var cookie = DocumentManager.GetInstance(this.solution).EnsureWritable(this.textControl.Document))
       {
-        if (cookie.EnsureWritableResult != global::JetBrains.Util.EnsureWritableResult.SUCCESS)
+        if (cookie.EnsureWritableResult != EnsureWritableResult.SUCCESS)
         {
           return;
         }
@@ -155,15 +140,9 @@ namespace AgentJohnson.Refactorings
 
     #region Methods
 
-    /// <summary>
-    /// Determines whether [is not expression] [the specified value].
-    /// </summary>
-    /// <param name="value">
-    /// The value.
-    /// </param>
-    /// <returns>
-    /// <c>true</c> if [is not expression] [the specified value]; otherwise, <c>false</c>.
-    /// </returns>
+    /// <summary>Determines whether [is not expression] [the specified value].</summary>
+    /// <param name="value">The value.</param>
+    /// <returns><c>true</c> if [is not expression] [the specified value]; otherwise, <c>false</c>.</returns>
     private static bool IsNotExpression(ICSharpExpression value)
     {
       var unaryOperatorExpression = value as IUnaryOperatorExpression;
@@ -183,12 +162,8 @@ namespace AgentJohnson.Refactorings
       return operatorSign == "!";
     }
 
-    /// <summary>
-    /// Executes the specified type member declaration.
-    /// </summary>
-    /// <param name="typeMemberDeclaration">
-    /// The type member declaration.
-    /// </param>
+    /// <summary>Executes the specified type member declaration.</summary>
+    /// <param name="typeMemberDeclaration">The type member declaration.</param>
     private void Execute(ITypeMemberDeclaration typeMemberDeclaration)
     {
       var processor = new RecursiveElementProcessor(this.ReplaceReturnValue);
@@ -196,12 +171,8 @@ namespace AgentJohnson.Refactorings
       typeMemberDeclaration.ProcessDescendants(processor);
     }
 
-    /// <summary>
-    /// Gets the element at caret.
-    /// </summary>
-    /// <returns>
-    /// The element at caret.
-    /// </returns>
+    /// <summary>Gets the element at caret.</summary>
+    /// <returns>The element at caret.</returns>
     private IElement GetElementAtCaret()
     {
       var projectFile = DocumentManager.GetInstance(this.Solution).GetProjectFile(this.TextControl.Document);
@@ -219,12 +190,8 @@ namespace AgentJohnson.Refactorings
       return file.FindTokenAt(new TreeOffset(this.TextControl.Caret.Offset()));
     }
 
-    /// <summary>
-    /// Actions the specified t.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
+    /// <summary>Actions the specified t.</summary>
+    /// <param name="element">The element.</param>
     private void ReplaceReturnValue(IElement element)
     {
       var returnStatement = element as IReturnStatement;

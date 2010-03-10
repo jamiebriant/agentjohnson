@@ -18,21 +18,16 @@ namespace AgentJohnson.SmartGenerate.Generators
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.Tree;
   using JetBrains.ReSharper.Psi.Util;
+  using JetBrains.Util;
 
-  /// <summary>
-  /// Defines the generate assignment check class.
-  /// </summary>
+  /// <summary>Defines the generate assignment check class.</summary>
   [SmartGenerate("Generate check if variable is null", "Generates statements that check for null or empty string.", Priority = 0)]
   public class AssignmentCheck : SmartGenerateHandlerBase
   {
     #region Methods
 
-    /// <summary>
-    /// Gets the items.
-    /// </summary>
-    /// <param name="smartGenerateParameters">
-    /// The get menu items parameters.
-    /// </param>
+    /// <summary>Gets the items.</summary>
+    /// <param name="smartGenerateParameters">The get menu items parameters.</param>
     protected override void GetItems(SmartGenerateParameters smartGenerateParameters)
     {
       var element = smartGenerateParameters.Element;
@@ -47,13 +42,13 @@ namespace AgentJohnson.SmartGenerate.Generators
       var name = scopeEntry.Name;
       var type = scopeEntry.Type;
 
-      var state = GetExpressionNullReferenceState(smartGenerateParameters, element, name);
+      var state = this.GetExpressionNullReferenceState(smartGenerateParameters, element, name);
       if (state == CSharpControlFlowNullReferenceState.NOT_NULL || state == CSharpControlFlowNullReferenceState.NULL)
       {
         return;
       }
 
-      JetBrains.Util.TextRange range = StatementUtil.GetNewStatementPosition(element);
+      var range = StatementUtil.GetNewStatementPosition(element);
 
       if (type.GetPresentableName(element.Language) == "string")
       {
@@ -68,60 +63,10 @@ namespace AgentJohnson.SmartGenerate.Generators
       }
     }
 
-    /// <summary>
-    /// Gets the state.
-    /// </summary>
-    /// <param name="smartGenerateParameters">
-    /// The smart generate parameters.
-    /// </param>
-    /// <param name="element">
-    /// The element.
-    /// </param>
-    /// <param name="name">
-    /// The variable name.
-    /// </param>
-    /// <returns>
-    /// The null reference state.
-    /// </returns>
-    private CSharpControlFlowNullReferenceState GetExpressionNullReferenceState(SmartGenerateParameters smartGenerateParameters, IElement element, string name)
-    {
-      var state = CSharpControlFlowNullReferenceState.UNKNOWN;
-
-      var psiManager = PsiManager.GetInstance(smartGenerateParameters.Solution);
-        
-      using (var cookie = EnsureWritable(smartGenerateParameters.Solution, smartGenerateParameters.TextControl.Document))
-      {
-        if (cookie.EnsureWritableResult != JetBrains.Util.EnsureWritableResult.SUCCESS)
-        {
-          return state;
-        }
-
-        using (CommandCookie.Create(string.Format("Context Action {0}", "AssignmentCheck")))
-        {
-          psiManager.DoTransaction(delegate
-          {
-            state = GetExpressionNullReferenceState(element, name);
-
-            throw new ProcessCancelledException();
-          });
-        }
-      }
-
-      return state;
-    }
-
-    /// <summary>
-    /// Gets the state.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
-    /// <param name="name">
-    /// The variable name.
-    /// </param>
-    /// <returns>
-    /// The null reference state.
-    /// </returns>
+    /// <summary>Gets the state.</summary>
+    /// <param name="element">The element.</param>
+    /// <param name="name">The variable name.</param>
+    /// <returns>The null reference state.</returns>
     private static CSharpControlFlowNullReferenceState GetExpressionNullReferenceState(IElement element, string name)
     {
       const CSharpControlFlowNullReferenceState UNKNOWN = CSharpControlFlowNullReferenceState.UNKNOWN;
@@ -166,6 +111,38 @@ namespace AgentJohnson.SmartGenerate.Generators
       var inspect = graf.Inspect(ValueAnalysisMode.OPTIMISTIC);
 
       return inspect.GetExpressionNullReferenceState(referenceExpression);
+    }
+
+    /// <summary>Gets the state.</summary>
+    /// <param name="smartGenerateParameters">The smart generate parameters.</param>
+    /// <param name="element">The element.</param>
+    /// <param name="name">The variable name.</param>
+    /// <returns>The null reference state.</returns>
+    private CSharpControlFlowNullReferenceState GetExpressionNullReferenceState(SmartGenerateParameters smartGenerateParameters, IElement element, string name)
+    {
+      var state = CSharpControlFlowNullReferenceState.UNKNOWN;
+
+      var psiManager = PsiManager.GetInstance(smartGenerateParameters.Solution);
+
+      using (var cookie = this.EnsureWritable(smartGenerateParameters.Solution, smartGenerateParameters.TextControl.Document))
+      {
+        if (cookie.EnsureWritableResult != EnsureWritableResult.SUCCESS)
+        {
+          return state;
+        }
+
+        using (CommandCookie.Create(string.Format("Context Action {0}", "AssignmentCheck")))
+        {
+          psiManager.DoTransaction(delegate
+          {
+            state = GetExpressionNullReferenceState(element, name);
+
+            throw new ProcessCancelledException();
+          });
+        }
+      }
+
+      return state;
     }
 
     #endregion

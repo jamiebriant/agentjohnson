@@ -11,9 +11,7 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
 {
   using System.Collections.Generic;
 
-  /// <summary>
-  /// The local variable context.
-  /// </summary>
+  /// <summary>The local variable context.</summary>
   [LiveTemplate("Local Variable Context", "Generate local Variable Context")]
   public class LocalVariableContext : ILiveTemplate
   {
@@ -21,15 +19,9 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
 
     #region ILiveTemplate
 
-    /// <summary>
-    /// Gets the name of the template.
-    /// </summary>
-    /// <param name="parameters">
-    /// The parameters.
-    /// </param>
-    /// <returns>
-    /// The items.
-    /// </returns>
+    /// <summary>Gets the name of the template.</summary>
+    /// <param name="parameters">The parameters.</param>
+    /// <returns>The items.</returns>
     IEnumerable<LiveTemplateItem> ILiveTemplate.GetItems(SmartGenerateParameters parameters)
     {
       var element = parameters.Element;
@@ -47,8 +39,8 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
 
       var liveTemplateItem = new LiveTemplateItem
       {
-        MenuText = string.Format("After declaration of variable of type '{0}'", type.GetPresentableName(element.Language)),
-        Description = string.Format("After declaration of variable of type '{0}'", type.GetPresentableName(element.Language)),
+        MenuText = string.Format("After declaration of variable of type '{0}'", type.GetPresentableName(element.Language)), 
+        Description = string.Format("After declaration of variable of type '{0}'", type.GetPresentableName(element.Language)), 
         Shortcut = string.Format("After declaration of variable of type '{0}'", type.GetLongPresentableName(element.Language))
       };
 

@@ -14,9 +14,7 @@ namespace AgentJohnson.Strings
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.Tree;
 
-  /// <summary>
-  /// The string empty analyzer.
-  /// </summary>
+  /// <summary>The string empty analyzer.</summary>
   public class StringEmptyAnalyzer : ITokenTypeAnalyzer
   {
     #region Constants and Fields
@@ -30,12 +28,8 @@ namespace AgentJohnson.Strings
 
     #region Constructors and Destructors
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="StringEmptyAnalyzer"/> class.
-    /// </summary>
-    /// <param name="solution">
-    /// The solution.
-    /// </param>
+    /// <summary>Initializes a new instance of the <see cref="StringEmptyAnalyzer"/> class.</summary>
+    /// <param name="solution">The solution.</param>
     public StringEmptyAnalyzer(ISolution solution)
     {
       this.solution = solution;
@@ -47,14 +41,9 @@ namespace AgentJohnson.Strings
 
     #region ITokenTypeAnalyzer
 
-    /// <summary>
-    /// Analyzes the specified statement.
-    /// </summary>
-    /// <param name="node">
-    /// The node.
-    /// </param>
-    /// <returns>
-    /// </returns>
+    /// <summary>Analyzes the specified statement.</summary>
+    /// <param name="node">The node.</param>
+    /// <returns>Returns the suggestion base.</returns>
     public SuggestionBase[] Analyze(ITokenNode node)
     {
       var type = node.GetTokenType();
@@ -74,6 +63,10 @@ namespace AgentJohnson.Strings
       }
 
       var parent = node.Parent;
+      if (parent == null)
+      {
+        return null;
+      }
 
       if (parent.Parent is ISwitchLabelStatement)
       {

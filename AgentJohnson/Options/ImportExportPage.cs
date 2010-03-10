@@ -13,13 +13,11 @@ namespace AgentJohnson.Options
   using System.IO;
   using System.Windows.Forms;
   using System.Xml;
-  using Strings;
-  using ValueAnalysis;
+  using AgentJohnson.Strings;
+  using AgentJohnson.ValueAnalysis;
   using JetBrains.UI.Options;
 
-  /// <summary>
-  /// The import export page.
-  /// </summary>
+  /// <summary>The import export page.</summary>
   [OptionsPage(NAME, "Agent Johnson Settings", "AgentJohnson.Resources.Shades.gif", ParentId = "Csharp", Sequence = 1)]
   public partial class ImportExportPage : UserControl, IOptionsPage
   {
@@ -44,7 +42,9 @@ namespace AgentJohnson.Options
 
     #endregion
 
-    #region Properties
+    #region Implemented Interfaces
+
+    #region IOptionsPage
 
     /// <summary>
     /// Control to be shown as page.
@@ -74,28 +74,22 @@ namespace AgentJohnson.Options
 
     #endregion
 
+    #endregion
+
     #region Implemented Interfaces
 
     #region IOptionsPage
 
-    /// <summary>
-    /// Invoked when OK button in the options dialog is pressed.
-    /// If the page returns <c>false</c>, the the options dialog won't be closed, and focus will be put into this page.
-    /// </summary>
-    /// <returns>
-    /// The on ok.
-    /// </returns>
+    /// <summary>Invoked when OK button in the options dialog is pressed.
+    /// If the page returns <c>false</c>, the the options dialog won't be closed, and focus will be put into this page.</summary>
+    /// <returns>The on ok.</returns>
     public bool OnOk()
     {
       return true;
     }
 
-    /// <summary>
-    /// Check if the settings on the page are consistent, and page could be closed.
-    /// </summary>
-    /// <returns>
-    /// <c>true</c> if page data is consistent.
-    /// </returns>
+    /// <summary>Check if the settings on the page are consistent, and page could be closed.</summary>
+    /// <returns><c>true</c> if page data is consistent.</returns>
     public bool ValidatePage()
     {
       return true;
@@ -107,15 +101,9 @@ namespace AgentJohnson.Options
 
     #region Methods
 
-    /// <summary>
-    /// Handles the Export_ click event.
-    /// </summary>
-    /// <param name="sender">
-    /// The sender.
-    /// </param>
-    /// <param name="e">
-    /// The <see cref="System.EventArgs"/> instance containing the event data.
-    /// </param>
+    /// <summary>Handles the Export_ click event.</summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
     private void Export_Click(object sender, EventArgs e)
     {
       if (this.SaveFileDialog.ShowDialog() != DialogResult.OK)
@@ -148,15 +136,9 @@ namespace AgentJohnson.Options
       File.WriteAllText(filename, stringWriter.ToString());
     }
 
-    /// <summary>
-    /// Handles the Import_ click event.
-    /// </summary>
-    /// <param name="sender">
-    /// The sender.
-    /// </param>
-    /// <param name="e">
-    /// The <see cref="System.EventArgs"/> instance containing the event data.
-    /// </param>
+    /// <summary>Handles the Import_ click event.</summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
     private void Import_Click(object sender, EventArgs e)
     {
       if (this.OpenFileDialog.ShowDialog() != DialogResult.OK)

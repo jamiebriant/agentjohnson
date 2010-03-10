@@ -15,20 +15,14 @@ namespace AgentJohnson.SmartGenerate.Generators
   using JetBrains.ReSharper.Feature.Services.LiveTemplates.LiveTemplates;
   using JetBrains.Util;
 
-  /// <summary>
-  /// The live template.
-  /// </summary>
+  /// <summary>The live template.</summary>
   [SmartGenerate("Execute Live Template", "Executes a Live Template.", Priority = -10)]
   public class LiveTemplate : SmartGenerateHandlerBase
   {
     #region Methods
 
-    /// <summary>
-    /// Gets the items.
-    /// </summary>
-    /// <param name="smartGenerateParameters">
-    /// The get menu items parameters.
-    /// </param>
+    /// <summary>Gets the items.</summary>
+    /// <param name="smartGenerateParameters">The get menu items parameters.</param>
     protected override void GetItems(SmartGenerateParameters smartGenerateParameters)
     {
       var element = smartGenerateParameters.Element;
@@ -78,8 +72,8 @@ namespace AgentJohnson.SmartGenerate.Generators
               template.Description = template.Description.Replace("$" + key + "$", liveTemplateMenuItem.Variables[key]);
             }
 
-            global::JetBrains.Util.TextRange range = liveTemplateMenuItem.Range;
-            if (range == global::JetBrains.Util.TextRange.InvalidRange)
+            var range = liveTemplateMenuItem.Range;
+            if (range == TextRange.InvalidRange)
             {
               range = defaultRange;
             }

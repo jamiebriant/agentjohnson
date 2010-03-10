@@ -7,24 +7,20 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using JetBrains.DocumentModel;
-
 namespace AgentJohnson.Strings
 {
   using System.Collections.Generic;
   using JetBrains.Application;
+  using JetBrains.DocumentModel;
   using JetBrains.ProjectModel;
   using JetBrains.ReSharper.Feature.Services.Bulbs;
-  using JetBrains.ReSharper.Intentions;
   using JetBrains.ReSharper.Psi;
   using JetBrains.ReSharper.Psi.CSharp;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.TextControl;
   using JetBrains.Util;
 
-  /// <summary>
-  /// Define the string empty quick fix class.
-  /// </summary>
+  /// <summary>Define the string empty quick fix class.</summary>
   [QuickFix]
   public class StringEmptyQuickFix : IQuickFix, IBulbItem
   {
@@ -37,12 +33,8 @@ namespace AgentJohnson.Strings
 
     #region Constructors and Destructors
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="StringEmptyQuickFix"/> class.
-    /// </summary>
-    /// <param name="suggestion">
-    /// The suggestion.
-    /// </param>
+    /// <summary>Initializes a new instance of the <see cref="StringEmptyQuickFix"/> class.</summary>
+    /// <param name="suggestion">The suggestion.</param>
     public StringEmptyQuickFix(StringEmptySuggestion suggestion)
     {
       this._suggestion = suggestion;
@@ -50,7 +42,9 @@ namespace AgentJohnson.Strings
 
     #endregion
 
-    #region Properties
+    #region Implemented Interfaces
+
+    #region IBulbAction
 
     /// <summary>
     /// Gets the items.
@@ -69,6 +63,10 @@ namespace AgentJohnson.Strings
       }
     }
 
+    #endregion
+
+    #region IBulbItem
+
     /// <summary>
     /// Gets the text.
     /// </summary>
@@ -77,9 +75,11 @@ namespace AgentJohnson.Strings
     {
       get
       {
-        return "Replace \"\" with string.Empty";
+        return "Replace \"\" with string.Empty [Agent Johnson]";
       }
     }
+
+    #endregion
 
     #endregion
 
@@ -87,15 +87,10 @@ namespace AgentJohnson.Strings
 
     #region IBulbAction
 
-    /// <summary>
-    /// Check if this action is available at the constructed context.
-    /// Actions could store precalculated info in <paramref name="cache"/> to share it between different actions
-    /// </summary>
-    /// <param name="cache">
-    /// </param>
-    /// <returns>
-    /// The is available.
-    /// </returns>
+    /// <summary>Check if this action is available at the constructed context.
+    /// Actions could store precalculated info in <paramref name="cache"/> to share it between different actions</summary>
+    /// <param name="cache"></param>
+    /// <returns>The is available.</returns>
     public bool IsAvailable(IUserDataHolder cache)
     {
       return true;
@@ -105,15 +100,9 @@ namespace AgentJohnson.Strings
 
     #region IBulbItem
 
-    /// <summary>
-    /// Executes the specified solution.
-    /// </summary>
-    /// <param name="solution">
-    /// The solution.
-    /// </param>
-    /// <param name="textControl">
-    /// The text control.
-    /// </param>
+    /// <summary>Executes the specified solution.</summary>
+    /// <param name="solution">The solution.</param>
+    /// <param name="textControl">The text control.</param>
     public void Execute(ISolution solution, ITextControl textControl)
     {
       var psiManager = PsiManager.GetInstance(solution);
@@ -142,9 +131,7 @@ namespace AgentJohnson.Strings
 
     #region Methods
 
-    /// <summary>
-    /// Executes this instance.
-    /// </summary>
+    /// <summary>Executes this instance.</summary>
     private void Execute()
     {
       var treeNode = this._suggestion.Node.ToTreeNode();

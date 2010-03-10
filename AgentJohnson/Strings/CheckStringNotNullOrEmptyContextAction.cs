@@ -7,22 +7,18 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using JetBrains.Util;
-
 namespace AgentJohnson.Strings
 {
-    using JetBrains.ReSharper.Feature.Services.Bulbs;
-    using JetBrains.ReSharper.Intentions;
+  using AgentJohnson.Psi.CodeStyle;
+  using JetBrains.ReSharper.Feature.Services.Bulbs;
   using JetBrains.ReSharper.Intentions.CSharp.DataProviders;
   using JetBrains.ReSharper.Psi;
   using JetBrains.ReSharper.Psi.CSharp;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.Tree;
-  using Psi.CodeStyle;
+  using JetBrains.Util;
 
-  /// <summary>
-  /// Represents the Context Action.
-  /// </summary>
+  /// <summary>Represents the Context Action.</summary>
   [ContextAction(Description = "Adds an 'if' statement after the current statement that checks if the string variable is null or empty.", Name = "Check if string is null or empty", Priority = -1, Group = "C#")]
   public class CheckStringNotNullOrEmptyContextAction : ContextActionBase
   {
@@ -37,74 +33,22 @@ namespace AgentJohnson.Strings
 
     #region Constructors and Destructors
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="CheckStringNotNullOrEmptyContextAction"/> class.
-    /// </summary>
-    /// <param name="provider">
-    /// The provider.
-    /// </param>
+    /// <summary>Initializes a new instance of the <see cref="CheckStringNotNullOrEmptyContextAction"/> class.</summary>
+    /// <param name="provider">The provider.</param>
     public CheckStringNotNullOrEmptyContextAction(ICSharpContextActionDataProvider provider) : base(provider)
     {
     }
 
     #endregion
 
-    #region Methods
+    #region Public Methods
 
-    /// <summary>
-    /// Executes the internal.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
-    protected override void Execute(IElement element)
-    {
-      if (!this.IsAvailable(element))
-      {
-        return;
-      }
-
-      var assignmentExpression = this.Provider.GetSelectedElement<IAssignmentExpression>(true, true);
-      if (assignmentExpression != null)
-      {
-        CheckStringAssignment(assignmentExpression);
-        return;
-      }
-
-      var localVariableDeclaration = this.Provider.GetSelectedElement<ILocalVariableDeclaration>(true, true);
-      if (localVariableDeclaration != null)
-      {
-        CheckStringAssignment(localVariableDeclaration);
-        return;
-      }
-    }
-
-    /// <summary>
-    /// Gets the text.
-    /// </summary>
-    /// <returns>
-    /// The text to display.
-    /// </returns>
-    /// <value>
-    /// The text that is shown in the context menu.
-    /// </value>
-    protected override string GetText()
-    {
-      return string.Format("Check if '{0}' is null or empty  [Agent Johnson]", this.name ?? "[unknown]");
-    }
-
-    /// <summary>
-    /// Called to check if ContextAction is available.
+    /// <summary>Called to check if ContextAction is available.
     /// ReadLock is taken
-    /// Will not be called if <c>PsiManager</c>, ProjectFile of Solution == <c>null</c>
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
-    /// <returns>
-    /// Determines if the context action is available.
-    /// </returns>
-    public override bool IsAvailable(IUserDataHolder element)
+    /// Will not be called if <c>PsiManager</c>, ProjectFile of Solution == <c>null</c></summary>
+    /// <param name="element">The element.</param>
+    /// <returns>Determines if the context action is available.</returns>
+    public override bool IsAvailable(IElement element)
     {
       this.name = null;
 
@@ -188,12 +132,44 @@ namespace AgentJohnson.Strings
       return range.IsValid && range.Contains(this.Provider.CaretOffset.Offset);
     }
 
-    /// <summary>
-    /// Inserts the assertion code.
-    /// </summary>
-    /// <param name="localVariableDeclaration">
-    /// The local variable declaration.
-    /// </param>
+    #endregion
+
+    #region Methods
+
+    /// <summary>Executes the internal.</summary>
+    /// <param name="element">The element.</param>
+    protected override void Execute(IElement element)
+    {
+      if (!this.IsAvailable(element))
+      {
+        return;
+      }
+
+      var assignmentExpression = this.Provider.GetSelectedElement<IAssignmentExpression>(true, true);
+      if (assignmentExpression != null)
+      {
+        this.CheckStringAssignment(assignmentExpression);
+        return;
+      }
+
+      var localVariableDeclaration = this.Provider.GetSelectedElement<ILocalVariableDeclaration>(true, true);
+      if (localVariableDeclaration != null)
+      {
+        this.CheckStringAssignment(localVariableDeclaration);
+        return;
+      }
+    }
+
+    /// <summary>Gets the text.</summary>
+    /// <returns>The text to display.</returns>
+    /// <value>The text that is shown in the context menu.</value>
+    protected override string GetText()
+    {
+      return string.Format("Check if '{0}' is null or empty  [Agent Johnson]", this.name ?? "[unknown]");
+    }
+
+    /// <summary>Inserts the assertion code.</summary>
+    /// <param name="localVariableDeclaration">The local variable declaration.</param>
     private void CheckStringAssignment(ILocalVariableDeclaration localVariableDeclaration)
     {
       var localVariable = localVariableDeclaration.DeclaredElement as ILocalVariable;
@@ -226,12 +202,8 @@ namespace AgentJohnson.Strings
       this.CheckStringAssignment(localVariableDeclaration, anchor, localVariable.ShortName);
     }
 
-    /// <summary>
-    /// Inserts the assertion code.
-    /// </summary>
-    /// <param name="assignmentExpression">
-    /// The assignment expression.
-    /// </param>
+    /// <summary>Inserts the assertion code.</summary>
+    /// <param name="assignmentExpression">The assignment expression.</param>
     private void CheckStringAssignment(IAssignmentExpression assignmentExpression)
     {
       var destination = assignmentExpression.Dest;
@@ -256,9 +228,7 @@ namespace AgentJohnson.Strings
       this.CheckStringAssignment(assignmentExpression, anchor, referenceExpression.Reference.GetName());
     }
 
-    /// <summary>
-    /// Inserts the assert.
-    /// </summary>
+    /// <summary>Inserts the assert.</summary>
     /// <param name="element">The element.</param>
     /// <param name="anchor">The anchor.</param>
     /// <param name="assignmentName">The name of the variable.</param>
@@ -285,6 +255,10 @@ namespace AgentJohnson.Strings
       var factory = CSharpElementFactory.GetInstance(element.GetPsiModule());
 
       var statement = factory.CreateStatement(string.Format("if (string.IsNullOrEmpty({0})) {{ }}", assignmentName));
+      if (statement == null)
+      {
+        return;
+      }
 
       var result = body.AddStatementAfter(statement, anchor);
 

@@ -13,9 +13,7 @@ namespace AgentJohnson.Strings
   using JetBrains.ReSharper.Daemon;
   using JetBrains.ReSharper.Psi.Tree;
 
-  /// <summary>
-  /// Defines the string empty suggestion class.
-  /// </summary>
+  /// <summary>Defines the string empty suggestion class.</summary>
   [ConfigurableSeverityHighlighting(NAME)]
   public class StringEmptySuggestion : SuggestionBase
   {
@@ -40,15 +38,9 @@ namespace AgentJohnson.Strings
 
     #region Constructors and Destructors
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="StringEmptySuggestion"/> class.
-    /// </summary>
-    /// <param name="solution">
-    /// The solution.
-    /// </param>
-    /// <param name="node">
-    /// The node.
-    /// </param>
+    /// <summary>Initializes a new instance of the <see cref="StringEmptySuggestion"/> class.</summary>
+    /// <param name="solution">The solution.</param>
+    /// <param name="node">The node.</param>
     public StringEmptySuggestion(ISolution solution, ITokenNode node) : base(NAME, node, node.GetDocumentRange(), "Empty string literals (\"\") should be string.Empty [Agent Johnson]")
     {
       this._solution = solution;

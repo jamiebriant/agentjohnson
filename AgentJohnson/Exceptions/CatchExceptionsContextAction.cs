@@ -7,8 +7,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using JetBrains.Util;
-
 namespace AgentJohnson.Exceptions
 {
   using System;
@@ -18,29 +16,62 @@ namespace AgentJohnson.Exceptions
   using JetBrains.Application;
   using JetBrains.Application.Progress;
   using JetBrains.ReSharper.Feature.Services.Bulbs;
-  using JetBrains.ReSharper.Intentions;
   using JetBrains.ReSharper.Intentions.CSharp.DataProviders;
   using JetBrains.ReSharper.Psi.CodeStyle;
   using JetBrains.ReSharper.Psi.CSharp;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.Tree;
 
-  /// <summary>
-  /// Defines the catch exceptions context action class.
-  /// </summary>
+  /// <summary>Defines the catch exceptions context action class.</summary>
   [ContextAction(Description = "Generates try/catch clauses surrounding expressions", Name = "Catch exceptions", Priority = -1, Group = "C#")]
   public partial class CatchExceptionsContextAction : ContextActionBase, IComparer<CatchExceptionsContextAction.Pair<string, Type>>
   {
-    #region Constructors
+    #region Constructors and Destructors
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="CatchExceptionsContextAction"/> class.
-    /// </summary>
-    /// <param name="provider">
-    /// The provider.
-    /// </param>
+    /// <summary>Initializes a new instance of the <see cref="CatchExceptionsContextAction"/> class.</summary>
+    /// <param name="provider">The provider.</param>
     public CatchExceptionsContextAction(ICSharpContextActionDataProvider provider) : base(provider)
     {
+    }
+
+    #endregion
+
+    #region Public Methods
+
+    /// <summary>Determines whether the specified cache is available.</summary>
+    /// <param name="element">The element.</param>
+    /// <returns><c>true</c> if the specified cache is available; otherwise, <c>false</c>.</returns>
+    public override bool IsAvailable(IElement element)
+    {
+      Shell.Instance.Locks.AssertReadAccessAllowed();
+
+      var node = element.ToTreeNode();
+
+      IInvocationExpression invocationExpression = null;
+
+      while (node != null)
+      {
+        invocationExpression = node as IInvocationExpression;
+
+        if (invocationExpression != null)
+        {
+          break;
+        }
+
+        if (node is IStatement)
+        {
+          break;
+        }
+
+        node = node.Parent;
+      }
+
+      if (invocationExpression == null)
+      {
+        return false;
+      }
+
+      return IsVisible(node);
     }
 
     #endregion
@@ -49,18 +80,10 @@ namespace AgentJohnson.Exceptions
 
     #region IComparer<Pair<string,Type>>
 
-    /// <summary>
-    /// Compares two objects and returns a value indicating whether one is less than, equal to, or greater than the other.
-    /// </summary>
-    /// <param name="x">
-    /// The first object to compare.
-    /// </param>
-    /// <param name="y">
-    /// The second object to compare.
-    /// </param>
-    /// <returns>
-    /// The compare.
-    /// </returns>
+    /// <summary>Compares two objects and returns a value indicating whether one is less than, equal to, or greater than the other.</summary>
+    /// <param name="x">The first object to compare.</param>
+    /// <param name="y">The second object to compare.</param>
+    /// <returns>The compare.</returns>
     public int Compare(Pair<string, Type> x, Pair<string, Type> y)
     {
       if (x.Value == null)
@@ -92,14 +115,8 @@ namespace AgentJohnson.Exceptions
 
     #region Methods
 
-    #region Protected methods
-
-    /// <summary>
-    /// Executes the specified solution.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
+    /// <summary>Executes the specified solution.</summary>
+    /// <param name="element">The element.</param>
     protected override void Execute(IElement element)
     {
       Shell.Instance.Locks.AssertReadAccessAllowed();
@@ -131,81 +148,17 @@ namespace AgentJohnson.Exceptions
       this.CatchExceptions(invocationExpression);
     }
 
-    /// <summary>
-    /// Gets the text.
-    /// </summary>
-    /// <value>
-    /// The text.
-    /// </value>
-    /// <returns>
-    /// The get text.
-    /// </returns>
+    /// <summary>Gets the text.</summary>
+    /// <value>The text.</value>
+    /// <returns>The get text.</returns>
     protected override string GetText()
     {
       return "Catch exceptions [Agent Johnson]";
     }
 
-    /// <summary>
-    /// Determines whether the specified cache is available.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
-    /// <returns>
-    /// <c>true</c> if the specified cache is available; otherwise, <c>false</c>.
-    /// </returns>
-    public override bool IsAvailable(IUserDataHolder element)
-    {
-      Shell.Instance.Locks.AssertReadAccessAllowed();
-
-    var node = Provider.GetSelectedElement<IInvocationExpression>(false, true);
-
-      //var node = ((IElement) element).ToTreeNode();
-      if (node == null)
-      {
-        return false;
-      }
-
-      //IInvocationExpression invocationExpression = null;
-
-      //while (node != null)
-      //{
-      //  invocationExpression = node as IInvocationExpression;
-
-      //  if (invocationExpression != null)
-      //  {
-      //    break;
-      //  }
-
-      //  if (node is IStatement)
-      //  {
-      //    break;
-      //  }
-
-      //  node = node.Parent;
-      //}
-
-      //if (invocationExpression == null)
-      //{
-      //  return false;
-      //}
-
-      return IsVisible(node);
-    }
-
-    #endregion
-
-    #region Private methods
-
-    /// <summary>
-    /// Examines the catches.
-    /// </summary>
-    /// <param name="tryStatement">
-    /// The try statement.
-    /// </param>
-    /// <param name="exceptions">
-    /// The exceptions.
-    /// </param>
+    /// <summary>Examines the catches.</summary>
+    /// <param name="tryStatement">The try statement.</param>
+    /// <param name="exceptions">The exceptions.</param>
     private static void ExamineCatches(ITryStatement tryStatement, IList<string> exceptions)
     {
       var list = tryStatement.Catches;
@@ -239,15 +192,9 @@ namespace AgentJohnson.Exceptions
       }
     }
 
-    /// <summary>
-    /// Gets the exceptions.
-    /// </summary>
-    /// <param name="exceptionList">
-    /// The exception list.
-    /// </param>
-    /// <returns>
-    /// The exceptions.
-    /// </returns>
+    /// <summary>Gets the exceptions.</summary>
+    /// <param name="exceptionList">The exception list.</param>
+    /// <returns>The exceptions.</returns>
     private static List<string> GetExceptions(XmlNodeList exceptionList)
     {
       var result = new List<string>();
@@ -277,15 +224,9 @@ namespace AgentJohnson.Exceptions
       return result;
     }
 
-    /// <summary>
-    /// Determines whether the specified element is available.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
-    /// <returns>
-    /// <c>true</c> if the specified element is available; otherwise, <c>false</c>.
-    /// </returns>
+    /// <summary>Determines whether the specified element is available.</summary>
+    /// <param name="element">The element.</param>
+    /// <returns><c>true</c> if the specified element is available; otherwise, <c>false</c>.</returns>
     private static bool IsVisible(IElement element)
     {
       var invocationExpression = element as IInvocationExpression;
@@ -348,12 +289,8 @@ namespace AgentJohnson.Exceptions
       return exceptions.Count > 0;
     }
 
-    /// <summary>
-    /// Generates the function assert statements.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
+    /// <summary>Generates the function assert statements.</summary>
+    /// <param name="element">The element.</param>
     private void CatchExceptions(IElement element)
     {
       var invocationExpression = element as IInvocationExpression;
@@ -433,24 +370,18 @@ namespace AgentJohnson.Exceptions
 
       var range = result.GetDocumentRange();
       formatter.Format(
-        this.Solution,
-        range,
-        CodeStyleSettingsManager.Instance.CodeStyleSettings,
-        CodeFormatProfile.DEFAULT,
-        true,
-        true,
+        this.Solution, 
+        range, 
+        CodeStyleSettingsManager.Instance.CodeStyleSettings, 
+        CodeFormatProfile.DEFAULT, 
+        true, 
+        true, 
         NullProgressIndicator.Instance);
     }
 
-    /// <summary>
-    /// Gets the exceptions.
-    /// </summary>
-    /// <param name="exceptionList">
-    /// The exception list.
-    /// </param>
-    /// <returns>
-    /// The exceptions.
-    /// </returns>
+    /// <summary>Gets the exceptions.</summary>
+    /// <param name="exceptionList">The exception list.</param>
+    /// <returns>The exceptions.</returns>
     private IEnumerable<Pair<string, Type>> GetSortedExceptions(XmlNodeList exceptionList)
     {
       var exceptions = new List<Pair<string, Type>>(exceptionList.Count);
@@ -478,7 +409,7 @@ namespace AgentJohnson.Exceptions
 
         var pair = new Pair<string, Type>
         {
-          Key = typeName,
+          Key = typeName, 
           Value = exceptionType
         };
 
@@ -489,8 +420,6 @@ namespace AgentJohnson.Exceptions
 
       return exceptions;
     }
-
-    #endregion
 
     #endregion
   }

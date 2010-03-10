@@ -9,18 +9,12 @@
 
 namespace AgentJohnson.Exceptions
 {
-  /// <summary>
-  /// The catch exceptions context action.
-  /// </summary>
+  /// <summary>The catch exceptions context action.</summary>
   public partial class CatchExceptionsContextAction
   {
-    /// <summary>
-    /// Represents a Pair.
-    /// </summary>
-    /// <typeparam name="TKey">
-    /// </typeparam>
-    /// <typeparam name="TValue">
-    /// </typeparam>
+    /// <summary>Represents a Pair.</summary>
+    /// <typeparam name="TKey"></typeparam>
+    /// <typeparam name="TValue"></typeparam>
     public class Pair<TKey, TValue>
     {
       #region Constants and Fields

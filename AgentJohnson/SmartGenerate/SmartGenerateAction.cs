@@ -12,9 +12,7 @@ namespace AgentJohnson.SmartGenerate
   using System;
   using JetBrains.Util;
 
-  /// <summary>
-  /// The smart generate action.
-  /// </summary>
+  /// <summary>The smart generate action.</summary>
   public class SmartGenerateAction : ISmartGenerateAction
   {
     #region Events
@@ -26,23 +24,15 @@ namespace AgentJohnson.SmartGenerate
 
     #endregion
 
-    #region Properties
+    #region Implemented Interfaces
+
+    #region ISmartGenerateAction
 
     /// <summary>
     /// Gets or sets the selection range.
     /// </summary>
     /// <value>The selection range.</value>
-    public global::JetBrains.Util.TextRange SelectionRange
-    {
-      get;
-      set;
-    }
-
-    /// <summary>
-    /// Gets or sets the tag.
-    /// </summary>
-    /// <value>The tag.</value>
-    public object Tag { get; set; }
+    public TextRange SelectionRange { get; set; }
 
     /// <summary>
     /// Gets or sets the template.
@@ -58,22 +48,26 @@ namespace AgentJohnson.SmartGenerate
 
     #endregion
 
+    #endregion
+
+    #region Properties
+
+    /// <summary>
+    /// Gets or sets the tag.
+    /// </summary>
+    /// <value>The tag.</value>
+    public object Tag { get; set; }
+
+    #endregion
+
     #region Implemented Interfaces
 
     #region ISmartGenerateAction
 
-    /// <summary>
-    /// Called when the item is clicked.
-    /// </summary>
-    /// <param name="sender">
-    /// The sender.
-    /// </param>
-    /// <param name="e">
-    /// The e.
-    /// </param>
-    /// <returns>
-    /// <c>true</c>, if handled, otherwise <c>false</c>.
-    /// </returns>
+    /// <summary>Called when the item is clicked.</summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="e">The e.</param>
+    /// <returns><c>true</c>, if handled, otherwise <c>false</c>.</returns>
     public bool HandleClick(object sender, EventArgs e)
     {
       if (this.Clicked != null)

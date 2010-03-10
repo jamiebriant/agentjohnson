@@ -7,37 +7,25 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using JetBrains.ReSharper.Feature.Services.Bulbs;
-
 namespace AgentJohnson.Strings
 {
   using System.Collections.Generic;
-  using JetBrains.ReSharper.Intentions;
-  using JetBrains.ReSharper.Intentions.CSharp.DataProviders;
+  using JetBrains.ReSharper.Feature.Services.Bulbs;
   using JetBrains.ReSharper.Intentions.CSharp.ContextActions.Util;
+  using JetBrains.ReSharper.Intentions.CSharp.DataProviders;
   using JetBrains.ReSharper.Psi;
-  using JetBrains.ReSharper.Psi.Tree;
   using JetBrains.ReSharper.Psi.CSharp;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
+  using JetBrains.ReSharper.Psi.Tree;
 
-  /// <summary>
-  /// The string concatenation action.
-  /// </summary>
+  /// <summary>The string concatenation action.</summary>
   [ContextAction(Group = "C#", Name = "Use StringBuilder", Description = "Converts concatenation of a few strings and other objects to the use of StringBuilder class.")]
   public class UseStringBuilderAction : OneItemContextActionBase, IBulbAction
   {
-    #region Constants and Fields
-
-    #endregion
-
     #region Constructors and Destructors
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="UseStringBuilderAction"/> class. 
-    /// </summary>
-    /// <param name="dataProvider">
-    /// The data provider.
-    /// </param>
+    /// <summary>Initializes a new instance of the <see cref="UseStringBuilderAction"/> class. </summary>
+    /// <param name="dataProvider">The data provider.</param>
     public UseStringBuilderAction(ICSharpContextActionDataProvider dataProvider) : base(dataProvider)
     {
     }
@@ -72,9 +60,7 @@ namespace AgentJohnson.Strings
 
     #region Methods
 
-    /// <summary>
-    /// The execute internal.
-    /// </summary>
+    /// <summary>The execute internal.</summary>
     protected override void ExecuteInternal()
     {
       var concatenatedStrings = new List<ICSharpExpression>();
@@ -83,9 +69,7 @@ namespace AgentJohnson.Strings
       this.ReplaceWithStringFormat(concatenatedStrings);
     }
 
-    /// <summary>
-    /// The is available internal.
-    /// </summary>
+    /// <summary>The is available internal.</summary>
     /// <returns>If available internal.</returns>
     protected override bool IsAvailableInternal()
     {
@@ -100,8 +84,8 @@ namespace AgentJohnson.Strings
 
         foreach (var expression in concatenatedStrings)
         {
-          var literalExpression = expression as JetBrains.ReSharper.Psi.Tree.ILiteralExpression;
-          if ((literalExpression == null) || !literalExpression.Type().Equals(this.SystemString))
+          var literalExpression = expression as ILiteralExpression;
+          if ((literalExpression != null) && literalExpression.Type().Equals(this.SystemString))
           {
             return true;
           }
@@ -111,9 +95,7 @@ namespace AgentJohnson.Strings
       return false;
     }
 
-    /// <summary>
-    /// Builds the addition list.
-    /// </summary>
+    /// <summary>Builds the addition list.</summary>
     /// <param name="expression">The expression.</param>
     /// <param name="concatenatedStrings">The concatenated strings.</param>
     /// <returns>The build addition list.</returns>
@@ -146,12 +128,8 @@ namespace AgentJohnson.Strings
       return false;
     }
 
-    /// <summary>
-    /// The get concatenation.
-    /// </summary>
-    /// <returns>
-    /// Returns the concatenation.
-    /// </returns>
+    /// <summary>The get concatenation.</summary>
+    /// <returns>Returns the concatenation.</returns>
     private IAdditiveExpression GetConcatenation()
     {
       IAdditiveExpression additiveElement;
@@ -182,12 +160,8 @@ namespace AgentJohnson.Strings
       return additiveElement;
     }
 
-    /// <summary>
-    /// Replaces the with string format.
-    /// </summary>
-    /// <param name="concatenatedStrings">
-    /// The concatenated strings.
-    /// </param>
+    /// <summary>Replaces the with string format.</summary>
+    /// <param name="concatenatedStrings">The concatenated strings.</param>
     private void ReplaceWithStringFormat(IEnumerable<ICSharpExpression> concatenatedStrings)
     {
       var element = this.Provider.SelectedElement;

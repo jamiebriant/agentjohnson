@@ -10,14 +10,11 @@
 namespace AgentJohnson.ValueAnalysis
 {
   using JetBrains.DocumentModel;
-  using JetBrains.ProjectModel;
   using JetBrains.ReSharper.Daemon;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.Tree;
 
-  /// <summary>
-  /// The return warning.
-  /// </summary>
+  /// <summary>The return warning.</summary>
   [ConfigurableSeverityHighlighting(Name)]
   public class ReturnWarning : SuggestionBase
   {
@@ -38,13 +35,8 @@ namespace AgentJohnson.ValueAnalysis
     /// <summary>
     /// Initializes a new instance of the <see cref="ReturnWarning"/> class.
     /// </summary>
-    /// <param name="solution">
-    /// The solution.
-    /// </param>
-    /// <param name="returnStatement">
-    /// The return statement.
-    /// </param>
-    public ReturnWarning(ISolution solution, IReturnStatement returnStatement) : base(Name, returnStatement, GetRange(returnStatement), "Return value should be asserted [Agent Johnson]")
+    /// <param name="returnStatement">The return statement.</param>
+    public ReturnWarning(IReturnStatement returnStatement) : base(Name, returnStatement, GetRange(returnStatement), "Return value should be asserted [Agent Johnson]")
     {
       this.returnStatement = returnStatement;
     }
@@ -52,18 +44,6 @@ namespace AgentJohnson.ValueAnalysis
     #endregion
 
     #region Properties
-
-    /// <summary>
-    /// Gets a value indicating whether this <see cref="ReturnWarning"/> is enabled.
-    /// </summary>
-    /// <value><c>true</c> if enabled; otherwise, <c>false</c>.</value>
-    public static bool Enabled
-    {
-      get
-      {
-        return HighlightingSettingsManager.Instance.Settings.GetSeverity(Name) != Severity.DO_NOT_SHOW;
-      }
-    }
 
     /// <summary>
     /// Gets the statement.
@@ -97,11 +77,8 @@ namespace AgentJohnson.ValueAnalysis
     /// <summary>
     /// Gets the range.
     /// </summary>
-    /// <param name="statement">
-    /// The statement.
-    /// </param>
-    /// <returns>
-    /// </returns>
+    /// <param name="statement">The statement.</param>
+    /// <returns>Returns the range.</returns>
     private static DocumentRange GetRange(IStatement statement)
     {
       return statement.GetDocumentRange();

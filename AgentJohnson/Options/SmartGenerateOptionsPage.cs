@@ -12,12 +12,10 @@ namespace AgentJohnson.Options
   using System;
   using System.Collections.Generic;
   using System.Windows.Forms;
-  using SmartGenerate;
+  using AgentJohnson.SmartGenerate;
   using JetBrains.UI.Options;
 
-  /// <summary>
-  /// The smart generate options page.
-  /// </summary>
+  /// <summary>The smart generate options page.</summary>
   [OptionsPage(NAME, "Smart Generate", "AgentJohnson.Resources.SmartGenerate.gif", ParentId = ImportExportPage.NAME, Sequence = 2)]
   public partial class SmartGenerateOptionsPage : UserControl, IOptionsPage, IComparer<SmartGenerateHandlerData>
   {
@@ -63,7 +61,9 @@ namespace AgentJohnson.Options
 
     #endregion
 
-    #region Properties
+    #region Implemented Interfaces
+
+    #region IOptionsPage
 
     /// <summary>
     /// Control to be shown as page.
@@ -93,22 +93,16 @@ namespace AgentJohnson.Options
 
     #endregion
 
+    #endregion
+
     #region Implemented Interfaces
 
     #region IComparer<SmartGenerateHandlerData>
 
-    /// <summary>
-    /// Compares two objects and returns a value indicating whether one is less than, equal to, or greater than the other.
-    /// </summary>
-    /// <param name="x">
-    /// The first object to compare.
-    /// </param>
-    /// <param name="y">
-    /// The second object to compare.
-    /// </param>
-    /// <returns>
-    /// Value Condition Less than zero<paramref name="x"/> is less than <paramref name="y"/>.Zero<paramref name="x"/> equals <paramref name="y"/>.Greater than zero<paramref name="x"/> is greater than <paramref name="y"/>.
-    /// </returns>
+    /// <summary>Compares two objects and returns a value indicating whether one is less than, equal to, or greater than the other.</summary>
+    /// <param name="x">The first object to compare.</param>
+    /// <param name="y">The second object to compare.</param>
+    /// <returns>Value Condition Less than zero<paramref name="x"/> is less than <paramref name="y"/>.Zero<paramref name="x"/> equals <paramref name="y"/>.Greater than zero<paramref name="x"/> is greater than <paramref name="y"/>.</returns>
     int IComparer<SmartGenerateHandlerData>.Compare(SmartGenerateHandlerData x, SmartGenerateHandlerData y)
     {
       return string.Compare(x.Name, y.Name);
@@ -118,13 +112,9 @@ namespace AgentJohnson.Options
 
     #region IOptionsPage
 
-    /// <summary>
-    /// Invoked when OK button in the options dialog is pressed.
-    /// If the page returns <c>false</c>, the the options dialog won't be closed, and focus will be put into this page.
-    /// </summary>
-    /// <returns>
-    /// The on ok.
-    /// </returns>
+    /// <summary>Invoked when OK button in the options dialog is pressed.
+    /// If the page returns <c>false</c>, the the options dialog won't be closed, and focus will be put into this page.</summary>
+    /// <returns>The on ok.</returns>
     public bool OnOk()
     {
       var disabledHandlers = string.Empty;
@@ -157,12 +147,8 @@ namespace AgentJohnson.Options
       return true;
     }
 
-    /// <summary>
-    /// Check if the settings on the page are consistent, and page could be closed.
-    /// </summary>
-    /// <returns>
-    /// <c>true</c> if page data is consistent.
-    /// </returns>
+    /// <summary>Check if the settings on the page are consistent, and page could be closed.</summary>
+    /// <returns><c>true</c> if page data is consistent.</returns>
     public bool ValidatePage()
     {
       return true;
@@ -174,9 +160,7 @@ namespace AgentJohnson.Options
 
     #region Methods
 
-    /// <summary>
-    /// Enables the buttons.
-    /// </summary>
+    /// <summary>Enables the buttons.</summary>
     private void EnableButtons()
     {
       if (this.Handlers.SelectedIndex < 0)
@@ -192,15 +176,9 @@ namespace AgentJohnson.Options
       this.ActionDescription.Text = selected.Description;
     }
 
-    /// <summary>
-    /// Handles the SelectedIndexChanged event of the Handlers control.
-    /// </summary>
-    /// <param name="sender">
-    /// The source of the event.
-    /// </param>
-    /// <param name="e">
-    /// The <see cref="System.EventArgs"/> instance containing the event data.
-    /// </param>
+    /// <summary>Handles the SelectedIndexChanged event of the Handlers control.</summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
     private void Handlers_SelectedIndexChanged(object sender, EventArgs e)
     {
       this.EnableButtons();

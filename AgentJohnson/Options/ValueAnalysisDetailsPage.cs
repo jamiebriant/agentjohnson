@@ -11,11 +11,9 @@ namespace AgentJohnson.Options
 {
   using System;
   using System.Windows.Forms;
-  using ValueAnalysis;
+  using AgentJohnson.ValueAnalysis;
 
-  /// <summary>
-  /// The value analysis details page.
-  /// </summary>
+  /// <summary>The value analysis details page.</summary>
   public partial class ValueAnalysisDetailsPage : Form
   {
     #region Constants and Fields
@@ -46,12 +44,8 @@ namespace AgentJohnson.Options
 
     #region Public Methods
 
-    /// <summary>
-    /// Commits the specified item.
-    /// </summary>
-    /// <param name="item">
-    /// The item.
-    /// </param>
+    /// <summary>Commits the specified item.</summary>
+    /// <param name="item">The item.</param>
     public void Commit(Rule item)
     {
       item.TypeName = this.TypeName.Text;
@@ -76,12 +70,8 @@ namespace AgentJohnson.Options
       }
     }
 
-    /// <summary>
-    /// Displays the specified item.
-    /// </summary>
-    /// <param name="rule">
-    /// The item.
-    /// </param>
+    /// <summary>Displays the specified item.</summary>
+    /// <param name="rule">The item.</param>
     public void Display(Rule rule)
     {
       this._rule = rule;
@@ -112,15 +102,9 @@ namespace AgentJohnson.Options
 
     #region Methods
 
-    /// <summary>
-    /// Handles the CheckedChanged event of the CanBeNull control.
-    /// </summary>
-    /// <param name="sender">
-    /// The source of the event.
-    /// </param>
-    /// <param name="e">
-    /// The <see cref="System.EventArgs"/> instance containing the event data.
-    /// </param>
+    /// <summary>Handles the CheckedChanged event of the CanBeNull control.</summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
     private void CanBeNull_CheckedChanged(object sender, EventArgs e)
     {
       if (this._updating)
@@ -137,23 +121,15 @@ namespace AgentJohnson.Options
       }
     }
 
-    /// <summary>
-    /// Enables the buttons.
-    /// </summary>
+    /// <summary>Enables the buttons.</summary>
     private void EnableButtons()
     {
       this.button1.Enabled = !string.IsNullOrEmpty(this.TypeName.Text);
     }
 
-    /// <summary>
-    /// Handles the CheckedChanged event of the NotNull control.
-    /// </summary>
-    /// <param name="sender">
-    /// The source of the event.
-    /// </param>
-    /// <param name="e">
-    /// The <see cref="System.EventArgs"/> instance containing the event data.
-    /// </param>
+    /// <summary>Handles the CheckedChanged event of the NotNull control.</summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
     private void NotNull_CheckedChanged(object sender, EventArgs e)
     {
       if (this._updating)
@@ -170,15 +146,9 @@ namespace AgentJohnson.Options
       }
     }
 
-    /// <summary>
-    /// Handles the O k_ click event.
-    /// </summary>
-    /// <param name="sender">
-    /// The sender.
-    /// </param>
-    /// <param name="e">
-    /// The <see cref="System.EventArgs"/> instance containing the event data.
-    /// </param>
+    /// <summary>Handles the O k_ click event.</summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
     private void OK_Click(object sender, EventArgs e)
     {
       this.Commit(this._rule);
@@ -188,15 +158,9 @@ namespace AgentJohnson.Options
       this.Close();
     }
 
-    /// <summary>
-    /// Handles the TextChanged event of the TypeName control.
-    /// </summary>
-    /// <param name="sender">
-    /// The source of the event.
-    /// </param>
-    /// <param name="e">
-    /// The <see cref="System.EventArgs"/> instance containing the event data.
-    /// </param>
+    /// <summary>Handles the TextChanged event of the TypeName control.</summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
     private void TypeName_TextChanged(object sender, EventArgs e)
     {
       this.EnableButtons();

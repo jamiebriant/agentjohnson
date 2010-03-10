@@ -7,13 +7,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using JetBrains.DocumentModel;
-
 namespace AgentJohnson.Exceptions
 {
   using System;
   using System.Text;
   using JetBrains.Application;
+  using JetBrains.DocumentModel;
   using JetBrains.ProjectModel;
   using JetBrains.ReSharper.Feature.Services.Bulbs;
   using JetBrains.ReSharper.Psi;
@@ -22,10 +21,9 @@ namespace AgentJohnson.Exceptions
   using JetBrains.ReSharper.Psi.ExtensionsAPI;
   using JetBrains.ReSharper.Psi.Tree;
   using JetBrains.TextControl;
+  using JetBrains.Util;
 
-  /// <summary>
-  /// Defines the document thrown exception bulb item class.
-  /// </summary>
+  /// <summary>Defines the document thrown exception bulb item class.</summary>
   public class DocumentThrownExceptionBulbItem : IBulbItem
   {
     #region Constants and Fields
@@ -39,12 +37,8 @@ namespace AgentJohnson.Exceptions
 
     #region Constructors and Destructors
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="DocumentThrownExceptionBulbItem"/> class.
-    /// </summary>
-    /// <param name="warning">
-    /// The suggestion.
-    /// </param>
+    /// <summary>Initializes a new instance of the <see cref="DocumentThrownExceptionBulbItem"/> class.</summary>
+    /// <param name="warning">The suggestion.</param>
     public DocumentThrownExceptionBulbItem(DocumentThrownExceptionWarning warning)
     {
       this.warning = warning;
@@ -52,7 +46,9 @@ namespace AgentJohnson.Exceptions
 
     #endregion
 
-    #region Properties
+    #region Implemented Interfaces
+
+    #region IBulbItem
 
     /// <summary>
     /// Gets the text.
@@ -83,19 +79,15 @@ namespace AgentJohnson.Exceptions
 
     #endregion
 
+    #endregion
+
     #region Implemented Interfaces
 
     #region IBulbItem
 
-    /// <summary>
-    /// Executes the specified solution.
-    /// </summary>
-    /// <param name="solution">
-    /// The solution.
-    /// </param>
-    /// <param name="textControl">
-    /// The text control.
-    /// </param>
+    /// <summary>Executes the specified solution.</summary>
+    /// <param name="solution">The solution.</param>
+    /// <param name="textControl">The text control.</param>
     public void Execute(ISolution solution, ITextControl textControl)
     {
       var psiManager = PsiManager.GetInstance(solution);
@@ -106,7 +98,7 @@ namespace AgentJohnson.Exceptions
 
       using (var cookie = DocumentManager.GetInstance(solution).EnsureWritable(textControl.Document))
       {
-        if (cookie.EnsureWritableResult != JetBrains.Util.EnsureWritableResult.SUCCESS)
+        if (cookie.EnsureWritableResult != EnsureWritableResult.SUCCESS)
         {
           return;
         }
@@ -124,18 +116,12 @@ namespace AgentJohnson.Exceptions
 
     #region Methods
 
-    /// <summary>
-    /// Gets the argument null text.
-    /// </summary>
-    /// <param name="throwStatement">
-    /// The statement.
-    /// </param>
-    /// <returns>
-    /// The argument null text.
-    /// </returns>
+    /// <summary>Gets the argument null text.</summary>
+    /// <param name="throwStatement">The statement.</param>
+    /// <returns>The argument null text.</returns>
     private static string GetArgumentExceptionText(IThrowStatement throwStatement)
     {
-      const string result = "Argument is null.";
+      const string Result = "Argument is null.";
       string name = null;
 
       var containingStatement = throwStatement.GetContainingStatement();
@@ -147,20 +133,20 @@ namespace AgentJohnson.Exceptions
       var ifStatement = containingStatement as IIfStatement;
       if (ifStatement == null)
       {
-        return result;
+        return Result;
       }
 
       var condition = ifStatement.Condition as IEqualityExpression;
       if (condition == null)
       {
-        return result;
+        return Result;
       }
 
       var leftOperand = condition.LeftOperand;
       var rightOperand = condition.RightOperand;
       if (rightOperand == null || leftOperand == null)
       {
-        return result;
+        return Result;
       }
 
       var left = leftOperand.GetText();
@@ -177,38 +163,24 @@ namespace AgentJohnson.Exceptions
 
       if (name == null)
       {
-        return result;
+        return Result;
       }
 
-      return "<c>" + name + "</c> is null.";
+      return "<paramref name=\"" + name + "\" /> is <c>null</c>.";
     }
 
-    /// <summary>
-    /// Gets the doc comment text.
-    /// </summary>
-    /// <param name="docCommentBlockNode">
-    /// The doc comment block node.
-    /// </param>
-    /// <returns>
-    /// The doc comment text.
-    /// </returns>
+    /// <summary>Gets the doc comment text.</summary>
+    /// <param name="docCommentBlockNode">The doc comment block node.</param>
+    /// <returns>The doc comment text.</returns>
     private static string GetDocCommentText(IElement docCommentBlockNode)
     {
       return docCommentBlockNode.GetText();
     }
 
-    /// <summary>
-    /// Gets the exception text.
-    /// </summary>
-    /// <param name="throwStatement">
-    /// The throw statement.
-    /// </param>
-    /// <param name="exceptionTypeName">
-    /// Name of the exception type.
-    /// </param>
-    /// <returns>
-    /// The exception text.
-    /// </returns>
+    /// <summary>Gets the exception text.</summary>
+    /// <param name="throwStatement">The throw statement.</param>
+    /// <param name="exceptionTypeName">Name of the exception type.</param>
+    /// <returns>The exception text.</returns>
     private static string GetExceptionText(IThrowStatement throwStatement, string exceptionTypeName)
     {
       if (exceptionTypeName == "ArgumentNullException")
@@ -275,15 +247,9 @@ namespace AgentJohnson.Exceptions
       return exceptionText;
     }
 
-    /// <summary>
-    /// Gets the exception.
-    /// </summary>
-    /// <param name="statement">
-    /// The statement.
-    /// </param>
-    /// <returns>
-    /// The exception.
-    /// </returns>
+    /// <summary>Gets the exception.</summary>
+    /// <param name="statement">The statement.</param>
+    /// <returns>The exception.</returns>
     private static IType GetExceptionType(IThrowStatement statement)
     {
       if (statement.Exception != null)
@@ -307,15 +273,9 @@ namespace AgentJohnson.Exceptions
       return catchClause.ExceptionType;
     }
 
-    /// <summary>
-    /// Gets the indent.
-    /// </summary>
-    /// <param name="anchor">
-    /// The anchor.
-    /// </param>
-    /// <returns>
-    /// The indent.
-    /// </returns>
+    /// <summary>Gets the indent.</summary>
+    /// <param name="anchor">The anchor.</param>
+    /// <returns>The indent.</returns>
     private static string GetIndent(IElement anchor)
     {
       var indent = string.Empty;
@@ -329,15 +289,9 @@ namespace AgentJohnson.Exceptions
       return indent;
     }
 
-    /// <summary>
-    /// Inserts the slashes.
-    /// </summary>
-    /// <param name="text">
-    /// The text.
-    /// </param>
-    /// <param name="indent">
-    /// The indent.
-    /// </param>
+    /// <summary>Inserts the slashes.</summary>
+    /// <param name="text">The text.</param>
+    /// <param name="indent">The indent.</param>
     private static void InsertSlashes(StringBuilder text, string indent)
     {
       var slashes = indent + "///";
@@ -351,9 +305,7 @@ namespace AgentJohnson.Exceptions
       }
     }
 
-    /// <summary>
-    /// Executes this instance.
-    /// </summary>
+    /// <summary>Executes this instance.</summary>
     private void Execute()
     {
       var throwStatement = this.warning.ThrowStatement as IThrowStatement;

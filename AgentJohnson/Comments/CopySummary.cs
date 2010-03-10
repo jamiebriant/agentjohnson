@@ -12,27 +12,20 @@ namespace AgentJohnson.Comments
   using JetBrains.Annotations;
   using JetBrains.Application;
   using JetBrains.ReSharper.Feature.Services.Bulbs;
-  using JetBrains.ReSharper.Intentions;
   using JetBrains.ReSharper.Intentions.CSharp.DataProviders;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.CSharp.Util;
   using JetBrains.ReSharper.Psi.Tree;
   using JetBrains.Util;
 
-  /// <summary>
-  /// Defines the copy summary class.
-  /// </summary>
+  /// <summary>Defines the copy summary class.</summary>
   [ContextAction(Description = "Replaces the <returns> tag with the text from the <summary> tag.", Name = "Replace <returns> with <summary>", Priority = -1, Group = "C#")]
   public class CopySummary : ContextActionBase
   {
     #region Constructors and Destructors
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="CopySummary"/> class.
-    /// </summary>
-    /// <param name="provider">
-    /// The provider.
-    /// </param>
+    /// <summary>Initializes a new instance of the <see cref="CopySummary"/> class.</summary>
+    /// <param name="provider">The provider.</param>
     public CopySummary([NotNull] ICSharpContextActionDataProvider provider) : base(provider)
     {
       this.StartTransaction = false;
@@ -40,14 +33,31 @@ namespace AgentJohnson.Comments
 
     #endregion
 
+    #region Public Methods
+
+    /// <summary>Determines whether this instance is available.</summary>
+    /// <param name="element">The element.</param>
+    /// <returns><c>true</c> if this instance is available; otherwise, <c>false</c>.</returns>
+    public override bool IsAvailable([NotNull] IElement element)
+    {
+      IDocCommentNode summary;
+      IDocCommentNode returns;
+
+      GetSummaryAndReturns(element, out summary, out returns);
+      if (summary == null || returns == null)
+      {
+        return false;
+      }
+
+      return returns.GetDocumentRange().Contains(this.Provider.DocumentCaret);
+    }
+
+    #endregion
+
     #region Methods
 
-    /// <summary>
-    /// Executes this instance.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
+    /// <summary>Executes this instance.</summary>
+    /// <param name="element">The element.</param>
     protected override void Execute([NotNull] IElement element)
     {
       IDocCommentNode summary;
@@ -76,62 +86,22 @@ namespace AgentJohnson.Comments
       this.ReplaceReturnsTagText(returns, text);
     }
 
-    /// <summary>
-    /// Gets the text.
-    /// </summary>
-    /// <returns>
-    /// The text in the context menu.
-    /// </returns>
+    /// <summary>Gets the text.</summary>
+    /// <returns>The text in the context menu.</returns>
     [NotNull]
     protected override string GetText()
     {
       return "Replace <returns> with <summary> [Agent Johnson]";
     }
 
-    /// <summary>
-    /// Determines whether this instance is available.
-    /// </summary>
-    /// <param name="cache">
-    /// The element.
-    /// </param>
-    /// <returns>
-    /// <c>true</c> if this instance is available; otherwise, <c>false</c>.
-    /// </returns>
-    public override bool IsAvailable([NotNull] IUserDataHolder cache)
-    {
-        IDocCommentNode summary;
-        IDocCommentNode returns;
-
-        IElement element = Provider.GetSelectedElement<ICommentNode>(false, true);
-        if(element == null)
-        {
-            return false;
-        }
-
-        GetSummaryAndReturns(element, out summary, out returns);
-        if (summary == null || returns == null)
-        {
-        return false;
-        }
-
-        return returns.GetDocumentRange().Contains(this.Provider.DocumentCaret);
-    }
-
-    /// <summary>
-    /// Gets the doc comment block.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
-    /// <returns>
-    /// Returns the I doc comment block node. 
-    /// </returns>
+    /// <summary>Gets the doc comment block.</summary>
+    /// <param name="element">The element.</param>
+    /// <returns>Returns the I doc comment block node. </returns>
     [CanBeNull]
     private static IDocCommentBlockNode GetDocCommentBlock([NotNull] IElement element)
     {
-        
       var typeMemberDeclaration = element.GetContainingElement<ITypeMemberDeclaration>(true);
-        
+
       if (typeMemberDeclaration == null)
       {
         return null;
@@ -146,18 +116,10 @@ namespace AgentJohnson.Comments
       return docCommentBlockOwnerNode.GetDocCommentBlockNode();
     }
 
-    /// <summary>
-    /// Gets the summary and returns.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
-    /// <param name="summary">
-    /// The summary.
-    /// </param>
-    /// <param name="returns">
-    /// The returns. 
-    /// </param>
+    /// <summary>Gets the summary and returns.</summary>
+    /// <param name="element">The element.</param>
+    /// <param name="summary">The summary.</param>
+    /// <param name="returns">The returns. </param>
     private static void GetSummaryAndReturns([NotNull] IElement element, out IDocCommentNode summary, out IDocCommentNode returns)
     {
       summary = null;
@@ -196,15 +158,9 @@ namespace AgentJohnson.Comments
       }
     }
 
-    /// <summary>
-    /// Gets the summary text.
-    /// </summary>
-    /// <param name="summary">
-    /// The summary.
-    /// </param>
-    /// <returns>
-    /// Returns the string.
-    /// </returns>
+    /// <summary>Gets the summary text.</summary>
+    /// <param name="summary">The summary.</param>
+    /// <returns>Returns the string.</returns>
     [NotNull]
     private static string GetSummaryText([NotNull] IDocCommentNode summary)
     {
@@ -247,32 +203,26 @@ namespace AgentJohnson.Comments
           break;
         }
 
-                summary = summary.FindNextNode(
-                              delegate(ITreeNode node)
-                                  {
-                                      return node is IDocCommentNode
-                                                 ? TreeNodeActionType.ACCEPT
-                                                 : TreeNodeActionType.CONTINUE;
-                                  }) as IDocCommentNode;
+        summary = summary.FindNextNode(
+          delegate(ITreeNode node)
+          {
+            return node is IDocCommentNode
+              ? TreeNodeActionType.ACCEPT
+              : TreeNodeActionType.CONTINUE;
+          }) as IDocCommentNode;
       }
 
       return result;
     }
 
-    /// <summary>
-    /// Replaces the returns tag text.
-    /// </summary>
-    /// <param name="returns">
-    /// The returns node <paramref name="text"/>.
-    /// </param>
-    /// <param name="text">
-    /// The text to replace with.
-    /// </param>
+    /// <summary>Replaces the returns tag text.</summary>
+    /// <param name="returns">The returns node <paramref name="text"/>.</param>
+    /// <param name="text">The text to replace with.</param>
     private void ReplaceReturnsTagText(IDocCommentNode returns, string text)
     {
       using (CommandCookie.Create(string.Format("Context Action {0}", this.GetText())))
       {
-        using (var cookie = EnsureWritable())
+        using (var cookie = this.EnsureWritable())
         {
           if (cookie.EnsureWritableResult != EnsureWritableResult.SUCCESS)
           {

@@ -13,9 +13,7 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
   using JetBrains.ReSharper.Psi;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
 
-  /// <summary>
-  /// The after local variable initializer.
-  /// </summary>
+  /// <summary>The after local variable initializer.</summary>
   [LiveTemplate("After initialization with call to a method", "Executes a Live Template after initialization with call to a method.")]
   public class AfterLocalVariableInitializer : ILiveTemplate
   {
@@ -23,15 +21,9 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
 
     #region ILiveTemplate
 
-    /// <summary>
-    /// Gets the name of the template.
-    /// </summary>
-    /// <param name="parameters">
-    /// The parameters.
-    /// </param>
-    /// <returns>
-    /// The items.
-    /// </returns>
+    /// <summary>Gets the name of the template.</summary>
+    /// <param name="parameters">The parameters.</param>
+    /// <returns>The items.</returns>
     public IEnumerable<LiveTemplateItem> GetItems(SmartGenerateParameters parameters)
     {
       var previousStatement = parameters.PreviousStatement;
@@ -117,8 +109,8 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
 
       var liveTemplateItem = new LiveTemplateItem
       {
-        MenuText = string.Format("After initialization with call to '{0}'", text),
-        Description = string.Format("After initialization with call to '{0}'", text),
+        MenuText = string.Format("After initialization with call to '{0}'", text), 
+        Description = string.Format("After initialization with call to '{0}'", text), 
         Shortcut = string.Format("After initialization with call to {0}", shortcut)
       };
 

@@ -17,20 +17,14 @@ namespace AgentJohnson.SmartGenerate.Generators
   using JetBrains.ReSharper.Psi.Util;
   using JetBrains.Util;
 
-  /// <summary>
-  /// Defines the local variable context class.
-  /// </summary>
+  /// <summary>Defines the local variable context class.</summary>
   [SmartGenerate("Local Variable Context", "Generates code based on the current local variable context.", Priority = 500)]
   public class LocalVariableContext : SmartGenerateHandlerBase
   {
     #region Methods
 
-    /// <summary>
-    /// Gets the items.
-    /// </summary>
-    /// <param name="smartGenerateParameters">
-    /// The get menu items parameters.
-    /// </param>
+    /// <summary>Gets the items.</summary>
+    /// <param name="smartGenerateParameters">The get menu items parameters.</param>
     protected override void GetItems(SmartGenerateParameters smartGenerateParameters)
     {
       var element = smartGenerateParameters.Element;
@@ -99,15 +93,9 @@ namespace AgentJohnson.SmartGenerate.Generators
       // }
     }
 
-    /// <summary>
-    /// Determines whether the specified type has constructor.
-    /// </summary>
-    /// <param name="type">
-    /// The type parameter.
-    /// </param>
-    /// <returns>
-    /// <c>true</c> if the specified type has constructor; otherwise, <c>false</c>.
-    /// </returns>
+    /// <summary>Determines whether the specified type has constructor.</summary>
+    /// <param name="type">The type parameter.</param>
+    /// <returns><c>true</c> if the specified type has constructor; otherwise, <c>false</c>.</returns>
     private static bool HasAccessableConstructor(IType type)
     {
       var declaredType = type as IDeclaredType;
@@ -145,15 +133,9 @@ namespace AgentJohnson.SmartGenerate.Generators
       return false;
     }
 
-    /// <summary>
-    /// Determines whether [has writable property] [the specified type].
-    /// </summary>
-    /// <param name="type">
-    /// The type parameter.
-    /// </param>
-    /// <returns>
-    /// <c>true</c> if [has writable property] [the specified type]; otherwise, <c>false</c>.
-    /// </returns>
+    /// <summary>Determines whether [has writable property] [the specified type].</summary>
+    /// <param name="type">The type parameter.</param>
+    /// <returns><c>true</c> if [has writable property] [the specified type]; otherwise, <c>false</c>.</returns>
     private static bool HasWritableProperty(IType type)
     {
       var declaredType = type as IDeclaredType;
@@ -185,22 +167,12 @@ namespace AgentJohnson.SmartGenerate.Generators
       return false;
     }
 
-    /// <summary>
-    /// Performs the value analysis.
-    /// </summary>
-    /// <param name="element">
-    /// The element.
-    /// </param>
-    /// <param name="type">
-    /// The type parameter.
-    /// </param>
-    /// <param name="range">
-    /// The range.
-    /// </param>
-    /// <param name="name">
-    /// The variable name.
-    /// </param>
-    private void PerformValueAnalysis(IElement element, IType type, global::JetBrains.Util.TextRange range, string name)
+    /// <summary>Performs the value analysis.</summary>
+    /// <param name="element">The element.</param>
+    /// <param name="type">The type parameter.</param>
+    /// <param name="range">The range.</param>
+    /// <param name="name">The variable name.</param>
+    private void PerformValueAnalysis(IElement element, IType type, TextRange range, string name)
     {
       if (!type.IsReferenceType())
       {
