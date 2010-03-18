@@ -53,7 +53,8 @@ namespace AgentJohnson.CodeCleanup.Descriptors
       {
         try
         {
-          options.AnnotateWithValueAnalysisAttribute = bool.Parse(XmlUtil.ReadLeafElementValue(optionsElement, "ValueAnalysis"));
+          options.AnnotateWithValueAnalysisAttributes = bool.Parse(XmlUtil.ReadLeafElementValue(optionsElement, "ValueAnalysis"));
+          options.InsertAssertStatements = bool.Parse(XmlUtil.ReadLeafElementValue(optionsElement, "InsertStatements"));
         }
         catch (ArgumentException)
         {
@@ -79,7 +80,8 @@ namespace AgentJohnson.CodeCleanup.Descriptors
       var options = profile.GetSetting(this);
       var optionsElement = element.CreateElement(this.Name);
 
-      optionsElement.CreateLeafElementWithValue("ValueAnalysis", options.AnnotateWithValueAnalysisAttribute.ToString());
+      optionsElement.CreateLeafElementWithValue("ValueAnalysis", options.AnnotateWithValueAnalysisAttributes.ToString());
+      optionsElement.CreateLeafElementWithValue("InsertStatements", options.InsertAssertStatements.ToString());
     }
 
     #endregion

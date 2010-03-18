@@ -82,11 +82,30 @@ namespace AgentJohnson.ValueAnalysis
 
       this.notNullableAttributeClrName = new CLRTypeName(this.notNullTypeElement.CLRName);
       this.canBeNullAttributeClrName = new CLRTypeName(this.canBeNullTypeElement.CLRName);
+
+      this.InsertAssertStatements = true;
+      this.AnnotateWithValueAnalysisAttributes = true;
     }
 
     #endregion
 
     #region Properties
+
+    /// <summary>
+    /// Gets or sets a value indicating whether [annotate with value analysis attributes].
+    /// </summary>
+    /// <value>
+    /// <c>true</c> if [annotate with value analysis attributes]; otherwise, <c>false</c>.
+    /// </value>
+    public bool AnnotateWithValueAnalysisAttributes { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether [insert assert statements].
+    /// </summary>
+    /// <value>
+    /// <c>true</c> if [insert assert statements]; otherwise, <c>false</c>.
+    /// </value>
+    public bool InsertAssertStatements { get; set; }
 
     /// <summary>
     /// Gets the solution.
@@ -380,7 +399,7 @@ namespace AgentJohnson.ValueAnalysis
             }
           }
 
-          break;
+            break;
 
           case "set":
             this.ExecuteFunction(accessorDeclaration);
@@ -459,7 +478,7 @@ namespace AgentJohnson.ValueAnalysis
     /// <param name="parameterStatement">The parameter statement.</param>
     private void FindAttributes([NotNull] ParameterStatement parameterStatement)
     {
-      if (this.notNullTypeElement == null || this.canBeNullTypeElement == null)
+      if (this.notNullTypeElement == null || this.canBeNullTypeElement == null || !this.AnnotateWithValueAnalysisAttributes)
       {
         return;
       }
@@ -583,7 +602,7 @@ namespace AgentJohnson.ValueAnalysis
 
         this.FindAttributes(parameterStatement);
 
-        if (parameter.Kind == ParameterKind.OUTPUT)
+        if (parameter.Kind == ParameterKind.OUTPUT || !this.InsertAssertStatements)
         {
           parameterStatement.NeedsStatement = false;
         }
@@ -727,7 +746,7 @@ namespace AgentJohnson.ValueAnalysis
 
       this.GetAssertionParameters(functionDeclaration, result);
 
-      if (findStatements)
+      if (findStatements && this.InsertAssertStatements)
       {
         this.GetAssertionStatements(functionDeclaration, result);
       }
@@ -835,6 +854,11 @@ namespace AgentJohnson.ValueAnalysis
     /// <returns><c>true</c> if [is available getter function] [the specified getter function declaration]; otherwise, <c>false</c>.</returns>
     private bool IsAvailableGetterFunction([NotNull] IFunctionDeclaration getterFunctionDeclaration)
     {
+      if (this.AnnotateWithValueAnalysisAttributes)
+      {
+        return false;
+      }
+
       var method = getterFunctionDeclaration.DeclaredElement as IMethod;
       if (method == null)
       {

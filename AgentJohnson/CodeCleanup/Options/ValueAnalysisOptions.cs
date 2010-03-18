@@ -27,7 +27,7 @@ namespace AgentJohnson.CodeCleanup.Options
     /// </summary>
     public ValueAnalysisOptions()
     {
-      this.AnnotateWithValueAnalysisAttribute = true;
+      this.AnnotateWithValueAnalysisAttributes = true;
     }
 
     #endregion
@@ -38,7 +38,11 @@ namespace AgentJohnson.CodeCleanup.Options
     /// Gets or sets a value indicating whether the elements must be documented.
     /// </summary>
     [DisplayName("Annotate with Value Analysis attributes")]
-    public bool AnnotateWithValueAnalysisAttribute { get; set; }
+    public bool AnnotateWithValueAnalysisAttributes { get; set; }
+
+    /// <summary>Gets or sets a value indicating whether InsertAssertStatements.</summary>
+    [DisplayName("Insert Assertions")]
+    public bool InsertAssertStatements { get; set; }
 
     #endregion
 

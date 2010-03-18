@@ -120,7 +120,7 @@ namespace AgentJohnson.CodeCleanup
       canIncrementalUpdate = true;
 
       var valueAnalysisOptions = profile.GetSetting(valueAnalysisDescriptor);
-      if (!valueAnalysisOptions.AnnotateWithValueAnalysisAttribute)
+      if (!valueAnalysisOptions.AnnotateWithValueAnalysisAttributes && !valueAnalysisOptions.InsertAssertStatements)
       {
         return;
       }

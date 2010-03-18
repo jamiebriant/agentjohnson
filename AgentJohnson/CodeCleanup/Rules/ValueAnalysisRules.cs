@@ -48,7 +48,7 @@ namespace AgentJohnson.CodeCleanup.Rules
     /// <param name="options">The options.</param>
     private void Annotate(IDeclaration declaration, ValueAnalysisOptions options)
     {
-      if (!options.AnnotateWithValueAnalysisAttribute)
+      if (!options.AnnotateWithValueAnalysisAttributes && !options.InsertAssertStatements)
       {
         return;
       }
@@ -60,6 +60,9 @@ namespace AgentJohnson.CodeCleanup.Rules
       }
 
       var refactoring = new ValueAnalysisRefactoring(typeMemberDeclaration);
+
+      refactoring.AnnotateWithValueAnalysisAttributes = options.AnnotateWithValueAnalysisAttributes;
+      refactoring.InsertAssertStatements = options.InsertAssertStatements;
 
       refactoring.Execute();
     }
