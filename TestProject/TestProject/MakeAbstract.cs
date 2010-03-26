@@ -2,8 +2,10 @@ namespace TestProject
 {
   using System;
 
-  public abstract class MakeAbstract
+  public class MakeAbstract
   {
-    public abstract void VirtualMethod();
+    public virtual void VirtualMethod()
+    {
+    }
   }
 }

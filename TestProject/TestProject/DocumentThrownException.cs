@@ -21,7 +21,7 @@ namespace TestProject
     {
       File.Delete("c:\autoexec.bat");
 
-      ThrowNotImplemented();
+      this.ThrowNotImplemented();
 
       throw new InvalidOperationException("Fail!");
     }
