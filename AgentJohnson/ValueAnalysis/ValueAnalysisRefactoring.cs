@@ -15,6 +15,7 @@ namespace AgentJohnson.ValueAnalysis
   using AgentJohnson.Psi.CodeStyle;
   using JetBrains.Annotations;
   using JetBrains.Application;
+  using JetBrains.DocumentModel;
   using JetBrains.ProjectModel;
   using JetBrains.ReSharper.Psi;
   using JetBrains.ReSharper.Psi.Caches;
@@ -357,8 +358,7 @@ namespace AgentJohnson.ValueAnalysis
 
         var result = body.AddStatementBefore(assertion.Statement, anchor);
 
-        var range = result.GetDocumentRange();
-        codeFormatter.Format(this.Solution, range);
+        CodeFormatter.Format(result);
 
         hasAsserts = true;
       }

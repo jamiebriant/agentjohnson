@@ -14,6 +14,8 @@ namespace AgentJohnson.Psi.CodeStyle
   using JetBrains.ProjectModel;
   using JetBrains.ReSharper.Psi.CodeStyle;
   using JetBrains.ReSharper.Psi.CSharp;
+  using JetBrains.ReSharper.Psi.CSharp.CodeStyle;
+  using JetBrains.ReSharper.Psi.Tree;
 
   /// <summary>Defines the code formatter class.</summary>
   public class CodeFormatter
@@ -45,6 +47,27 @@ namespace AgentJohnson.Psi.CodeStyle
         true, 
         true, 
         NullProgressIndicator.Instance);
+    }
+
+    /// <summary>
+    /// Formats the specified solution.
+    /// </summary>
+    /// <param name="element">The element.</param>
+    public static void Format(IElement element)
+    {
+      var languageService = CSharpLanguageService.CSHARP.Service;
+      if (languageService == null)
+      {
+        return;
+      }
+
+      var formatter = languageService.CodeFormatter as ICSharpCodeFormatter;
+      if (formatter == null)
+      {
+        return;
+      }
+
+      formatter.Format(element, CodeFormatProfile.DEFAULT);
     }
 
     #endregion

@@ -16,6 +16,7 @@ namespace AgentJohnson.SmartGenerate
   using System.Xml;
   using AgentJohnson.SmartGenerate.Scopes;
   using JetBrains.ActionManagement;
+  using JetBrains.Annotations;
   using JetBrains.Application;
   using JetBrains.CommonControls;
   using JetBrains.DocumentModel;
@@ -484,14 +485,15 @@ namespace AgentJohnson.SmartGenerate
   }
 
   /// <summary>Defines the smart generate action1 class.</summary>
-  [ActionHandler("SmartGenerate")]
-  public class SmartGenerateAction1 : SmartGenerateContextAction
+  [UsedImplicitly]
+  public class SmartGenerate1ActionHandler : SmartGenerateContextAction
   {
   }
 
   /// <summary>Defines the smart generate action2 class.</summary>
-  [ActionHandler("SmartGenerate2")]
-  public class SmartGenerateAction2 : SmartGenerateContextAction
+  [UsedImplicitly]
+  [ActionHandler]
+  public class SmartGenerate2ActionHandler : SmartGenerateContextAction
   {
     #region Methods
 

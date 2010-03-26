@@ -10,6 +10,7 @@
 namespace AgentJohnson.Refactorings
 {
   using JetBrains.ActionManagement;
+  using JetBrains.Annotations;
   using JetBrains.Application;
   using JetBrains.ProjectModel;
   using JetBrains.ReSharper.Psi;
@@ -21,7 +22,8 @@ namespace AgentJohnson.Refactorings
   using JetBrains.Util;
 
   /// <summary>Defines the implement I disposable action handler class.</summary>
-  [ActionHandler("AgentJohnson.ImplementIDisposable")]
+  [UsedImplicitly]
+  [ActionHandler]
   public class ImplementIDisposableActionHandler : ActionHandlerBase
   {
     #region Methods

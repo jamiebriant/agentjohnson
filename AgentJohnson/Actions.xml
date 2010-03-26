@@ -1,16 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <actions>
-  <action id="AgentJohnson.IntroduceStringConstant" text="Introduce String Constant"/>
-  <action id="AgentJohnson.InvertReturnValue" text="Invert Return Value"/>
-  <action id="AgentJohnson.ImplementICloneable" text="Implement ICloneable"/>
-  <action id="AgentJohnson.ImplementIDisposable" text="Implement IDisposable"/>
-  <action id="AgentJohnson.ImplementISerializable" text="Implement ISerializable"/>
-  <action id="AgentJohnson.ImplementProxyClass" text="Implement proxy class"/>
-  <action id="AgentJohnson.DuplicateMethod" text="Duplicate method" shortcut="Control+Shift+M">
-    <vs-shortcut>Control+Shift+M</vs-shortcut>
-  </action>
   <action id="SmartGenerate2" text="Internal Use Only"/>
-
 
   <insert group-id="ReSharper.Find" position="last">
     <action id="FavoriteFiles" text="Favorite Files" shortcut="Control+Shift+X">
@@ -21,21 +11,23 @@
     </action>
   </insert>
 
-  <insert group-id="ReSharper.Refactor" position="last">
+  <insert group-id="ReSharper.Tools" position="last">
     <separator />
-    <action-ref id="AgentJohnson.IntroduceStringConstant"/>
-    <action-ref id="AgentJohnson.InvertReturnValue"/>
+    <action id="IntroduceStringConstant" text="Introduce String Constant"/>
+    <action id="InvertReturnValue" text="Invert Return Value"/>
     <separator />
     <action-group id="ImplementInterfaces" text="Implement Interfaces">
-      <action-ref id="AgentJohnson.ImplementICloneable"/>
-      <action-ref id="AgentJohnson.ImplementIDisposable"/>
-      <action-ref id="AgentJohnson.ImplementISerializable"/>
-      <action-ref id="AgentJohnson.ImplementProxyClass"/>
+      <action id="ImplementICloneable" text="Implement ICloneable"/>
+      <action id="ImplementIDisposable" text="Implement IDisposable"/>
+      <action id="ImplementISerializable" text="Implement ISerializable"/>
+      <action id="ImplementProxyClass" text="Implement proxy class"/>
     </action-group>
   </insert>
 
-  <insert group-id="ReSharper.Edit" position="last">
+  <insert group-id="ReSharper.Edit" position="before" anchor-id="LineComment">
     <separator />
-    <action-ref id="AgentJohnson.DuplicateMethod" />
+    <action id="DuplicateMethod" text="Duplicate method" shortcut="Control+Shift+M">
+      <vs-shortcut>Control+Shift+M</vs-shortcut>
+    </action>
   </insert>
 </actions>

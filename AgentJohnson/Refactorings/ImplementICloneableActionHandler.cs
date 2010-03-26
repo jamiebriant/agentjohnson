@@ -11,6 +11,7 @@ namespace AgentJohnson.Refactorings
 {
   using System.Text;
   using JetBrains.ActionManagement;
+  using JetBrains.Annotations;
   using JetBrains.Application;
   using JetBrains.IDE;
   using JetBrains.ProjectModel;
@@ -21,7 +22,8 @@ namespace AgentJohnson.Refactorings
   using JetBrains.Util;
 
   /// <summary>Defines the implement <c>ICloneable</c> action handler class.</summary>
-  [ActionHandler("AgentJohnson.ImplementICloneable")]
+  [UsedImplicitly]
+  [ActionHandler]
   public class ImplementICloneableActionHandler : ActionHandlerBase
   {
     #region Methods

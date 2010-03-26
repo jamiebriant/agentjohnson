@@ -22,7 +22,8 @@ namespace AgentJohnson.Statements
   using JetBrains.Util;
 
   /// <summary>The invert return value action handler.</summary>
-  [ActionHandler("AgentJohnson.DuplicateMethod")]
+  [UsedImplicitly]
+  [ActionHandler]
   public class DuplicateMethodActionHandler : ActionHandlerBase
   {
     #region Methods

@@ -220,7 +220,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Psi\CodeStyle\CodeFormatter.cs" />
-    <Compile Include="RecentChanges\RecentChangesAction.cs" />
+    <Compile Include="RecentChanges\RecentChangesActionHandler.cs" />
     <Compile Include="RecentChanges\RecentChanges.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -306,7 +306,7 @@
     <Compile Include="ValueAnalysis\ReturnAnalyzer.cs" />
     <Compile Include="ITypeMemberDeclarationAnalyzer.cs" />
     <Compile Include="FavoriteFiles\FavoriteFilePath.cs" />
-    <Compile Include="FavoriteFiles\FavoriteFilesAction.cs" />
+    <Compile Include="FavoriteFiles\FavoriteFilesActionHandler.cs" />
     <Compile Include="FavoriteFiles\FavoriteFilesSettings.cs" />
     <Compile Include="FavoriteFiles\OrganizeDialog.cs">
       <SubType>Form</SubType>
@@ -356,11 +356,6 @@
     <Compile Include="ValueAnalysis\ValueAnalysisRefactoring.cs" />
     <Compile Include="ValueAnalysis\ValueAnalysisSettings.cs" />
     <Compile Include="ValueAnalysis\ValueAnalysisSuggestion.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Actions.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="FavoriteFiles\OrganizeDialog.resx">

@@ -15,6 +15,7 @@ namespace AgentJohnson.FavoriteFiles
   using System.Windows.Forms;
   using EnvDTE;
   using JetBrains.ActionManagement;
+  using JetBrains.Annotations;
   using JetBrains.CommonControls;
   using JetBrains.DocumentModel;
   using JetBrains.IDE;
@@ -25,8 +26,9 @@ namespace AgentJohnson.FavoriteFiles
   using JetBrains.VsIntegration.Application;
 
   /// <summary>Handles Find Text action, see Actions.xml</summary>
-  [ActionHandler("FavoriteFiles")]
-  public class FavoriteFilesAction : IActionHandler
+  [UsedImplicitly]
+  [ActionHandler]
+  public class FavoriteFilesActionHandler : IActionHandler
   {
     #region Constants and Fields
 

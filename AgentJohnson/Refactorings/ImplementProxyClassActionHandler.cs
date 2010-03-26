@@ -12,6 +12,7 @@ namespace AgentJohnson.Refactorings
   using System;
   using System.Text;
   using JetBrains.ActionManagement;
+  using JetBrains.Annotations;
   using JetBrains.Application;
   using JetBrains.IDE;
   using JetBrains.ProjectModel;
@@ -23,7 +24,8 @@ namespace AgentJohnson.Refactorings
   using JetBrains.Util;
 
   /// <summary>Defines the implement proxy class action handler class.</summary>
-  [ActionHandler("AgentJohnson.ImplementProxyClass")]
+  [UsedImplicitly]
+  [ActionHandler]
   public class ImplementProxyClassActionHandler : ActionHandlerBase
   {
     #region Methods

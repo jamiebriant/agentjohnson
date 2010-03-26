@@ -11,6 +11,7 @@ namespace AgentJohnson.RecentChanges
 {
   using System.Windows.Forms;
   using JetBrains.ActionManagement;
+  using JetBrains.Annotations;
   using JetBrains.Application;
   using JetBrains.DocumentModel;
   using JetBrains.IDE;
@@ -19,8 +20,9 @@ namespace AgentJohnson.RecentChanges
   using JetBrains.Util;
 
   /// <summary>Handles Find Text action, see Actions.xml</summary>
-  [ActionHandler("RecentChanges")]
-  public class RecentChangesAction : IActionHandler
+  [UsedImplicitly]
+  [ActionHandler]
+  public class RecentChangesActionHandler : IActionHandler
   {
     #region Implemented Interfaces
 

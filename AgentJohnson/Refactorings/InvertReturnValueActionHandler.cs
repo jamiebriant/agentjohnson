@@ -10,11 +10,13 @@
 namespace AgentJohnson.Refactorings
 {
   using JetBrains.ActionManagement;
+  using JetBrains.Annotations;
   using JetBrains.IDE;
   using JetBrains.ProjectModel;
 
   /// <summary>The invert return value action handler.</summary>
-  [ActionHandler("AgentJohnson.InvertReturnValue")]
+  [UsedImplicitly]
+  [ActionHandler]
   public class InvertReturnValueActionHandler : ActionHandlerBase
   {
     #region Methods

@@ -10,11 +10,13 @@
 namespace AgentJohnson.Strings
 {
   using JetBrains.ActionManagement;
+  using JetBrains.Annotations;
   using JetBrains.IDE;
   using JetBrains.ProjectModel;
 
   /// <summary>The introduce string constant action handler.</summary>
-  [ActionHandler("AgentJohnson.IntroduceStringConstant")]
+  [UsedImplicitly]
+  [ActionHandler]
   public class IntroduceStringConstantActionHandler : ActionHandlerBase
   {
     #region Methods

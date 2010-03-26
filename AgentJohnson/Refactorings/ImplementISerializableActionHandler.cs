@@ -10,6 +10,7 @@
 namespace AgentJohnson.Refactorings
 {
   using JetBrains.ActionManagement;
+  using JetBrains.Annotations;
   using JetBrains.Application;
   using JetBrains.DocumentModel;
   using JetBrains.IDE;
@@ -22,7 +23,8 @@ namespace AgentJohnson.Refactorings
   using JetBrains.Util;
 
   /// <summary>Defines the implement <c>ISerializable</c> action handler class.</summary>
-  [ActionHandler("AgentJohnson.ImplementISerializable")]
+  [UsedImplicitly]
+  [ActionHandler]
   public class ImplementISerializableActionHandler : ActionHandlerBase
   {
     #region Methods
