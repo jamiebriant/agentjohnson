@@ -397,6 +397,7 @@
     <EmbeddedResource Include="Resources\SmartGenerate.gif" />
     <EmbeddedResource Include="Resources\LeftArrow.png" />
     <EmbeddedResource Include="Resources\RightArrow.png" />
+    <EmbeddedResource Include="Actions.xml" />
     <Content Include="SmartGenerate.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

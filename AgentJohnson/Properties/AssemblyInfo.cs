@@ -28,7 +28,7 @@ using JetBrains.UI.Application.PluginSupport;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly : AssemblyVersion("1.6.3.*")]
+[assembly : AssemblyVersion("1.7.0.*")]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 
@@ -62,4 +62,4 @@ using JetBrains.UI.Application.PluginSupport;
 [assembly : PluginTitle("Agent Johnson Plugin")]
 [assembly : PluginVendor("Jakob Christensen.")]
 [assembly : PluginDescription("Smart generate, assertions, value analysis and exception fixes.")]
-// [assembly : ActionsXml("AgentJohnson.Actions.xml")]
+[assembly : ActionsXml("AgentJohnson.Actions.xml")]

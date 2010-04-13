@@ -12,7 +12,7 @@ namespace AgentJohnson.Strings
   using JetBrains.ActionManagement;
   using JetBrains.Annotations;
   using JetBrains.IDE;
-  using JetBrains.ProjectModel;
+  using JetBrains.ProjectModel;        
 
   /// <summary>The introduce string constant action handler.</summary>
   [UsedImplicitly]
@@ -25,7 +25,7 @@ namespace AgentJohnson.Strings
     /// <param name="solution">The solution.</param>
     /// <param name="context">The context.</param>
     protected override void Execute(ISolution solution, IDataContext context)
-    {
+    {                                                                                 
       var textControl = context.GetData(DataConstants.TEXT_CONTROL);
       if (textControl == null)
       {

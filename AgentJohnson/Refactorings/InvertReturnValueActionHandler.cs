@@ -37,7 +37,7 @@ namespace AgentJohnson.Refactorings
       invertReturnValueRefactoring.Execute();
     }
 
-    /// <summary>Updates the specified context.</summary>
+    /// <summary>Updates the specified context.</summary>    
     /// <param name="context">The context.</param>
     /// <returns>The update.</returns>
     protected override bool Update(IDataContext context)

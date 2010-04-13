@@ -3,30 +3,30 @@
   <action id="SmartGenerate2" text="Internal Use Only"/>
 
   <insert group-id="ReSharper.Find" position="last">
-    <action id="FavoriteFiles" text="Favorite Files" shortcut="Control+Shift+X">
+    <action id="FavoriteFiles" text="Favorite Files [Agent Johnson]" shortcut="Control+Shift+X">
       <vs-shortcut>Control+Shift+X</vs-shortcut>
     </action>
-    <action id="RecentChanges" text="Recent Changes" shortcut="Control+Shift+P">
+    <action id="RecentChanges" text="Recent Changes [Agent Johnson]" shortcut="Control+Shift+P">
       <vs-shortcut>Control+Shift+P</vs-shortcut>
     </action>
   </insert>
 
   <insert group-id="ReSharper.Tools" position="last">
-    <separator />
-    <action id="IntroduceStringConstant" text="Introduce String Constant"/>
-    <action id="InvertReturnValue" text="Invert Return Value"/>
-    <separator />
-    <action-group id="ImplementInterfaces" text="Implement Interfaces">
-      <action id="ImplementICloneable" text="Implement ICloneable"/>
-      <action id="ImplementIDisposable" text="Implement IDisposable"/>
-      <action id="ImplementISerializable" text="Implement ISerializable"/>
-      <action id="ImplementProxyClass" text="Implement proxy class"/>
+    <action-group id="AgentJohnson" text="Agent Johnson">
+      <separator />
+      <action id="IntroduceStringConstant" text="Introduce String Constant"/>
+      <action id="InvertReturnValue" text="Invert Return Value"/>
+      <separator />
+      <action id="ImplementICloneable" text="Implement ICloneable Interface"/>
+      <action id="ImplementIDisposable" text="Implement IDisposable Interface"/>
+      <action id="ImplementISerializable" text="Implement ISerializable Interface"/>
+      <action id="ImplementProxyClass" text="Implement Proxy Class"/>
     </action-group>
   </insert>
-
-  <insert group-id="ReSharper.Edit" position="before" anchor-id="LineComment">
+  
+  <insert group-id="ReSharper.Edit" position="after" anchor-id="DuplicateText">  
     <separator />
-    <action id="DuplicateMethod" text="Duplicate method" shortcut="Control+Shift+M">
+    <action id="DuplicateMethod" text="Duplicate Method [Agent Johnson]" shortcut="Control+Shift+M">
       <vs-shortcut>Control+Shift+M</vs-shortcut>
     </action>
   </insert>
