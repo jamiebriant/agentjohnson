@@ -44,8 +44,6 @@ namespace AgentJohnson.Statements
         return;
       }
 
-      Shell.Instance.Locks.AssertReadAccessAllowed();
-
       var textControl = context.GetData(DataConstants.TEXT_CONTROL);
       if (textControl == null)
       {
@@ -89,8 +87,6 @@ namespace AgentJohnson.Statements
       {
         return false;
       }
-
-      Shell.Instance.Locks.AssertReadAccessAllowed();
 
       var typeMemberDeclaration = element.ToTreeNode().Parent as ITypeMemberDeclaration;
       if (typeMemberDeclaration == null)

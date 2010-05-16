@@ -99,8 +99,6 @@ namespace AgentJohnson.Strings
     /// <returns><c>true</c> if the specified solution is available; otherwise, <c>false</c>.</returns>
     public static bool IsAvailable(IElement element)
     {
-      Shell.Instance.Locks.AssertReadAccessAllowed();
-
       var tokenNode = element as ITokenNode;
       if (tokenNode == null)
       {

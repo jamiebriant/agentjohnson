@@ -86,8 +86,6 @@ namespace AgentJohnson.Refactorings
     /// <returns><c>true</c> if the specified solution is available; otherwise, <c>false</c>.</returns>
     public static bool IsAvailable(IElement element)
     {
-      Shell.Instance.Locks.AssertReadAccessAllowed();
-
       var typeMemberDeclaration = element.ToTreeNode().Parent as ITypeMemberDeclaration;
       if (typeMemberDeclaration == null)
       {

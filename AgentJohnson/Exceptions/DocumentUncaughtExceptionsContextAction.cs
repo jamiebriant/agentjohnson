@@ -64,8 +64,6 @@ namespace AgentJohnson.Exceptions
     /// <param name="element">The element.</param>
     protected override void Execute(IElement element)
     {
-      Shell.Instance.Locks.AssertReadAccessAllowed();
-
       var node = element.ToTreeNode();
       if (node == null)
       {

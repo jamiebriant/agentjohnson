@@ -184,8 +184,6 @@ namespace AgentJohnson
         throw new InvalidOperationException();
       }
 
-      Shell.Instance.Locks.AssertReadAccessAllowed();
-
       var element = this.provider.SelectedElement;
       if (element == null)
       {
@@ -255,8 +253,6 @@ namespace AgentJohnson
     /// <returns>The is available internal.</returns>
     protected bool IsAvailableInternal()
     {
-      Shell.Instance.Locks.AssertReadAccessAllowed();
-
       var element = this.provider.SelectedElement;
       if (element == null)
       {

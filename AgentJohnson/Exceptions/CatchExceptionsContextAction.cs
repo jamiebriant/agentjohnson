@@ -43,8 +43,6 @@ namespace AgentJohnson.Exceptions
     /// <returns><c>true</c> if the specified cache is available; otherwise, <c>false</c>.</returns>
     public override bool IsAvailable(IElement element)
     {
-      Shell.Instance.Locks.AssertReadAccessAllowed();
-
       var node = element.ToTreeNode();
 
       IInvocationExpression invocationExpression = null;
@@ -119,8 +117,6 @@ namespace AgentJohnson.Exceptions
     /// <param name="element">The element.</param>
     protected override void Execute(IElement element)
     {
-      Shell.Instance.Locks.AssertReadAccessAllowed();
-
       var node = element.ToTreeNode();
       if (node == null)
       {
