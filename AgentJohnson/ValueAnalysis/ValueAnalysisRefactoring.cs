@@ -15,11 +15,10 @@ namespace AgentJohnson.ValueAnalysis
   using AgentJohnson.Psi.CodeStyle;
   using JetBrains.Annotations;
   using JetBrains.Application;
-  using JetBrains.DocumentModel;
   using JetBrains.ProjectModel;
+  using JetBrains.ReSharper.Daemon;
   using JetBrains.ReSharper.Psi;
   using JetBrains.ReSharper.Psi.Caches;
-  using JetBrains.ReSharper.Psi.ControlFlow2;
   using JetBrains.ReSharper.Psi.ControlFlow2.CSharp;
   using JetBrains.ReSharper.Psi.CSharp;
   using JetBrains.ReSharper.Psi.CSharp.Parsing;
@@ -373,14 +372,20 @@ namespace AgentJohnson.ValueAnalysis
     /// <param name="indexerDeclaration">The property declaration.</param>
     private void ExecuteIndexer([NotNull] IIndexerDeclaration indexerDeclaration)
     {
+      if (this.HasCanBeNullAnnotation())
+      {
+        return;
+      }
+
       foreach (var accessorDeclaration in indexerDeclaration.AccessorDeclarations)
       {
-        if (accessorDeclaration.ToTreeNode().AccessorName == null)
+        var name = accessorDeclaration.ToTreeNode().AccessorName;
+        if (name == null)
         {
           continue;
         }
 
-        var accessorName = accessorDeclaration.ToTreeNode().AccessorName.GetText();
+        var accessorName = name.GetText();
 
         switch (accessorName)
         {
@@ -412,16 +417,20 @@ namespace AgentJohnson.ValueAnalysis
     /// <param name="propertyDeclaration">The declaration.</param>
     private void ExecuteProperty([NotNull] IPropertyDeclaration propertyDeclaration)
     {
+      if (this.HasCanBeNullAnnotation())
+      {
+        return;
+      }
+
       foreach (var accessorDeclaration in propertyDeclaration.AccessorDeclarations)
       {
-        if (accessorDeclaration.ToTreeNode().AccessorName == null)
+        var name = accessorDeclaration.ToTreeNode().AccessorName;
+        if (name == null)
         {
           continue;
         }
 
-        var accessorName = accessorDeclaration.ToTreeNode().AccessorName.GetText();
-
-        switch (accessorName)
+        switch (name.GetText())
         {
           case "get":
             if (this.IsAvailableGetterFunction(accessorDeclaration))
@@ -454,7 +463,7 @@ namespace AgentJohnson.ValueAnalysis
 
       var graf = CSharpControlFlowBuilder.Build(functionDeclaration);
 
-      var inspect = graf.Inspect(ValueAnalysisMode.OPTIMISTIC);
+      var inspect = graf.Inspect(HighlightingSettingsManager.Instance.Settings.ValueAnalysisMode);
 
       var state = inspect.SuggestReturnValueAnnotationAttribute;
 
@@ -784,6 +793,19 @@ namespace AgentJohnson.ValueAnalysis
       return attributes.Any(codeAnnotationsCache.IsAnnotationAttribute);
     }
 
+    /// <summary>
+    /// Determines whether [is can be null annotation].
+    /// </summary>
+    /// <returns>
+    /// <c>true</c> if [is can be null annotation]; otherwise, <c>false</c>.
+    /// </returns>
+    private bool HasCanBeNullAnnotation()
+    {
+      var attributes = this.TypeMemberDeclaration.DeclaredElement.GetAttributeInstances(this.canBeNullAttributeClrName, false);
+      
+      return attributes != null && attributes.Count > 0;
+    }
+
     /// <summary>Inserts the blank line.</summary>
     /// <param name="anchor">The anchor.</param>
     /// <param name="codeFormatter">The code formatter.</param>
@@ -854,7 +876,7 @@ namespace AgentJohnson.ValueAnalysis
     /// <returns><c>true</c> if [is available getter function] [the specified getter function declaration]; otherwise, <c>false</c>.</returns>
     private bool IsAvailableGetterFunction([NotNull] IFunctionDeclaration getterFunctionDeclaration)
     {
-      if (this.AnnotateWithValueAnalysisAttributes)
+      if (!this.AnnotateWithValueAnalysisAttributes)
       {
         return false;
       }
@@ -879,6 +901,11 @@ namespace AgentJohnson.ValueAnalysis
     /// <returns><c>true</c> if [is available indexer] [the specified indexer declaration]; otherwise, <c>false</c>.</returns>
     private bool IsAvailableIndexer([NotNull] IIndexerDeclaration indexerDeclaration)
     {
+      if (this.HasCanBeNullAnnotation())
+      {
+        return false;
+      }
+
       ICSharpFunctionDeclaration getterFunctionDeclaration = null;
       ICSharpFunctionDeclaration setterFunctionDeclaration = null;
 
@@ -913,6 +940,11 @@ namespace AgentJohnson.ValueAnalysis
     {
       ICSharpFunctionDeclaration getterFunctionDeclaration = null;
       ICSharpFunctionDeclaration setterFunctionDeclaration = null;
+
+      if (this.HasCanBeNullAnnotation())
+      {
+        return false;
+      }
 
       foreach (var accessorDeclaration in propertyDeclaration.AccessorDeclarations)
       {

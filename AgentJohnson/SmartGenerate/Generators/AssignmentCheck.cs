@@ -11,6 +11,7 @@ namespace AgentJohnson.SmartGenerate.Generators
 {
   using JetBrains.Application;
   using JetBrains.Application.Progress;
+  using JetBrains.ReSharper.Daemon;
   using JetBrains.ReSharper.Psi;
   using JetBrains.ReSharper.Psi.ControlFlow2;
   using JetBrains.ReSharper.Psi.ControlFlow2.CSharp;
@@ -108,7 +109,7 @@ namespace AgentJohnson.SmartGenerate.Generators
 
       var graf = CSharpControlFlowBuilder.Build(functionDeclaration);
 
-      var inspect = graf.Inspect(ValueAnalysisMode.OPTIMISTIC);
+      var inspect = graf.Inspect(HighlightingSettingsManager.Instance.Settings.ValueAnalysisMode);
 
       return inspect.GetExpressionNullReferenceState(referenceExpression);
     }

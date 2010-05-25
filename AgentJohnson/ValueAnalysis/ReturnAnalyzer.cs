@@ -11,6 +11,7 @@ namespace AgentJohnson.ValueAnalysis
 {
   using System.Collections.Generic;
   using JetBrains.ProjectModel;
+  using JetBrains.ReSharper.Daemon;
   using JetBrains.ReSharper.Psi;
   using JetBrains.ReSharper.Psi.ControlFlow2;
   using JetBrains.ReSharper.Psi.ControlFlow2.CSharp;
@@ -100,7 +101,7 @@ namespace AgentJohnson.ValueAnalysis
 
       var graf = CSharpControlFlowBuilder.Build(functionDeclaration);
 
-      var inspect = graf.Inspect(ValueAnalysisMode.OPTIMISTIC);
+      var inspect = graf.Inspect(HighlightingSettingsManager.Instance.Settings.ValueAnalysisMode);
 
       var state = inspect.GetExpressionNullReferenceState(referenceExpression);
 

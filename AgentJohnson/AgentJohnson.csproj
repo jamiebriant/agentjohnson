@@ -305,6 +305,15 @@
     <Compile Include="ValueAnalysis\ReturnWarning.cs" />
     <Compile Include="ValueAnalysis\ReturnAnalyzer.cs" />
     <Compile Include="ITypeMemberDeclarationAnalyzer.cs" />
+    <Compile Include="FavoriteFiles\FavoriteFilePath.cs" />
+    <Compile Include="FavoriteFiles\FavoriteFilesActionHandler.cs" />
+    <Compile Include="FavoriteFiles\FavoriteFilesSettings.cs" />
+    <Compile Include="FavoriteFiles\OrganizeDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FavoriteFiles\OrganizeDialog.Designer.cs">
+      <DependentUpon>OrganizeDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="ITokenAnalyzer.cs" />
     <Compile Include="Exceptions\CatchExceptionsContextAction.cs" />
     <Compile Include="Exceptions\DocumentUncaughtExceptionsContextAction.cs" />
@@ -349,6 +358,10 @@
     <Compile Include="ValueAnalysis\ValueAnalysisSuggestion.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="FavoriteFiles\OrganizeDialog.resx">
+      <DependentUpon>OrganizeDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Options\ImportExportPage.resx">
       <DependentUpon>ImportExportPage.cs</DependentUpon>
       <SubType>Designer</SubType>
