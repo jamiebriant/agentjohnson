@@ -25,6 +25,7 @@ namespace AgentJohnson.ValueAnalysis
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.ExtensionsAPI;
   using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
+  using JetBrains.ReSharper.Psi.Resolve;
   using JetBrains.ReSharper.Psi.Tree;
   using JetBrains.ReSharper.Psi.Util;
   using JetBrains.Text;
@@ -323,15 +324,12 @@ namespace AgentJohnson.ValueAnalysis
           continue;
         }
 
-        var code = GetCode(assertion, accessRights);
-        if (string.IsNullOrEmpty(code))
+        if (string.IsNullOrEmpty(assertion.Code))
         {
           continue;
         }
 
-        code = string.Format(code, assertion.Parameter.ShortName);
-
-        assertion.Statement = factory.CreateStatement(code);
+        assertion.Statement = factory.CreateStatement(assertion.Code);
       }
 
       IStatement anchor = null;
@@ -623,6 +621,12 @@ namespace AgentJohnson.ValueAnalysis
           {
             parameterStatement.NeedsStatement = false;
           }
+          else
+          {
+            code = string.Format(code, parameterStatement.Parameter.ShortName);
+
+            parameterStatement.Code = code.Trim();
+          }
         }
 
         result.Add(parameterStatement);
@@ -663,7 +667,33 @@ namespace AgentJohnson.ValueAnalysis
       {
         return;
       }
+ 
+      // text resolving
+      var count = 0;
+      foreach (var statement in statements)
+      {
+        var stm = statement.GetText().Trim();
 
+        foreach (var parameterStatement in result)
+        {
+          if (!parameterStatement.Code.EndsWith(stm))
+          {
+            continue;
+          }
+                               
+          parameterStatement.Statement = statement;
+          count++;
+
+          if (count == result.Count)
+          {
+            return;
+          }
+
+          break;
+        }
+      }
+
+      // invocation resolving
       foreach (var statement in statements)
       {
         var expressionStatement = statement as IExpressionStatement;

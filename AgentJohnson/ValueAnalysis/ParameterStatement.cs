@@ -42,6 +42,8 @@ namespace AgentJohnson.ValueAnalysis
     /// </summary>
     private IStatement statement;
 
+    private string code;
+
     #endregion
 
     #region Properties
@@ -128,6 +130,23 @@ namespace AgentJohnson.ValueAnalysis
       set
       {
         this.statement = value;
+      }
+    }
+
+    /// <summary>
+    /// Gets or sets the code.
+    /// </summary>
+    /// <value>The code.</value>
+    public string Code
+    {
+      get
+      {
+        return code ?? string.Empty;
+      }
+
+      set
+      {
+        code = value;
       }
     }
 
