@@ -18,7 +18,7 @@ namespace AgentJohnson.Statements
   using JetBrains.ReSharper.Psi.Tree;
 
   /// <summary>The reverse for context action.</summary>
-  [ContextAction(Description = "Reverses the direction of a for-loop.", Name = "Reverse for-loop direction", Priority = -1, Group = "C#")]
+  [ContextAction(Description = "Reverses the direction of a for-loop.", Name = "Reverse for-loop direction [Agent Johnson]", Priority = -1, Group = "C#")]
   public class ReverseForContextAction : ContextActionBase
   {
     #region Constructors and Destructors

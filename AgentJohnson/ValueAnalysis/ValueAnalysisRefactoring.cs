@@ -25,7 +25,6 @@ namespace AgentJohnson.ValueAnalysis
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.ExtensionsAPI;
   using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
-  using JetBrains.ReSharper.Psi.Resolve;
   using JetBrains.ReSharper.Psi.Tree;
   using JetBrains.ReSharper.Psi.Util;
   using JetBrains.Text;

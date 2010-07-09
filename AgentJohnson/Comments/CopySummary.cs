@@ -19,7 +19,7 @@ namespace AgentJohnson.Comments
   using JetBrains.Util;
 
   /// <summary>Defines the copy summary class.</summary>
-  [ContextAction(Description = "Replaces the <returns> tag with the text from the <summary> tag.", Name = "Replace <returns> with <summary>", Priority = -1, Group = "C#")]
+  [ContextAction(Description = "Replaces the <returns> tag with the text from the <summary> tag.", Name = "Replace <returns> with <summary> [Agent Johnson]", Priority = -1, Group = "C#")]
   public class CopySummary : ContextActionBase
   {
     #region Constructors and Destructors

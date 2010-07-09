@@ -10,82 +10,44 @@
 namespace AgentJohnson.Refactorings
 {
   using System.Text;
-  using JetBrains.ActionManagement;
   using JetBrains.Annotations;
   using JetBrains.Application;
-  using JetBrains.IDE;
   using JetBrains.ProjectModel;
+  using JetBrains.ReSharper.Feature.Services.Bulbs;
+  using JetBrains.ReSharper.Intentions.CSharp.DataProviders;
   using JetBrains.ReSharper.Psi;
   using JetBrains.ReSharper.Psi.Caches;
   using JetBrains.ReSharper.Psi.CSharp;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
+  using JetBrains.ReSharper.Psi.Tree;
   using JetBrains.Util;
 
   /// <summary>Defines the implement <c>ICloneable</c> action handler class.</summary>
   [UsedImplicitly]
-  [ActionHandler]
-  public class ImplementICloneableActionHandler : ActionHandlerBase
+  [ContextAction(Description = "Implement IClonable interface.", Name = "Implement IClonable [Agent Johnson]", Priority = -1, Group = "C#")]
+  public class ImplementICloneable : ContextActionBase
   {
-    #region Methods
+    #region Constructors and Destructors
 
-    /// <summary>Executes action. Called after Update, that set <c>ActionPresentation.Enabled</c> to true.</summary>
-    /// <param name="solution">The solution.</param>
-    /// <param name="context">The context.</param>
-    protected override void Execute(ISolution solution, IDataContext context)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ImplementICloneable"/> class.
+    /// </summary>
+    /// <param name="provider">The provider.</param>
+    public ImplementICloneable([NotNull] ICSharpContextActionDataProvider provider) : base(provider)
     {
-      if (!context.CheckAllNotNull(DataConstants.SOLUTION))
-      {
-        return;
-      }
-
-      var textControl = context.GetData(DataConstants.TEXT_CONTROL);
-      if (textControl == null)
-      {
-        return;
-      }
-
-      var element = GetElementAtCaret(context);
-      if (element == null)
-      {
-        return;
-      }
-
-      var classDeclaration = element.ToTreeNode().Parent as IClassDeclaration;
-      if (classDeclaration == null)
-      {
-        return;
-      }
-
-      using (var cookie = this.EnsureWritable(solution, textControl.Document))
-      {
-        if (cookie.EnsureWritableResult != EnsureWritableResult.SUCCESS)
-        {
-          return;
-        }
-
-        using (CommandCookie.Create("Context Action Implement ICloneable"))
-        {
-          PsiManager.GetInstance(solution).DoTransaction(() => Execute(solution, classDeclaration));
-        }
-      }
     }
 
-    /// <summary>Updates the specified context.</summary>
-    /// <param name="context">The context.</param>
+    #endregion
+
+    #region Public Methods
+
+    /// <summary>
+    /// Updates the specified context.
+    /// </summary>
+    /// <param name="element">The element.</param>
     /// <returns><c>true</c>, if updateable.</returns>
-    protected override bool Update(IDataContext context)
+    public override bool IsAvailable(IElement element)
     {
-      if (!context.CheckAllNotNull(DataConstants.SOLUTION))
-      {
-        return false;
-      }
-
-      var element = GetElementAtCaret(context);
-      if (element == null)
-      {
-        return false;
-      }
-
       var classDeclaration = element.ToTreeNode().Parent as IClassDeclaration;
       if (classDeclaration == null)
       {
@@ -105,6 +67,42 @@ namespace AgentJohnson.Refactorings
       }
 
       return true;
+    }
+
+    #endregion
+
+    #region Methods
+
+    /// <summary>
+    /// Executes action. Called after Update, that set <c>ActionPresentation.Enabled</c> to true.
+    /// </summary>
+    /// <param name="element">The element.</param>
+    protected override void Execute(IElement element)
+    {
+      var classDeclaration = element.ToTreeNode().Parent as IClassDeclaration;
+      if (classDeclaration == null)
+      {
+        return;
+      }
+
+      using (var cookie = this.EnsureWritable())
+      {
+        if (cookie.EnsureWritableResult != EnsureWritableResult.SUCCESS)
+        {
+          return;
+        }
+
+        Execute(this.Solution, classDeclaration);
+      }
+    }
+
+    /// <summary>
+    /// Gets the text.
+    /// </summary>
+    /// <returns>The context action text.</returns>
+    protected override string GetText()
+    {
+      return "Implement IClonable [Agent Johnson]";
     }
 
     /// <summary>Adds the dispose object method.</summary>
@@ -137,7 +135,10 @@ namespace AgentJohnson.Refactorings
 
       code += "\r\nreturn result;";
 
-      AddMember(classDeclaration, factory, @"
+      AddMember(
+        classDeclaration, 
+        factory, 
+        @"
         public object Clone() {" +
         code + @"
         }

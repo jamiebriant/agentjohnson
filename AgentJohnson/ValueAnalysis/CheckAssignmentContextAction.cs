@@ -21,7 +21,7 @@ namespace AgentJohnson.ValueAnalysis
   using JetBrains.Util;
 
   /// <summary>Represents the Context Action.</summary>
-  [ContextAction(Description = "Adds an 'if' statement after the current statement that checks if the variable is null.", Name = "Check if variable is null", Priority = -1, Group = "C#")]
+  [ContextAction(Description = "Adds an 'if' statement after the current statement that checks if the variable is null.", Name = "Check if variable is null [Agent Johnson]", Priority = -1, Group = "C#")]
   public class CheckAssignmentContextAction : ContextActionBase
   {
     #region Constants and Fields

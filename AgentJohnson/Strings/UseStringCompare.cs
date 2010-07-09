@@ -19,7 +19,7 @@ namespace AgentJohnson.Strings
   using JetBrains.ReSharper.Psi.Tree;
 
   /// <summary>Defines the equality operator to equals action class.</summary>
-  [ContextAction(Group = "C#", Name = "Convert '==' to string.Compare", Description = "Converts usage of equality operator ('==') to a call to string.Compare method.")]
+  [ContextAction(Group = "C#", Name = "Convert '==' to string.Compare [Agent Johnson]", Description = "Converts usage of equality operator ('==') to a call to string.Compare method.")]
   public class EqualityOperatorToEqualsAction : OneItemContextActionBase, IBulbAction
   {
     #region Constructors and Destructors

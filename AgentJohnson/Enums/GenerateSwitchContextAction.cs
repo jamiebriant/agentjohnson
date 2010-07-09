@@ -20,7 +20,7 @@ namespace AgentJohnson.Enums
   using JetBrains.ReSharper.Psi.Util;
 
   /// <summary>Represents the Context Action.</summary>
-  [ContextAction(Description = "Generates a 'switch' statement based on the current 'enum' expression.", Name = "Generate 'switch' statement", Priority = -1, Group = "C#")]
+  [ContextAction(Description = "Generates a 'switch' statement based on the current 'enum' expression.", Name = "Generate 'switch' statement [Agent Johnson]", Priority = -1, Group = "C#")]
   public class GenerateSwitchContextAction : ContextActionBase
   {
     #region Constructors and Destructors

@@ -20,7 +20,7 @@ namespace AgentJohnson.Statements
   using JetBrains.ReSharper.Psi.Util;
 
   /// <summary>Defines the make abstract class.</summary>
-  [ContextAction(Description = "Sort case statements.", Name = "Sort case statements", Priority = -1, Group = "C#")]
+  [ContextAction(Description = "Sort case statements.", Name = "Sort case statements [Agent Johnson]", Priority = -1, Group = "C#")]
   public class SortCaseStatements : ContextActionBase, IComparer<SortCaseStatements.KeyCode>
   {
     #region Constructors and Destructors

@@ -19,7 +19,7 @@ namespace AgentJohnson.Strings
   using JetBrains.ReSharper.Psi.Tree;
 
   /// <summary>The string concatenation action.</summary>
-  [ContextAction(Group = "C#", Name = "Use StringBuilder", Description = "Converts concatenation of a few strings and other objects to the use of StringBuilder class.")]
+  [ContextAction(Group = "C#", Name = "Use StringBuilder [Agent Johnson]", Description = "Converts concatenation of a few strings and other objects to the use of StringBuilder class.")]
   public class UseStringBuilderAction : OneItemContextActionBase, IBulbAction
   {
     #region Constructors and Destructors

@@ -22,7 +22,7 @@ namespace AgentJohnson.ValueAnalysis
   using JetBrains.Util;
 
   /// <summary>Represents the Context Action.</summary>
-  [ContextAction(Description = "Annotates the parameter under the caret with the Allow Null attribute.", Name = "Annotate with AllowNull attribute for the current parameter", Priority = -1, Group = "C#")]
+  [ContextAction(Description = "Annotates the parameter under the caret with the Allow Null attribute.", Name = "Annotate with AllowNull attribute for the current parameter [Agent Johnson]", Priority = -1, Group = "C#")]
   public class AllowNullContextAction : ContextActionBase
   {
     #region Constructors and Destructors

@@ -24,7 +24,7 @@ namespace AgentJohnson.ValueAnalysis
   using JetBrains.Util;
 
   /// <summary>Represents the Context Action.</summary>
-  [ContextAction(Description = "Adds an assertion statement after the current statement.", Name = "Assert assignment", Priority = 0, Group = "C#")]
+  [ContextAction(Description = "Adds an assertion statement after the current statement.", Name = "Assert assignment [Agent Johnson]", Priority = 0, Group = "C#")]
   public class AssertAssignmentContextAction : ContextActionBase
   {
     #region Constructors and Destructors

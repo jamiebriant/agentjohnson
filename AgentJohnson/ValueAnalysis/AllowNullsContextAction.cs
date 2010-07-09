@@ -19,7 +19,7 @@ namespace AgentJohnson.ValueAnalysis
   using JetBrains.ReSharper.Psi.Tree;
 
   /// <summary>Represents the Context Action.</summary>
-  [ContextAction(Description = "Annotates a function with the Allow Null attribute.", Name = "Annotate with Allow Null attributes for all parameters", Priority = -1, Group = "C#")]
+  [ContextAction(Description = "Annotates a function with the Allow Null attribute.", Name = "Annotate with Allow Null attributes for all parameters [Agent Johnson]", Priority = -1, Group = "C#")]
   public class AllowNullsContextAction : ContextActionBase
   {
     #region Constructors and Destructors

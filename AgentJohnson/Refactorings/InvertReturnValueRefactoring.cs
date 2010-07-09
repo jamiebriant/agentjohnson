@@ -127,10 +127,7 @@ namespace AgentJohnson.Refactorings
           return;
         }
 
-        using (CommandCookie.Create("Context Action Invert Return Value"))
-        {
-          PsiManager.GetInstance(this.Solution).DoTransaction(delegate { this.Execute(typeMemberDeclaration); });
-        }
+        this.Execute(typeMemberDeclaration);
       }
     }
 

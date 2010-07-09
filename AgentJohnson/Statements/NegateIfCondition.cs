@@ -17,7 +17,7 @@ namespace AgentJohnson.Statements
   using JetBrains.ReSharper.Psi.Tree;
 
   /// <summary>Defines the negate if condition class.</summary>
-  [ContextAction(Description = "Negates the condition of an 'if' statement.", Name = "Negate 'if' condition", Priority = -1, Group = "C#")]
+  [ContextAction(Description = "Negates the condition of an 'if' statement.", Name = "Negate 'if' condition [Agent Johnson]", Priority = -1, Group = "C#")]
   public class NegateIfCondition : ContextActionBase
   {
     #region Constructors and Destructors

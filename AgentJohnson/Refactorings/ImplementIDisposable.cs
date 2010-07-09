@@ -9,83 +9,44 @@
 
 namespace AgentJohnson.Refactorings
 {
-  using JetBrains.ActionManagement;
   using JetBrains.Annotations;
   using JetBrains.Application;
   using JetBrains.ProjectModel;
+  using JetBrains.ReSharper.Feature.Services.Bulbs;
+  using JetBrains.ReSharper.Intentions.CSharp.DataProviders;
   using JetBrains.ReSharper.Psi;
   using JetBrains.ReSharper.Psi.Caches;
   using JetBrains.ReSharper.Psi.CSharp;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
-  using JetBrains.ReSharper.Psi.Services;
   using JetBrains.ReSharper.Psi.Tree;
   using JetBrains.Util;
 
   /// <summary>Defines the implement I disposable action handler class.</summary>
   [UsedImplicitly]
-  [ActionHandler]
-  public class ImplementIDisposableActionHandler : ActionHandlerBase
+  [ContextAction(Description = "Implement IDisposable interface.", Name = "Implement IDisposable [Agent Johnson]", Priority = -1, Group = "C#")]
+  public class ImplementIDisposable : ContextActionBase
   {
-    #region Methods
+    #region Constructors and Destructors
 
-    /// <summary>Executes action. Called after Update, that set <c>ActionPresentation.Enabled</c> to true.</summary>
-    /// <param name="solution">The solution.</param>
-    /// <param name="context">The context.</param>
-    protected override void Execute(ISolution solution, IDataContext context)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ImplementIDisposable"/> class.
+    /// </summary>
+    /// <param name="provider">The provider.</param>
+    public ImplementIDisposable([NotNull] ICSharpContextActionDataProvider provider) : base(provider)
     {
-      if (!context.CheckAllNotNull(JetBrains.IDE.DataConstants.SOLUTION))
-      {
-        return;
-      }
-
-      var textControl = context.GetData(JetBrains.IDE.DataConstants.TEXT_CONTROL);
-      if (textControl == null)
-      {
-        return;
-      }
-
-      var element = TextControlToPsi.GetElementFromCaretPosition<IElement>(solution, textControl);
-      if (element == null)
-      {
-        return;
-      }
-
-      var classDeclaration = element.ToTreeNode().Parent as IClassDeclaration;
-      if (classDeclaration == null)
-      {
-        return;
-      }
-
-      using (var cookie = this.EnsureWritable(solution, textControl.Document))
-      {
-        if (cookie.EnsureWritableResult != EnsureWritableResult.SUCCESS)
-        {
-          return;
-        }
-
-        using (CommandCookie.Create("Context Action Implement IDisposable"))
-        {
-          PsiManager.GetInstance(solution).DoTransaction(() => Execute(solution, classDeclaration));
-        }
-      }
     }
 
-    /// <summary>Updates the specified context.</summary>
-    /// <param name="context">The context.</param>
+    #endregion
+
+    #region Public Methods
+
+    /// <summary>
+    /// Updates the specified context.
+    /// </summary>
+    /// <param name="element">The element.</param>
     /// <returns><c>true</c>, if the update succeeds.</returns>
-    protected override bool Update(IDataContext context)
+    public override bool IsAvailable(IElement element)
     {
-      if (!context.CheckAllNotNull(JetBrains.IDE.DataConstants.SOLUTION))
-      {
-        return false;
-      }
-
-      var element = GetElementAtCaret(context);
-      if (element == null)
-      {
-        return false;
-      }
-
       var classDeclaration = element.ToTreeNode().Parent as IClassDeclaration;
       if (classDeclaration == null)
       {
@@ -105,6 +66,42 @@ namespace AgentJohnson.Refactorings
       }
 
       return true;
+    }
+
+    #endregion
+
+    #region Methods
+
+    /// <summary>
+    /// Executes action. Called after Update, that set <c>ActionPresentation.Enabled</c> to true.
+    /// </summary>
+    /// <param name="element">The element.</param>
+    protected override void Execute(IElement element)
+    {
+      var classDeclaration = element.ToTreeNode().Parent as IClassDeclaration;
+      if (classDeclaration == null)
+      {
+        return;
+      }
+
+      using (var cookie = this.EnsureWritable())
+      {
+        if (cookie.EnsureWritableResult != EnsureWritableResult.SUCCESS)
+        {
+          return;
+        }
+
+        Execute(this.Solution, classDeclaration);
+      }
+    }
+
+    /// <summary>
+    /// Gets the text.
+    /// </summary>
+    /// <returns>The context action text.</returns>
+    protected override string GetText()
+    {
+      return "Implement IDisposable [Agent Johnson]";
     }
 
     /// <summary>Adds the destructor.</summary>

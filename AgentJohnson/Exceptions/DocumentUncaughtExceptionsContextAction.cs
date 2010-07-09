@@ -23,7 +23,7 @@ namespace AgentJohnson.Exceptions
   using JetBrains.ReSharper.Psi.Tree;
 
   /// <summary>Defines the document uncaught exceptions context action class.</summary>
-  [ContextAction(Description = "Document uncaught exceptions that are thrown in called functions", Name = "Add xml-docs comments for uncaught exceptions", Priority = -1, Group = "C#")]
+  [ContextAction(Description = "Document uncaught exceptions that are thrown in called functions", Name = "Add xml-docs comments for uncaught exceptions [Agent Johnson]", Priority = -1, Group = "C#")]
   public class DocumentUncaughtExceptionsContextAction : ContextActionBase
   {
     #region Constructors and Destructors

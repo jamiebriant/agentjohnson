@@ -9,11 +9,10 @@
 
 namespace AgentJohnson.Statements
 {
-  using JetBrains.ActionManagement;
   using JetBrains.Annotations;
   using JetBrains.Application;
-  using JetBrains.IDE;
-  using JetBrains.ProjectModel;
+  using JetBrains.ReSharper.Feature.Services.Bulbs;
+  using JetBrains.ReSharper.Intentions.CSharp.DataProviders;
   using JetBrains.ReSharper.Psi;
   using JetBrains.ReSharper.Psi.CSharp;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
@@ -23,71 +22,28 @@ namespace AgentJohnson.Statements
 
   /// <summary>The invert return value action handler.</summary>
   [UsedImplicitly]
-  [ActionHandler]
-  public class DuplicateMethodActionHandler : ActionHandlerBase
+  [ContextAction(Description = "Duplicates a method.", Name = "Duplicate method [Agent Johnson]", Priority = -1, Group = "C#")]
+  public class DuplicateMethod : ContextActionBase
   {
-    #region Methods
+    #region Constructors and Destructors
 
-    /// <summary>Executes action. Called after Update, that set <c>ActionPresentation.Enabled</c> to <c>true</c>.</summary>
-    /// <param name="solution">The solution.</param>
-    /// <param name="context">The context.</param>
-    protected override void Execute([NotNull] ISolution solution, [NotNull] IDataContext context)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DuplicateMethod"/> class.
+    /// </summary>
+    /// <param name="provider">The provider.</param>
+    public DuplicateMethod([NotNull] ICSharpContextActionDataProvider provider) : base(provider)
     {
-      if (!context.CheckAllNotNull(DataConstants.SOLUTION))
-      {
-        return;
-      }
-
-      var element = GetElementAtCaret(context);
-      if (element == null)
-      {
-        return;
-      }
-
-      var textControl = context.GetData(DataConstants.TEXT_CONTROL);
-      if (textControl == null)
-      {
-        return;
-      }
-
-      var selection = TextRange.InvalidRange;
-
-
-      using (var cookie = this.EnsureWritable(solution, textControl.Document))
-      {
-        if (cookie.EnsureWritableResult != EnsureWritableResult.SUCCESS)
-        {
-          return;
-        }
-
-        using (CommandCookie.Create("Context Action Duplicate Method"))
-        {
-          PsiManager.GetInstance(solution).DoTransaction(delegate { selection = Execute(element); });
-        }
-      }
-
-      if (selection != TextRange.InvalidRange)
-      {
-        textControl.Selection.SetRange(TextControlPosRange.FromDocRange(textControl, selection.StartOffset, selection.EndOffset));
-      }
     }
 
-    /// <summary>Updates the specified context.</summary>
-    /// <param name="context">The context.</param>
-    /// <returns>The update.</returns>
-    protected override bool Update([NotNull] IDataContext context)
+    #endregion
+
+    #region Public Methods
+
+    /// <summary>Determines whether this instance is available.</summary>
+    /// <param name="element">The element.</param>
+    /// <returns><c>true</c> if this instance is available; otherwise, <c>false</c>.</returns>
+    public override bool IsAvailable(IElement element)
     {
-      if (!context.CheckAllNotNull(DataConstants.SOLUTION))
-      {
-        return false;
-      }
-
-      var element = GetElementAtCaret(context);
-      if (element == null)
-      {
-        return false;
-      }
-
       var typeMemberDeclaration = element.ToTreeNode().Parent as ITypeMemberDeclaration;
       if (typeMemberDeclaration == null)
       {
@@ -99,11 +55,54 @@ namespace AgentJohnson.Statements
       return function != null;
     }
 
+    #endregion
+
+    #region Methods
+
+    /// <summary>
+    /// Executes action. Called after Update, that set <c>ActionPresentation.Enabled</c> to <c>true</c>.
+    /// </summary>
+    /// <param name="element">The element.</param>
+    protected override void Execute(IElement element)
+    {
+      var textControl = this.TextControl;
+      if (textControl == null)
+      {
+        return;
+      }
+
+      var selection = TextRange.InvalidRange;
+
+      using (var cookie = this.EnsureWritable())
+      {
+        if (cookie.EnsureWritableResult != EnsureWritableResult.SUCCESS)
+        {
+          return;
+        }
+
+        ExecuteAction(element);
+      }
+
+      if (selection != TextRange.InvalidRange)
+      {
+        textControl.Selection.SetRange(TextControlPosRange.FromDocRange(textControl, selection.StartOffset, selection.EndOffset));
+      }
+    }
+
+    /// <summary>
+    /// Gets the text.
+    /// </summary>
+    /// <returns>The context action text.</returns>
+    protected override string GetText()
+    {
+      return "Duplicate method [Agent Johnson]";
+    }
+
     /// <summary>Executes the specified element.</summary>
     /// <param name="element">The element.</param>
     /// <returns>Returns the text range.</returns>
     [NotNull]
-    private static TextRange Execute([NotNull] IElement element)
+    private static TextRange ExecuteAction([NotNull] IElement element)
     {
       var typeMemberDeclaration = element.ToTreeNode().Parent as ICSharpTypeMemberDeclaration;
       if (typeMemberDeclaration == null)

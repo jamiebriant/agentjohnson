@@ -17,7 +17,7 @@ namespace AgentJohnson.Statements
   using JetBrains.ReSharper.Psi.Tree;
 
   /// <summary>Defines the make abstract class.</summary>
-  [ContextAction(Description = "Converts an abstract class to a normal class with virtual members.", Name = "Make abstract class virtual", Priority = -1, Group = "C#")]
+  [ContextAction(Description = "Converts an abstract class to a normal class with virtual members.", Name = "Make abstract class virtual [Agent Johnson]", Priority = -1, Group = "C#")]
   public class MakeVirtual : ContextActionBase
   {
     #region Constructors and Destructors

@@ -23,7 +23,7 @@ namespace AgentJohnson.Exceptions
   using JetBrains.ReSharper.Psi.Tree;
 
   /// <summary>Defines the catch exceptions context action class.</summary>
-  [ContextAction(Description = "Generates try/catch clauses surrounding expressions", Name = "Catch exceptions", Priority = -1, Group = "C#")]
+  [ContextAction(Description = "Generates try/catch clauses surrounding expressions", Name = "Catch exceptions [Agent Johnson]", Priority = -1, Group = "C#")]
   public partial class CatchExceptionsContextAction : ContextActionBase, IComparer<CatchExceptionsContextAction.Pair<string, Type>>
   {
     #region Constructors and Destructors

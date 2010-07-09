@@ -19,7 +19,7 @@ namespace AgentJohnson.Strings
   using JetBrains.Util;
 
   /// <summary>Represents the Context Action.</summary>
-  [ContextAction(Description = "Adds an 'if' statement after the current statement that checks if the string variable is null or empty.", Name = "Check if string is null or empty", Priority = -1, Group = "C#")]
+  [ContextAction(Description = "Adds an 'if' statement after the current statement that checks if the string variable is null or empty.", Name = "Check if string is null or empty [Agent Johnson]", Priority = -1, Group = "C#")]
   public class CheckStringNotNullOrEmptyContextAction : ContextActionBase
   {
     #region Constants and Fields

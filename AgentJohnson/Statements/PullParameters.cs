@@ -21,7 +21,7 @@ namespace AgentJohnson.Statements
   using JetBrains.TextControl;
 
   /// <summary>Defines the pull parameters class.</summary>
-  [ContextAction(Description = "Pulls the containing methods parameters to this method call.", Name = "Pull parameters", Priority = -1, Group = "C#")]
+  [ContextAction(Description = "Pulls the containing methods parameters to this method call.", Name = "Pull parameters [Agent Johnson]", Priority = -1, Group = "C#")]
   public class PullParameters : ContextActionBase
   {
     #region Constructors and Destructors

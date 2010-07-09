@@ -23,7 +23,7 @@ namespace AgentJohnson.Enums
   using JetBrains.Util;
 
   /// <summary>Represents the Context Action.</summary>
-  [ContextAction(Description = "Formats the current 'enum', sorts it by value.", Name = "Format 'enum'", Priority = -1, Group = "C#")]
+  [ContextAction(Description = "Formats the current 'enum', sorts it by value.", Name = "Format 'enum' [Agent Johnson]", Priority = -1, Group = "C#")]
   public class SortEnumContextAction : ContextActionBase
   {
     #region Constants and Fields

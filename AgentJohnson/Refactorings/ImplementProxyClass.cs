@@ -11,83 +11,44 @@ namespace AgentJohnson.Refactorings
 {
   using System;
   using System.Text;
-  using JetBrains.ActionManagement;
   using JetBrains.Annotations;
   using JetBrains.Application;
-  using JetBrains.IDE;
-  using JetBrains.ProjectModel;
+  using JetBrains.ReSharper.Feature.Services.Bulbs;
+  using JetBrains.ReSharper.Intentions.CSharp.DataProviders;
   using JetBrains.ReSharper.Psi;
   using JetBrains.ReSharper.Psi.CodeStyle;
   using JetBrains.ReSharper.Psi.CSharp;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
   using JetBrains.ReSharper.Psi.Naming.Settings;
+  using JetBrains.ReSharper.Psi.Tree;
   using JetBrains.Util;
 
   /// <summary>Defines the implement proxy class action handler class.</summary>
   [UsedImplicitly]
-  [ActionHandler]
-  public class ImplementProxyClassActionHandler : ActionHandlerBase
+  [ContextAction(Description = "Implement proxy class.", Name = "Implement Proxy Class [Agent Johnson]", Priority = -1, Group = "C#")]
+  public class ImplementProxyClass : ContextActionBase
   {
-    #region Methods
+    #region Constructors and Destructors
 
-    /// <summary>Executes action. Called after Update, that set <c>ActionPresentation</c>.Enabled to true.</summary>
-    /// <param name="solution">The solution.</param>
-    /// <param name="context">The context.</param>
-    protected override void Execute(ISolution solution, IDataContext context)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ImplementProxyClass"/> class.
+    /// </summary>
+    /// <param name="provider">The provider.</param>
+    public ImplementProxyClass([NotNull] ICSharpContextActionDataProvider provider) : base(provider)
     {
-      if (!context.CheckAllNotNull(DataConstants.SOLUTION))
-      {
-        return;
-      }
-
-      var textControl = context.GetData(DataConstants.TEXT_CONTROL);
-      if (textControl == null)
-      {
-        return;
-      }
-
-      var element = GetElementAtCaret(context);
-      if (element == null)
-      {
-        return;
-      }
-
-      var classDeclaration = element.ToTreeNode().Parent as IClassDeclaration;
-      if (classDeclaration == null)
-      {
-        return;
-      }
-
-      using (var cookie = this.EnsureWritable(solution, textControl.Document))
-      {
-        if (cookie.EnsureWritableResult != EnsureWritableResult.SUCCESS)
-        {
-          return;
-        }
-
-        using (CommandCookie.Create("Context Action Implement Proxy Class"))
-        {
-          PsiManager.GetInstance(solution).DoTransaction(delegate { Execute(classDeclaration); });
-        }
-      }
     }
 
-    /// <summary>Updates the specified context.</summary>
-    /// <param name="context">The context.</param>
+    #endregion
+
+    #region Public Methods
+
+    /// <summary>
+    /// Updates the specified context.
+    /// </summary>
+    /// <param name="element">The element.</param>
     /// <returns>Determines if the update succeeded.</returns>
-    protected override bool Update(IDataContext context)
+    public override bool IsAvailable(IElement element)
     {
-      if (!context.CheckAllNotNull(DataConstants.SOLUTION))
-      {
-        return false;
-      }
-
-      var element = GetElementAtCaret(context);
-      if (element == null)
-      {
-        return false;
-      }
-
       var classDeclaration = element.ToTreeNode().Parent as IClassDeclaration;
       if (classDeclaration == null)
       {
@@ -95,6 +56,42 @@ namespace AgentJohnson.Refactorings
       }
 
       return true;
+    }
+
+    #endregion
+
+    #region Methods
+
+    /// <summary>
+    /// Executes action. Called after Update, that set <c>ActionPresentation</c>.Enabled to true.
+    /// </summary>
+    /// <param name="element">The element.</param>
+    protected override void Execute(IElement element)
+    {
+      var classDeclaration = element.ToTreeNode().Parent as IClassDeclaration;
+      if (classDeclaration == null)
+      {
+        return;
+      }
+
+      using (var cookie = this.EnsureWritable())
+      {
+        if (cookie.EnsureWritableResult != EnsureWritableResult.SUCCESS)
+        {
+          return;
+        }
+
+        Execute(classDeclaration);
+      }
+    }
+
+    /// <summary>
+    /// Gets the text.
+    /// </summary>
+    /// <returns>The context action text.</returns>
+    protected override string GetText()
+    {
+      return "Implement proxy class [Agent Johnson]";
     }
 
     /// <summary>Adds the get object data method code.</summary>
@@ -304,6 +301,10 @@ namespace AgentJohnson.Refactorings
       code.Append("}");
 
       var memberDeclaration = factory.CreateTypeMemberDeclaration(code.ToString()) as IClassDeclaration;
+      if (memberDeclaration == null)
+      {
+        return;
+      }
 
       var namespaceDeclaration = classDeclaration.GetContainingNamespaceDeclaration();
 

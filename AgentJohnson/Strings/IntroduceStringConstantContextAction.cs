@@ -14,7 +14,7 @@ namespace AgentJohnson.Strings
   using JetBrains.ReSharper.Psi.Tree;
 
   /// <summary>Defines the introduce string constant context action class.</summary>
-  [ContextAction(Description = "Generates a string constant from the literal string.", Name = "Introduce string constant", Priority = -1, Group = "C#")]
+  [ContextAction(Description = "Generates a string constant from the literal string.", Name = "Introduce string constant [Agent Johnson]", Priority = -1, Group = "C#")]
   public class IntroduceStringConstantContextAction : ContextActionBase
   {
     #region Constructors and Destructors
@@ -55,7 +55,7 @@ namespace AgentJohnson.Strings
     /// <returns>The text.</returns>
     protected override string GetText()
     {
-      return "Introduce String Constant [Agent Johnson]";
+      return "Introduce string constant [Agent Johnson]";
     }
 
     #endregion

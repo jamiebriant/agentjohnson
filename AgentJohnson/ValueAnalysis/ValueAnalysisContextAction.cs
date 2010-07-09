@@ -17,7 +17,7 @@ namespace AgentJohnson.ValueAnalysis
   using JetBrains.VsIntegration.Application;
 
   /// <summary>Represents the Context Action.</summary>
-  [ContextAction(Description = "Annotates a function with Value Analysis attributes and assert statements.", Name = "Annotate with Value Analysis attributes", Priority = 0, Group = "C#")]
+  [ContextAction(Description = "Annotates a function with Value Analysis attributes and assert statements.", Name = "Annotate with Value Analysis attributes [Agent Johnson]", Priority = 10, Group = "C#")]
   public class ValueAnalysisContextAction : ContextActionBase
   {
     #region Constructors and Destructors
