@@ -16,6 +16,7 @@ namespace AgentJohnson.SmartGenerate
   using JetBrains.Application;
   using JetBrains.ComponentModel;
   using JetBrains.ReSharper.Feature.Services.LiveTemplates.LiveTemplates;
+  using JetBrains.ReSharper.Feature.Services.LiveTemplates.Storages;
   using JetBrains.ReSharper.LiveTemplates.Templates;
   using JetBrains.ReSharper.LiveTemplates.UI.TemplateEditor;
   using JetBrains.UI.PopupMenu;
@@ -104,7 +105,7 @@ namespace AgentJohnson.SmartGenerate
         return;
       }
 
-      var template = new Template("@Do not change: " + liveTemplateItem.Shortcut, liveTemplateItem.Description, string.Empty, true, true, true);
+      var template = new Template("@Do not change: " + liveTemplateItem.Shortcut, liveTemplateItem.Description, liveTemplateItem.Text ?? string.Empty, true, true, false);
 
       Shell.Instance.Invocator.ReentrancyGuard.ExecuteOrQueue("Create Live Template", delegate
       {
@@ -112,7 +113,18 @@ namespace AgentJohnson.SmartGenerate
         {
           using (CommandCookie.Create("Context Action Create Live Template"))
           {
-            TemplateEditorManager.Instance.CreateTemplate(template, LiveTemplatesManager.Instance.TemplateFamily.UserStorage);
+            var templateStorage = LiveTemplatesManager.Instance.TemplateFamily.UserStorage;
+
+            foreach (var storage in LiveTemplatesManager.Instance.TemplateFamily.TemplateStorages)
+            {
+              if (storage is FileStorage && !storage.ReadOnly)
+              {
+                templateStorage = storage;
+                break;
+              }
+            }
+
+            TemplateEditorManager.Instance.CreateTemplate(template, templateStorage);
           }
         }
       });

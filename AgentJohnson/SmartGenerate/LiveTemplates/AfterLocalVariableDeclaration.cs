@@ -50,15 +50,17 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
 
       var presentableName = type.GetPresentableName(element.Language);
       var longPresentableName = type.GetLongPresentableName(element.Language);
+      var shortName = localVariable.ShortName;
 
       var liveTemplateItem = new LiveTemplateItem
       {
         MenuText = string.Format("After local variable declaration of type '{0}'", presentableName), 
         Description = string.Format("After local variable of type '{0}'", presentableName), 
-        Shortcut = string.Format("After local variable of type {0}", longPresentableName)
+        Shortcut = string.Format("After local variable of type {0}", longPresentableName),
+        Text = string.Format("/* $Name$: variable name, $Type$ = variable type name */\n")
       };
 
-      liveTemplateItem.Variables["Name"] = localVariable.ShortName;
+      liveTemplateItem.Variables["Name"] = shortName;
       liveTemplateItem.Variables["Type"] = presentableName;
 
       return new List<LiveTemplateItem>

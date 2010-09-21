@@ -50,6 +50,18 @@ namespace AgentJohnson.SmartGenerate
 
     #region Methods
 
+    /// <summary>
+    /// Gets a value indicating whether this instance has items.
+    /// </summary>
+    /// <value><c>true</c> if this instance has items; otherwise, <c>false</c>.</value>
+    protected bool HasItems
+    {
+      get
+      {
+        return this.items.Count > 0;
+      }
+    }
+
     /// <summary>Adds the specified text.</summary>
     /// <param name="text">The text.</param>
     /// <param name="template">The template.</param>

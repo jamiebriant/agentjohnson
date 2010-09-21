@@ -13,6 +13,7 @@ namespace AgentJohnson.SmartGenerate.Generators
   using System.Reflection;
   using System.Xml;
   using JetBrains.ReSharper.Feature.Services.LiveTemplates.LiveTemplates;
+  using JetBrains.ReSharper.Feature.Services.LiveTemplates.Storages;
   using JetBrains.Util;
 
   /// <summary>The live template.</summary>
@@ -53,34 +54,54 @@ namespace AgentJohnson.SmartGenerate.Generators
         {
           var shortcut = "@Do not change: " + liveTemplateMenuItem.Shortcut;
 
-          foreach (var template in LiveTemplatesManager.Instance.TemplateFamily.UserStorage.Templates)
+          foreach (var templateStorage in LiveTemplatesManager.Instance.TemplateFamily.TemplateStorages)
           {
-            if (template.Shortcut != shortcut)
-            {
-              continue;
-            }
-
-            var doc = new XmlDocument();
-
-            var templateElement = template.WriteToXml(doc);
-
-            var xml = templateElement.OuterXml;
-
-            foreach (var key in liveTemplateMenuItem.Variables.Keys)
-            {
-              xml = xml.Replace("$" + key + "$", liveTemplateMenuItem.Variables[key]);
-              template.Description = template.Description.Replace("$" + key + "$", liveTemplateMenuItem.Variables[key]);
-            }
-
-            var range = liveTemplateMenuItem.Range;
-            if (range == TextRange.InvalidRange)
-            {
-              range = defaultRange;
-            }
-
-            this.AddAction(template.Description, xml, range);
+            this.GetItems(liveTemplateMenuItem, templateStorage, shortcut, defaultRange);
           }
         }
+      }
+
+      if (this.HasItems)
+      {
+        this.AddMenuSeparator();
+      }
+    }
+
+    /// <summary>
+    /// Gets the items.
+    /// </summary>
+    /// <param name="liveTemplateMenuItem">The live template menu item.</param>
+    /// <param name="templateStorage">The template storage.</param>
+    /// <param name="shortcut">The shortcut.</param>
+    /// <param name="defaultRange">The default range.</param>
+    private void GetItems(LiveTemplateItem liveTemplateMenuItem, ITemplateStorage templateStorage, string shortcut, TextRange defaultRange)
+    {
+      foreach (var template in templateStorage.Templates)
+      {
+        if (template.Shortcut != shortcut)
+        {
+          continue;
+        }
+
+        var doc = new XmlDocument();
+
+        var templateElement = template.WriteToXml(doc);
+
+        var xml = templateElement.OuterXml;
+
+        foreach (var key in liveTemplateMenuItem.Variables.Keys)
+        {
+          xml = xml.Replace("$" + key + "$", liveTemplateMenuItem.Variables[key]);
+          template.Description = template.Description.Replace("$" + key + "$", liveTemplateMenuItem.Variables[key]);
+        }
+
+        var range = liveTemplateMenuItem.Range;
+        if (range == TextRange.InvalidRange)
+        {
+          range = defaultRange;
+        }
+
+        this.AddAction(template.Description, xml, range);
       }
     }
 

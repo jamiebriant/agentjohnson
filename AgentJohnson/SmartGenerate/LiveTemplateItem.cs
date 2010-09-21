@@ -67,6 +67,13 @@ namespace AgentJohnson.SmartGenerate
     public string Shortcut { get; set; }
 
     /// <summary>
+    /// Gets or sets the text.
+    /// </summary>
+    /// <value>The text.</value>
+    [CanBeNull]
+    public string Text { get; set; }
+
+    /// <summary>
     /// Gets the variables.
     /// </summary>
     /// <value>The variables.</value>

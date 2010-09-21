@@ -66,14 +66,18 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
         return null;
       }
 
-      var text = method.ShortName;
-      var shortcut = method.ShortName;
+      var shortName = method.ShortName;
+      var type = string.Empty;
+
+      var text = shortName;
+      var shortcut = shortName;
 
       var containingType = method.GetContainingType();
       if (containingType != null)
       {
         text = containingType.ShortName + "." + text;
         shortcut = containingType.ShortName + "." + shortcut;
+        type = containingType.ShortName;
 
         var ns = containingType.GetContainingNamespace();
         if (!string.IsNullOrEmpty(ns.ShortName))
@@ -84,13 +88,14 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
 
       var liveTemplateItem = new LiveTemplateItem
       {
-        MenuText = string.Format("After call to '{0}'", text), 
-        Description = string.Format("After call to '{0}'", text), 
-        Shortcut = string.Format("After call to {0}", shortcut)
+        MenuText = string.Format("After call to '{0}'", text),
+        Description = string.Format("After call to '{0}'", text),
+        Shortcut = string.Format("After call to {0}", shortcut),
+        Text = string.Format("/* $Name$: method name, $Type$: containing type name*/\n")
       };
 
-      liveTemplateItem.Variables["Name"] = method.ShortName;
-      liveTemplateItem.Variables["Type"] = containingType != null ? containingType.ShortName : string.Empty;
+      liveTemplateItem.Variables["Name"] = shortName;
+      liveTemplateItem.Variables["Type"] = type;
 
       return new List<LiveTemplateItem>
       {
