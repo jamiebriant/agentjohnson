@@ -105,7 +105,7 @@ namespace AgentJohnson.SmartGenerate
         return;
       }
 
-      var template = new Template("@Do not change: " + liveTemplateItem.Shortcut, liveTemplateItem.Description, liveTemplateItem.Text ?? string.Empty, true, true, false);
+      var template = new Template("`Do not change: " + liveTemplateItem.Shortcut, liveTemplateItem.Description, liveTemplateItem.Text ?? string.Empty, true, true, false);
 
       Shell.Instance.Invocator.ReentrancyGuard.ExecuteOrQueue("Create Live Template", delegate
       {

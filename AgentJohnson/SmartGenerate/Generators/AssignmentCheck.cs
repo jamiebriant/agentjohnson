@@ -13,7 +13,6 @@ namespace AgentJohnson.SmartGenerate.Generators
   using JetBrains.Application.Progress;
   using JetBrains.ReSharper.Daemon;
   using JetBrains.ReSharper.Psi;
-  using JetBrains.ReSharper.Psi.ControlFlow2;
   using JetBrains.ReSharper.Psi.ControlFlow2.CSharp;
   using JetBrains.ReSharper.Psi.CSharp;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
@@ -22,7 +21,7 @@ namespace AgentJohnson.SmartGenerate.Generators
   using JetBrains.Util;
 
   /// <summary>Defines the generate assignment check class.</summary>
-  [SmartGenerate("Generate check if variable is null", "Generates statements that check for null or empty string.", Priority = 0)]
+  // [SmartGenerate("Generate check if variable is null", "Generates statements that check for null or empty string.", Priority = 0)]
   public class AssignmentCheck : SmartGenerateHandlerBase
   {
     #region Methods

@@ -52,7 +52,7 @@ namespace AgentJohnson.SmartGenerate.Generators
 
         foreach (var liveTemplateMenuItem in liveTemplateItems)
         {
-          var shortcut = "@Do not change: " + liveTemplateMenuItem.Shortcut;
+          var shortcut = "`Do not change: " + liveTemplateMenuItem.Shortcut;
 
           foreach (var templateStorage in LiveTemplatesManager.Instance.TemplateFamily.TemplateStorages)
           {
@@ -88,11 +88,12 @@ namespace AgentJohnson.SmartGenerate.Generators
         var templateElement = template.WriteToXml(doc);
 
         var xml = templateElement.OuterXml;
+        var description = template.Description;
 
         foreach (var key in liveTemplateMenuItem.Variables.Keys)
         {
-          xml = xml.Replace("$" + key + "$", liveTemplateMenuItem.Variables[key]);
-          template.Description = template.Description.Replace("$" + key + "$", liveTemplateMenuItem.Variables[key]);
+          xml = xml.Replace("@" + key, liveTemplateMenuItem.Variables[key].Replace("\"", "&quot;"));
+          description = description.Replace("@" + key, liveTemplateMenuItem.Variables[key]);
         }
 
         var range = liveTemplateMenuItem.Range;
@@ -101,7 +102,7 @@ namespace AgentJohnson.SmartGenerate.Generators
           range = defaultRange;
         }
 
-        this.AddAction(template.Description, xml, range);
+        this.AddAction(description, xml, range);
       }
     }
 

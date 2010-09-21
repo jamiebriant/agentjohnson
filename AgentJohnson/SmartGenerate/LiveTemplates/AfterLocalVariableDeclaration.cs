@@ -9,6 +9,7 @@
 
 namespace AgentJohnson.SmartGenerate.LiveTemplates
 {
+  using System;
   using System.Collections.Generic;
   using JetBrains.ReSharper.Psi;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
@@ -40,7 +41,15 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
         return null;
       }
 
-      var localVariable = localVariableDeclarations[0] as ILocalVariable;
+      var localVariableDeclaration = localVariableDeclarations[0];
+      if (localVariableDeclaration == null)
+      {
+        return null;
+      }
+
+      var value = localVariableDeclaration.Initial.GetText();
+
+      var localVariable = localVariableDeclaration as ILocalVariable;
       if (localVariable == null)
       {
         return null;
@@ -57,11 +66,12 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
         MenuText = string.Format("After local variable declaration of type '{0}'", presentableName), 
         Description = string.Format("After local variable of type '{0}'", presentableName), 
         Shortcut = string.Format("After local variable of type {0}", longPresentableName),
-        Text = string.Format("/* $Name$: variable name, $Type$ = variable type name */\n")
+        Text = string.Format("/* @VariableName, @VariableType, @Value */\n")
       };
 
-      liveTemplateItem.Variables["Name"] = shortName;
-      liveTemplateItem.Variables["Type"] = presentableName;
+      liveTemplateItem.Variables["VariableName"] = shortName;
+      liveTemplateItem.Variables["VariableType"] = presentableName;
+      liveTemplateItem.Variables["Value"] = value;
 
       return new List<LiveTemplateItem>
       {

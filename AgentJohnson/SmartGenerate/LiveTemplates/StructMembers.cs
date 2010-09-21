@@ -46,7 +46,7 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
         MenuText = "Struct member", 
         Description = "Struct member", 
         Shortcut = "Struct member",
-        Text = string.Format("/* $Modifier$: modifier */\n")
+        Text = string.Format("/* @Modifier */\n")
       };
 
       liveTemplateItem.Variables["Modifier"] = modifier;

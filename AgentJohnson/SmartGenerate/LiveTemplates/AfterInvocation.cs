@@ -9,6 +9,7 @@
 
 namespace AgentJohnson.SmartGenerate.LiveTemplates
 {
+  using System;
   using System.Collections.Generic;
   using JetBrains.ReSharper.Psi;
   using JetBrains.ReSharper.Psi.CSharp.Tree;
@@ -46,6 +47,7 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
         return null;
       }
 
+
       var resolveResult = invokedExpression.Reference.Resolve();
 
       IMethod method = null;
@@ -64,6 +66,14 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
       if (method == null)
       {
         return null;
+      }
+
+      var expression = string.Empty;
+
+      var qualifierExpression = invokedExpression.QualifierExpression;
+      if (qualifierExpression != null)
+      {
+        expression = qualifierExpression.GetText();
       }
 
       var shortName = method.ShortName;
@@ -91,11 +101,23 @@ namespace AgentJohnson.SmartGenerate.LiveTemplates
         MenuText = string.Format("After call to '{0}'", text),
         Description = string.Format("After call to '{0}'", text),
         Shortcut = string.Format("After call to {0}", shortcut),
-        Text = string.Format("/* $Name$: method name, $Type$: containing type name*/\n")
+        Text = string.Format("/* @Qualifier, @MethodName, @ContainingType, @Arg0... */\n")
       };
 
-      liveTemplateItem.Variables["Name"] = shortName;
-      liveTemplateItem.Variables["Type"] = type;
+      liveTemplateItem.Variables["MethodName"] = shortName;
+      liveTemplateItem.Variables["ContainingType"] = type;
+      liveTemplateItem.Variables["Qualifier"] = expression;
+
+      var arguments = invocationExpression.Arguments;
+      if (arguments != null)
+      {
+        var count = 0;
+        foreach (var argument in arguments)
+        {
+          liveTemplateItem.Variables["Arg" + count] = argument.GetText();
+          count++;
+        }
+      }
 
       return new List<LiveTemplateItem>
       {
