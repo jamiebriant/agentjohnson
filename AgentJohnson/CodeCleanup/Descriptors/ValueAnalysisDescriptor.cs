@@ -55,6 +55,7 @@ namespace AgentJohnson.CodeCleanup.Descriptors
         {
           options.AnnotateWithValueAnalysisAttributes = bool.Parse(XmlUtil.ReadLeafElementValue(optionsElement, "ValueAnalysis"));
           options.InsertAssertStatements = bool.Parse(XmlUtil.ReadLeafElementValue(optionsElement, "InsertStatements"));
+          options.TreatAllMembersAsNonPublic = bool.Parse(XmlUtil.ReadLeafElementValue(optionsElement, "TreatAllMembersAsNonPublic"));
         }
         catch (ArgumentException)
         {
@@ -82,6 +83,7 @@ namespace AgentJohnson.CodeCleanup.Descriptors
 
       optionsElement.CreateLeafElementWithValue("ValueAnalysis", options.AnnotateWithValueAnalysisAttributes.ToString());
       optionsElement.CreateLeafElementWithValue("InsertStatements", options.InsertAssertStatements.ToString());
+      optionsElement.CreateLeafElementWithValue("TreatAllMembersAsNonPublic", options.TreatAllMembersAsNonPublic.ToString());
     }
 
     #endregion

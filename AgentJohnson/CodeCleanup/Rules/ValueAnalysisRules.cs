@@ -63,6 +63,7 @@ namespace AgentJohnson.CodeCleanup.Rules
 
       refactoring.AnnotateWithValueAnalysisAttributes = options.AnnotateWithValueAnalysisAttributes;
       refactoring.InsertAssertStatements = options.InsertAssertStatements;
+      refactoring.TreatAllMembersAsNonPublic = options.TreatAllMembersAsNonPublic;
 
       refactoring.Execute();
     }

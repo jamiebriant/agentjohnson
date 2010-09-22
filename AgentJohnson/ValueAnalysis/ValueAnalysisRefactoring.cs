@@ -2,9 +2,6 @@
 // <copyright file="ValueAnalysisRefactoring.cs" company="Jakob Christensen">
 //   Copyright (C) 2009 Jakob Christensen
 // </copyright>
-// <summary>
-//   Defines the value analysis refactoring class.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace AgentJohnson.ValueAnalysis
@@ -106,6 +103,14 @@ namespace AgentJohnson.ValueAnalysis
     /// <c>true</c> if [insert assert statements]; otherwise, <c>false</c>.
     /// </value>
     public bool InsertAssertStatements { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether [treat all members as non public].
+    /// </summary>
+    /// <value>
+    /// <c>true</c> if [treat all members as non public]; otherwise, <c>false</c>.
+    /// </value>
+    public bool TreatAllMembersAsNonPublic { get; set; }
 
     /// <summary>
     /// Gets the solution.
@@ -254,33 +259,6 @@ namespace AgentJohnson.ValueAnalysis
       return null;
     }
 
-    /// <summary>Gets the code.</summary>
-    /// <param name="assertion">The assertion.</param>
-    /// <param name="accessRights">The access rights.</param>
-    /// <returns>The code.</returns>
-    private static string GetCode([NotNull] ParameterStatement assertion, AccessRights accessRights)
-    {
-      var rule = Rule.GetRule(assertion.Parameter.Type, assertion.Parameter.Language) ?? Rule.GetDefaultRule();
-      if (rule == null)
-      {
-        return null;
-      }
-
-      var code = accessRights == AccessRights.PUBLIC ? rule.PublicParameterAssertion : rule.NonPublicParameterAssertion;
-
-      if (string.IsNullOrEmpty(code))
-      {
-        rule = Rule.GetDefaultRule();
-
-        if (rule != null)
-        {
-          code = accessRights == AccessRights.PUBLIC ? rule.PublicParameterAssertion : rule.NonPublicParameterAssertion;
-        }
-      }
-
-      return string.IsNullOrEmpty(code) ? null : code;
-    }
-
     /// <summary>Executes the parameters.</summary>
     /// <param name="functionDeclaration">The function declaration.</param>
     private void ExecuteFunction([NotNull] ICSharpFunctionDeclaration functionDeclaration)
@@ -299,8 +277,6 @@ namespace AgentJohnson.ValueAnalysis
       var factory = CSharpElementFactory.GetInstance(functionDeclaration.GetPsiModule());
       var body = functionDeclaration.Body;
       var codeFormatter = new CodeFormatter();
-
-      var accessRights = GetAccessRights(functionDeclaration);
 
       foreach (var assertion in assertions)
       {
@@ -582,8 +558,6 @@ namespace AgentJohnson.ValueAnalysis
         }
       }
 
-      var accessRights = GetAccessRights(functionDeclaration);
-
       foreach (var parameter in parametersOwner.Parameters)
       {
         if (parameter == null)
@@ -614,7 +588,9 @@ namespace AgentJohnson.ValueAnalysis
         }
         else
         {
-          var code = GetCode(parameterStatement, accessRights);
+          var accessRights = GetAccessRights(functionDeclaration);
+
+          var code = this.GetCode(parameterStatement, accessRights);
 
           if (string.IsNullOrEmpty(code))
           {
@@ -666,7 +642,7 @@ namespace AgentJohnson.ValueAnalysis
       {
         return;
       }
- 
+
       // text resolving
       var count = 0;
       foreach (var statement in statements)
@@ -679,7 +655,7 @@ namespace AgentJohnson.ValueAnalysis
           {
             continue;
           }
-                               
+
           parameterStatement.Statement = statement;
           count++;
 
@@ -811,6 +787,38 @@ namespace AgentJohnson.ValueAnalysis
       return typeElement;
     }
 
+    /// <summary>Gets the code.</summary>
+    /// <param name="assertion">The assertion.</param>
+    /// <param name="accessRights">The access rights.</param>
+    /// <returns>The code.</returns>
+    private string GetCode([NotNull] ParameterStatement assertion, AccessRights accessRights)
+    {
+      var rule = Rule.GetRule(assertion.Parameter.Type, assertion.Parameter.Language) ?? Rule.GetDefaultRule();
+      if (rule == null)
+      {
+        return null;
+      }
+
+      if (this.TreatAllMembersAsNonPublic)
+      {
+        accessRights = AccessRights.PRIVATE;
+      }
+
+      var code = accessRights == AccessRights.PUBLIC ? rule.PublicParameterAssertion : rule.NonPublicParameterAssertion;
+
+      if (string.IsNullOrEmpty(code))
+      {
+        rule = Rule.GetDefaultRule();
+
+        if (rule != null)
+        {
+          code = accessRights == AccessRights.PUBLIC ? rule.PublicParameterAssertion : rule.NonPublicParameterAssertion;
+        }
+      }
+
+      return string.IsNullOrEmpty(code) ? null : code;
+    }
+
     /// <summary>Determines whether this instance has annotation.</summary>
     /// <returns><c>true</c> if this instance has annotation; otherwise, <c>false</c>.</returns>
     private bool HasAnnotation()
@@ -822,16 +830,12 @@ namespace AgentJohnson.ValueAnalysis
       return attributes.Any(codeAnnotationsCache.IsAnnotationAttribute);
     }
 
-    /// <summary>
-    /// Determines whether [is can be null annotation].
-    /// </summary>
-    /// <returns>
-    /// <c>true</c> if [is can be null annotation]; otherwise, <c>false</c>.
-    /// </returns>
+    /// <summary>Determines whether [is can be null annotation].</summary>
+    /// <returns><c>true</c> if [is can be null annotation]; otherwise, <c>false</c>.</returns>
     private bool HasCanBeNullAnnotation()
     {
       var attributes = this.TypeMemberDeclaration.DeclaredElement.GetAttributeInstances(this.canBeNullAttributeClrName, false);
-      
+
       return attributes != null && attributes.Count > 0;
     }
 

@@ -300,7 +300,7 @@ namespace AgentJohnson.ValueAnalysis
         {
           TypeName = GetAttributeString(type, "type"), 
           NotNull = GetAttributeString(type, "notnull") == "true", 
-          CanBeNull = GetAttributeString(type, "canbenull") == "true", 
+          CanBeNull = GetAttributeString(type, "canbenull") == "true",
           PublicParameterAssertion = GetElementString(type, "publicparameterassertion"), 
           NonPublicParameterAssertion = GetElementString(type, "nonpublicparameterassertion"), 
           ReturnAssertion = GetElementString(type, "returnassertion")

@@ -21,7 +21,7 @@ namespace AgentJohnson.SmartGenerate.Generators
   using JetBrains.Util;
 
   /// <summary>Defines the generate assignment check class.</summary>
-  // [SmartGenerate("Generate check if variable is null", "Generates statements that check for null or empty string.", Priority = 0)]
+  [SmartGenerate("Generate check if variable is null", "Generates statements that check for null or empty string.", Priority = 0)]
   public class AssignmentCheck : SmartGenerateHandlerBase
   {
     #region Methods

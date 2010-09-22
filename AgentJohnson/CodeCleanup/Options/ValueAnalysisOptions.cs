@@ -37,12 +37,21 @@ namespace AgentJohnson.CodeCleanup.Options
     /// <summary>
     /// Gets or sets a value indicating whether the elements must be documented.
     /// </summary>
-    [DisplayName("Annotate with Value Analysis attributes")]
+    [DisplayName("Annotate with Value Analysis Attributes")]
     public bool AnnotateWithValueAnalysisAttributes { get; set; }
 
     /// <summary>Gets or sets a value indicating whether InsertAssertStatements.</summary>
     [DisplayName("Insert Assertions")]
     public bool InsertAssertStatements { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether [treat all members as non public].
+    /// </summary>
+    /// <value>
+    /// <c>true</c> if [treat all members as non public]; otherwise, <c>false</c>.
+    /// </value>
+    [DisplayName("Treat All Members as Non-public")]
+    public bool TreatAllMembersAsNonPublic { get; set; }
 
     #endregion
 
